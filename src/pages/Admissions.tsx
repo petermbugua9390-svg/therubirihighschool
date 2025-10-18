@@ -84,17 +84,25 @@ const Admissions = () => {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">CBC Grade 10 Admission Form</h2>
+            <h2 className="text-4xl font-bold mb-6 text-foreground">Admission Documents</h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Download the official CBC Grade 10 admission form below. Complete all sections carefully and submit 
+              Download the official admission documents below. Complete all sections carefully and submit 
               along with the required documents.
             </p>
-            <a href="/documents/grade-10-admission-form.pdf" download>
-              <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-maroon">
-                <Download className="mr-2" />
-                Download Grade 10 Admission Form
-              </Button>
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/documents/admission-letter.pdf" download>
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-maroon">
+                  <Download className="mr-2" />
+                  Download Admission Letter
+                </Button>
+              </a>
+              <a href="/documents/grade-10-admission-form.pdf" download>
+                <Button size="lg" variant="outline" className="shadow-maroon">
+                  <Download className="mr-2" />
+                  Download Grade 10 Form
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </section>
