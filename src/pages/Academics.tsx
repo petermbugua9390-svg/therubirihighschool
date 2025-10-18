@@ -118,6 +118,173 @@ const Academics = () => {
         </div>
       </section>
 
+      {/* Subject Combinations */}
+      <section className="py-16 bg-secondary">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold mb-4 text-center text-foreground">Subject Combinations</h2>
+          <p className="text-lg text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
+            Choose your pathway based on your interests and career goals. Rubiri High offers diverse combinations across STEM, Arts, Sports, and Social Sciences.
+          </p>
+
+          {/* STEM Combinations */}
+          <div className="mb-12">
+            <h3 className="text-3xl font-bold mb-6 text-accent">🔬 STEM Combinations</h3>
+            
+            <div className="mb-8">
+              <h4 className="text-2xl font-bold mb-4 text-foreground">Applied Sciences</h4>
+              <div className="space-y-3">
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">ST2083:</span> Agriculture, Building & Construction, Home Science</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">ST2015:</span> Computer Studies, Geography, Marine & Fisheries</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">ST2071:</span> Agriculture, Biology, Geography</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div className="mb-8">
+              <h4 className="text-2xl font-bold mb-4 text-foreground">Pure Sciences</h4>
+              <div className="space-y-3">
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">ST1046:</span> Biology, Chemistry, Computer Studies</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">ST1037:</span> Core Mathematics, Home Science, Physics</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">ST1020:</span> Core Mathematics, Chemistry, Physics</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-2xl font-bold mb-4 text-foreground">Technical Studies</h4>
+              <div className="space-y-3">
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">ST3030:</span> Business Studies, Chemistry, Marine & Fisheries</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+
+          {/* Arts & Sports Combinations */}
+          <div className="mb-12">
+            <h3 className="text-3xl font-bold mb-6 text-accent">🎭 Arts & Sports Science Combinations</h3>
+            
+            <div className="mb-8">
+              <h4 className="text-2xl font-bold mb-4 text-foreground">Arts</h4>
+              <div className="space-y-3">
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">AS1021:</span> Computer Studies, Fine Arts, Music & Dance</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">AS1027:</span> Fine Arts, General Science, Music & Dance</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">AS1030:</span> Fine Arts, History & Citizenship, Music & Dance</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">AS1026:</span> Fine Arts, French, Music & Dance</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">AS1031:</span> Fine Arts, Literature in English, Music & Dance</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-2xl font-bold mb-4 text-foreground">Sports</h4>
+              <div className="space-y-3">
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">AS2010:</span> Biology, German, Sports & Recreation</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+
+          {/* Social Sciences Combinations */}
+          <div>
+            <h3 className="text-3xl font-bold mb-6 text-accent">🌍 Social Sciences Combinations</h3>
+            
+            <div className="mb-8">
+              <h4 className="text-2xl font-bold mb-4 text-foreground">Humanities & Business Studies</h4>
+              <div className="space-y-3">
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">SS2099:</span> Business Studies, German, History & Citizenship</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">SS2024:</span> Computer Studies, Geography, History & Citizenship</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">SS2004:</span> Geography, History & Citizenship, Literature in English</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">SS2018:</span> Fasihi ya Kiswahili, Geography, History & Citizenship</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">SS2076:</span> Christian Religious Education, General Science, History & Citizenship</p>
+                  </CardContent>
+                </Card>
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">SS2068:</span> Business Studies, French, Geography</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-2xl font-bold mb-4 text-foreground">Languages & Literature</h4>
+              <div className="space-y-3">
+                <Card className="shadow-maroon">
+                  <CardContent className="pt-4">
+                    <p className="text-muted-foreground"><span className="font-bold text-foreground">SS1081:</span> Fasihi ya Kiswahili, History & Citizenship, Literature in English</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Additional Features */}
       <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">

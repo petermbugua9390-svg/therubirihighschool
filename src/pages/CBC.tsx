@@ -176,6 +176,14 @@ const CBC = () => {
             The Rubiri High School welcomes the first cohort of CBC Grade 10 students with excitement and preparedness. 
             Join us in shaping Kenya's educational future.
           </p>
+          <a 
+            href="https://kicd.ac.ke/cbc-materials/curriculum-designs/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-block bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-3 rounded-lg font-semibold transition-all duration-300 shadow-maroon hover:shadow-lg"
+          >
+            Learn More About CBC
+          </a>
         </div>
       </section>
     </div>
