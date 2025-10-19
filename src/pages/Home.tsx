@@ -34,8 +34,8 @@ const Home = () => {
               </Button>
             </Link>
             <Link to="/admissions">
-              <Button size="lg" variant="outline" className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                Admissions
+              <Button size="lg" variant="outline" className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-black">
+                Admission 2026
               </Button>
             </Link>
             <Link to="/contact">
