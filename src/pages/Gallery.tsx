@@ -6,6 +6,16 @@ import sportsImage from "@/assets/sports-action.jpg";
 import cultureImage from "@/assets/music-culture.jpg";
 import alumniImage from "@/assets/alumni-celebration.jpg";
 import clubsImage from "@/assets/clubs-activities.jpg";
+import treePlanting1 from "@/assets/tree-planting-1.jpg";
+import treePlanting2 from "@/assets/tree-planting-2.jpg";
+import treePlanting3 from "@/assets/tree-planting-3.jpg";
+import treePlanting4 from "@/assets/tree-planting-4.jpg";
+import treePlanting5 from "@/assets/tree-planting-5.jpg";
+import treePlanting6 from "@/assets/tree-planting-6.jpg";
+import treePlanting7 from "@/assets/tree-planting-7.jpg";
+import treePlanting8 from "@/assets/tree-planting-8.jpg";
+import treePlanting9 from "@/assets/tree-planting-9.jpg";
+import treePlanting10 from "@/assets/tree-planting-10.jpg";
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -17,6 +27,16 @@ const Gallery = () => {
     { src: sportsImage, title: "Sports Excellence", category: "Sports" },
     { src: cultureImage, title: "National Music Festival 2024", category: "Culture" },
     { src: alumniImage, title: "Graduation Celebration", category: "Alumni" },
+    { src: treePlanting1, title: "Tree Planting Initiative", category: "Environment" },
+    { src: treePlanting2, title: "Environmental Conservation", category: "Environment" },
+    { src: treePlanting3, title: "Student-Led Tree Planting", category: "Environment" },
+    { src: treePlanting4, title: "Building Green Futures", category: "Environment" },
+    { src: treePlanting5, title: "Environment Club in Action", category: "Environment" },
+    { src: treePlanting6, title: "Nurturing Nature", category: "Environment" },
+    { src: treePlanting7, title: "Community Tree Planting", category: "Environment" },
+    { src: treePlanting8, title: "Hands-On Environmental Work", category: "Environment" },
+    { src: treePlanting9, title: "Leading Environmental Change", category: "Environment" },
+    { src: treePlanting10, title: "Sustainable Future Projects", category: "Environment" },
   ];
 
   return (
@@ -73,7 +93,7 @@ const Gallery = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold mb-12 text-center text-foreground">Photo Categories</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {["Academic", "Sports", "Culture", "Clubs", "Events", "Alumni"].map((category) => (
+            {["Academic", "Sports", "Culture", "Clubs", "Environment", "Alumni"].map((category) => (
               <div
                 key={category}
                 className="bg-accent text-accent-foreground py-4 px-6 rounded-lg text-center font-bold hover:scale-105 transition-transform duration-300 cursor-pointer shadow-lg"

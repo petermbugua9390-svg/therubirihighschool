@@ -3,6 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import sportsImage from "@/assets/sports-action.jpg";
 import cultureImage from "@/assets/music-culture.jpg";
 import clubsImage from "@/assets/clubs-activities.jpg";
+import treePlanting1 from "@/assets/tree-planting-1.jpg";
+import treePlanting2 from "@/assets/tree-planting-2.jpg";
+import treePlanting3 from "@/assets/tree-planting-3.jpg";
+import treePlanting4 from "@/assets/tree-planting-4.jpg";
+import treePlanting5 from "@/assets/tree-planting-5.jpg";
+import treePlanting6 from "@/assets/tree-planting-6.jpg";
 
 const CoCurricular = () => {
   const clubs = [
@@ -79,8 +85,92 @@ const CoCurricular = () => {
         </div>
       </section>
 
-      {/* Music, Drama & Culture */}
+      {/* Tree Planting Program */}
       <section className="py-16 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-6 text-foreground">Tree Planting & Environmental Conservation</h2>
+            <p className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8 leading-relaxed">
+              At The Rubiri High School, we believe in nurturing not just minds, but also our planet. Our comprehensive 
+              tree planting program is a cornerstone of our commitment to environmental sustainability and responsible citizenship.
+            </p>
+            <blockquote className="text-2xl font-bold text-accent italic border-l-4 border-accent pl-6 max-w-4xl mx-auto bg-background p-6 rounded-lg shadow-maroon">
+              "We do not inherit the earth from our ancestors; we borrow it from our children. Every tree we plant is a promise of a greener, 
+              healthier future — a legacy of hope and responsibility that defines the Rubiri spirit."
+            </blockquote>
+          </div>
+
+          <div className="mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <Card className="shadow-maroon">
+                <CardContent className="pt-6">
+                  <Leaf className="w-12 h-12 text-accent mb-4 mx-auto" />
+                  <h3 className="text-xl font-bold mb-3 text-center">Student-Led Initiative</h3>
+                  <p className="text-muted-foreground text-center">
+                    Our Environment Club leads regular tree planting activities, empowering students to take ownership of environmental conservation
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-maroon">
+                <CardContent className="pt-6">
+                  <Users className="w-12 h-12 text-accent mb-4 mx-auto" />
+                  <h3 className="text-xl font-bold mb-3 text-center">Community Impact</h3>
+                  <p className="text-muted-foreground text-center">
+                    Through partnerships with local organizations, we extend our environmental efforts beyond school grounds to benefit Naivasha
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="shadow-maroon">
+                <CardContent className="pt-6">
+                  <BookOpen className="w-12 h-12 text-accent mb-4 mx-auto" />
+                  <h3 className="text-xl font-bold mb-3 text-center">Educational Integration</h3>
+                  <p className="text-muted-foreground text-center">
+                    Tree planting connects classroom learning with real-world environmental science, ecology, and climate action
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { src: treePlanting1, title: "Hands-On Learning" },
+              { src: treePlanting2, title: "Collaborative Effort" },
+              { src: treePlanting3, title: "Teacher Mentorship" },
+              { src: treePlanting4, title: "Community Spirit" },
+              { src: treePlanting5, title: "Environmental Champions" },
+              { src: treePlanting6, title: "Building Green Futures" },
+            ].map((image, index) => (
+              <Card key={index} className="overflow-hidden shadow-lg hover:shadow-maroon transition-all duration-300 group">
+                <div className="relative">
+                  <img
+                    src={image.src}
+                    alt={image.title}
+                    className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                    <h3 className="text-primary-foreground text-lg font-bold">{image.title}</h3>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Through our tree planting program, students learn the vital importance of environmental stewardship, biodiversity, 
+              and climate action. Each seedling planted represents hope, growth, and our collective commitment to sustainability — 
+              embodying our motto: <span className="font-bold text-accent">Committed to Excellence</span> in all we do, 
+              including caring for our planet.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Music, Drama & Culture */}
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row-reverse items-center gap-12">
             <div className="lg:w-1/2">
@@ -137,7 +227,7 @@ const CoCurricular = () => {
       </section>
 
       {/* Sports Section */}
-      <section className="py-16 bg-background">
+      <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
@@ -173,7 +263,7 @@ const CoCurricular = () => {
       </section>
 
       {/* Impact Section */}
-      <section className="py-16 bg-secondary">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6 text-foreground">The Impact of Co-Curricular Activities</h2>
