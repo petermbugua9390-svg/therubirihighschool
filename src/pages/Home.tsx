@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -7,16 +8,85 @@ import cbcImage from "@/assets/cbc-learning.jpg";
 import sportsImage from "@/assets/sports-action.jpg";
 import cultureImage from "@/assets/music-culture.jpg";
 
+// Import all 20 educational hero images
+import classroomLearning from "@/assets/hero/classroom-learning.jpg";
+import chemistryLab from "@/assets/hero/chemistry-lab.jpg";
+import computerStudies from "@/assets/hero/computer-studies.jpg";
+import libraryStudy from "@/assets/hero/library-study.jpg";
+import physicsLab from "@/assets/hero/physics-lab.jpg";
+import biologyPractical from "@/assets/hero/biology-practical.jpg";
+import mathematicsClass from "@/assets/hero/mathematics-class.jpg";
+import groupDiscussion from "@/assets/hero/group-discussion.jpg";
+import artClass from "@/assets/hero/art-class.jpg";
+import musicLessons from "@/assets/hero/music-lessons.jpg";
+import sportsField from "@/assets/hero/sports-field.jpg";
+import teacherMentoring from "@/assets/hero/teacher-mentoring.jpg";
+import dramaPerformance from "@/assets/hero/drama-performance.jpg";
+import geographyStudy from "@/assets/hero/geography-study.jpg";
+import literatureClass from "@/assets/hero/literature-class.jpg";
+import technicalWorkshop from "@/assets/hero/technical-workshop.jpg";
+import digitalLearning from "@/assets/hero/digital-learning.jpg";
+import environmentalStudy from "@/assets/hero/environmental-study.jpg";
+import businessStudies from "@/assets/hero/business-studies.jpg";
+import agriculturePractical from "@/assets/hero/agriculture-practical.jpg";
+
 const Home = () => {
+  const heroImages = [
+    classroomLearning,
+    chemistryLab,
+    computerStudies,
+    libraryStudy,
+    physicsLab,
+    biologyPractical,
+    mathematicsClass,
+    groupDiscussion,
+    artClass,
+    musicLessons,
+    sportsField,
+    teacherMentoring,
+    dramaPerformance,
+    geographyStudy,
+    literatureClass,
+    technicalWorkshop,
+    digitalLearning,
+    environmentalStudy,
+    businessStudies,
+    agriculturePractical,
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 10000); // Change image every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section
-        className="relative h-screen flex items-center justify-center text-center bg-cover bg-center"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(128, 0, 32, 0.5)), url(${heroImage})`,
-        }}
-      >
+      {/* Hero Section with 3D Slideshow */}
+      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+        {/* Image Slideshow Container */}
+        <div className="absolute inset-0">
+          {heroImages.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 hero-slide ${
+                currentImageIndex === index ? "hero-slide-active" : "hero-slide-inactive"
+              }`}
+              style={{
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(128, 0, 32, 0.5)), url(${image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                zIndex: currentImageIndex === index ? 1 : 0,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Hero Content */}
         <div className="container mx-auto px-4 z-10">
           <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground mb-6 animate-fade-in">
             THE RUBIRI HIGH SCHOOL

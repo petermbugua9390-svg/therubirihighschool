@@ -146,4 +146,23 @@ All colors MUST be HSL.
   .bg-gradient-hero {
     background: var(--gradient-hero);
   }
+  
+  /* 3D Slideshow Animations */
+  .duration-2000 {
+    transition-duration: 2000ms;
+  }
+  
+  .hero-slide {
+    transition: opacity 2s ease-in-out, transform 2s ease-in-out;
+  }
+  
+  .hero-slide-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .hero-slide-inactive {
+    opacity: 0;
+    transform: scale(1.1);
+  }
 }
