@@ -185,8 +185,31 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Highlights Grid */}
+      {/* Principal's Message */}
       <section className="py-16 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl font-bold mb-8 text-center text-foreground">Message from the Principal</h2>
+            <div className="bg-card p-8 rounded-lg shadow-maroon">
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                It is with great pride and honor that I welcome you to The Rubiri High School, an institution dedicated to nurturing young minds and shaping future leaders. Our commitment to academic excellence, character development, and holistic education remains unwavering as we prepare our students to face the challenges of tomorrow with confidence and competence.
+              </p>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                At Rubiri, we believe that education transcends the classroom. Through our comprehensive CBC curriculum, co-curricular activities, and mentorship programs, we provide a conducive environment where every learner discovers their potential and develops the skills necessary for success in an ever-evolving world. Our dedicated teaching staff works tirelessly to ensure that each student receives personalized attention and guidance throughout their educational journey.
+              </p>
+              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                As we continue to uphold our motto, "Mwanzo Mpya" – every day is a new beginning – I encourage all our students to embrace every opportunity for growth, maintain discipline, and strive for excellence in all their endeavors. Together with our supportive parent community and committed staff, we are building a legacy of transformation and achievement that will positively impact generations to come.
+              </p>
+              <p className="text-right font-semibold text-foreground mt-8">
+                The Rubiri High School Principal
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Highlights Grid */}
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Life at Rubiri</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
