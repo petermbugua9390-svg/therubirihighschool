@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, Beaker, Laptop, Globe, Calculator, Leaf, Palette, Music } from "lucide-react";
 import cbcImage from "@/assets/cbc-learning.jpg";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 const Academics = () => {
   const subjects = [
@@ -23,14 +24,10 @@ const Academics = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-hero text-primary-foreground py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">Academic Excellence</h1>
-          <p className="text-xl max-w-3xl mx-auto">
-            Comprehensive education that prepares learners for the future through the Competency-Based Curriculum
-          </p>
-        </div>
-      </section>
+      <HeroSlideshow
+        title="Academic Excellence"
+        subtitle="Comprehensive education that prepares learners for the future through the Competency-Based Curriculum"
+      />
 
       {/* Introduction */}
       <section className="py-16 bg-background">

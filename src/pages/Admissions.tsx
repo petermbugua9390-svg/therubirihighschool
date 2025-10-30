@@ -1,19 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, UserCheck, ClipboardList, Download } from "lucide-react";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 const Admissions = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-hero text-primary-foreground py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">Admissions</h1>
-          <p className="text-xl max-w-3xl mx-auto">
-            Join The Rubiri High School family — where excellence begins and futures are built
-          </p>
-        </div>
-      </section>
+      <HeroSlideshow
+        title="Admissions"
+        subtitle="Join The Rubiri High School family — where excellence begins and futures are built"
+      />
 
       {/* Introduction */}
       <section className="py-16 bg-background">

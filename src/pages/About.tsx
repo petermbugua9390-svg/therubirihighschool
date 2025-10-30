@@ -1,18 +1,15 @@
 import { Target, Eye, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 const About = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-hero text-primary-foreground py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">About The Rubiri High School</h1>
-          <p className="text-xl max-w-3xl mx-auto">
-            A transformative learning institution where excellence meets character development
-          </p>
-        </div>
-      </section>
+      <HeroSlideshow
+        title="About The Rubiri High School"
+        subtitle="A transformative learning institution where excellence meets character development"
+      />
 
       {/* School Information */}
       <section className="py-16 bg-background">

@@ -1,6 +1,7 @@
 import { GraduationCap, Quote } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import alumniImage from "@/assets/alumni-celebration.jpg";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 const Alumni = () => {
   const testimonials = [
@@ -27,19 +28,10 @@ const Alumni = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section
-        className="relative py-32 bg-cover bg-center"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(128, 0, 32, 0.5)), url(${alumniImage})`,
-        }}
-      >
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold text-primary-foreground mb-6">Our Alumni</h1>
-          <p className="text-xl text-primary-foreground max-w-3xl mx-auto">
-            Celebrating the success stories of Rubiri graduates who continue to make us proud
-          </p>
-        </div>
-      </section>
+      <HeroSlideshow
+        title="Our Alumni"
+        subtitle="Celebrating the success stories of Rubiri graduates who continue to make us proud"
+      />
 
       {/* Introduction */}
       <section className="py-16 bg-background">

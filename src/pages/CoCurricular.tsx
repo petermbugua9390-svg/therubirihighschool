@@ -9,6 +9,7 @@ import treePlanting3 from "@/assets/tree-planting-3.jpg";
 import treePlanting4 from "@/assets/tree-planting-4.jpg";
 import treePlanting5 from "@/assets/tree-planting-5.jpg";
 import treePlanting6 from "@/assets/tree-planting-6.jpg";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 const CoCurricular = () => {
   const clubs = [
@@ -38,14 +39,10 @@ const CoCurricular = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-hero text-primary-foreground py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">Co-Curricular Life</h1>
-          <p className="text-xl max-w-3xl mx-auto">
-            Building character, confidence, and leadership through clubs, sports, and cultural activities
-          </p>
-        </div>
-      </section>
+      <HeroSlideshow
+        title="Co-Curricular Life"
+        subtitle="Building character, confidence, and leadership through clubs, sports, and cultural activities"
+      />
 
       {/* Clubs Section */}
       <section className="py-16 bg-background">

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter } from "lucide-react";
 import { toast } from "sonner";
+import HeroSlideshow from "@/components/HeroSlideshow";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -28,14 +29,10 @@ const Contact = () => {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-hero text-primary-foreground py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">Contact Us</h1>
-          <p className="text-xl max-w-3xl mx-auto">
-            Get in touch with The Rubiri High School — we're here to answer your questions
-          </p>
-        </div>
-      </section>
+      <HeroSlideshow
+        title="Contact Us"
+        subtitle="Get in touch with The Rubiri High School — we're here to answer your questions"
+      />
 
       {/* Contact Info & Form */}
       <section className="py-16 bg-background">
