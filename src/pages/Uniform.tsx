@@ -16,7 +16,7 @@ const Uniform = () => {
           <h2 className="text-3xl font-bold text-foreground mb-6">Official School Uniform</h2>
           <p className="text-muted-foreground text-lg">
             At The Rubiri High School, our uniform represents our values of discipline, unity, and excellence. 
-            The distinctive maroon and gold colors symbolize our school's rich heritage and commitment to academic achievement.
+            The distinctive dark gray, maroon, and white colors symbolize our school's rich heritage and commitment to academic achievement.
           </p>
         </div>
 
@@ -35,16 +35,16 @@ const Uniform = () => {
               <h3 className="text-2xl font-bold text-foreground mb-4">Boys' Uniform</h3>
               <div className="space-y-3 text-muted-foreground">
                 <p>
-                  <span className="font-semibold text-foreground">Blazer:</span> Rich maroon blazer with elegant gold trim on the lapels and sleeves
+                  <span className="font-semibold text-foreground">Blazer:</span> Rich maroon blazer with white trim on the lapels and sleeves
                 </p>
                 <p>
                   <span className="font-semibold text-foreground">Shirt:</span> Crisp white collared shirt
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Sweater:</span> Maroon V-neck sweater with gold trim
+                  <span className="font-semibold text-foreground">Sweater:</span> Maroon V-neck sweater with white trim
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Tie:</span> Maroon and gold striped school tie
+                  <span className="font-semibold text-foreground">Tie:</span> Maroon and white striped school tie
                 </p>
                 <p>
                   <span className="font-semibold text-foreground">Trousers:</span> Dark grey or black tailored trousers
@@ -66,22 +66,22 @@ const Uniform = () => {
               <h3 className="text-2xl font-bold text-foreground mb-4">Girls' Uniform</h3>
               <div className="space-y-3 text-muted-foreground">
                 <p>
-                  <span className="font-semibold text-foreground">Blazer:</span> Rich maroon blazer with elegant gold trim on the lapels and sleeves
+                  <span className="font-semibold text-foreground">Blazer:</span> Rich maroon blazer with white trim on the lapels and sleeves
                 </p>
                 <p>
                   <span className="font-semibold text-foreground">Shirt:</span> Crisp white collared shirt
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Sweater:</span> Maroon V-neck sweater with gold trim
+                  <span className="font-semibold text-foreground">Sweater:</span> Maroon V-neck sweater with white trim
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Tie:</span> Maroon and gold striped school tie
+                  <span className="font-semibold text-foreground">Tie:</span> Maroon and white striped school tie
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Skirt:</span> Maroon and beige tartan plaid pleated skirt
+                  <span className="font-semibold text-foreground">Skirt:</span> Dark gray pleated skirt
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Socks:</span> Cream knee-high socks with maroon stripes
+                  <span className="font-semibold text-foreground">Socks:</span> White knee-high socks with maroon stripes
                 </p>
               </div>
             </div>
@@ -97,9 +97,9 @@ const Uniform = () => {
               at all school-related events. The uniform must be clean, well-maintained, and worn with pride.
             </p>
             <p>
-              <span className="font-semibold text-foreground">School Colors:</span> Our distinctive maroon represents 
-              strength, determination, and academic excellence, while the gold accents symbolize achievement, 
-              wisdom, and the bright future we strive to build for every student.
+              <span className="font-semibold text-foreground">School Colors:</span> Our distinctive dark gray represents 
+              strength and discipline, maroon symbolizes determination and academic excellence, while white 
+              represents purity, wisdom, and the bright future we strive to build for every student.
             </p>
             <p>
               Uniforms can be purchased from authorized suppliers. For more information about uniform requirements 
