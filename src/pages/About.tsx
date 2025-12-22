@@ -121,14 +121,14 @@ const About = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-8 text-foreground">Our School Colors</h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
-            The Rubiri High School proudly wears Black, Maroon, and White — colors that symbolize authority, 
-            courage, and clarity in our pursuit of excellence.
+            The Rubiri High School proudly wears Dark Gray, Maroon, White, and Golden Yellow — colors that symbolize 
+            strength, courage, purity, and excellence in our pursuit of academic achievement.
           </p>
           <div className="flex flex-wrap justify-center gap-8">
             <div className="text-center">
-              <div className="w-32 h-32 rounded-full bg-primary shadow-lg mb-4 mx-auto"></div>
-              <p className="font-bold text-foreground">Black</p>
-              <p className="text-sm text-muted-foreground">Authority & Discipline</p>
+              <div className="w-32 h-32 rounded-full bg-[hsl(0,0%,30%)] shadow-lg mb-4 mx-auto"></div>
+              <p className="font-bold text-foreground">Dark Gray</p>
+              <p className="text-sm text-muted-foreground">Strength & Discipline</p>
             </div>
             <div className="text-center">
               <div className="w-32 h-32 rounded-full bg-accent shadow-lg mb-4 mx-auto"></div>
@@ -138,7 +138,12 @@ const About = () => {
             <div className="text-center">
               <div className="w-32 h-32 rounded-full bg-background border-4 border-border shadow-lg mb-4 mx-auto"></div>
               <p className="font-bold text-foreground">White</p>
-              <p className="text-sm text-muted-foreground">Clarity & Professionalism</p>
+              <p className="text-sm text-muted-foreground">Purity & Clarity</p>
+            </div>
+            <div className="text-center">
+              <div className="w-32 h-32 rounded-full bg-[hsl(45,100%,50%)] shadow-lg mb-4 mx-auto"></div>
+              <p className="font-bold text-foreground">Golden Yellow</p>
+              <p className="text-sm text-muted-foreground">Excellence & Achievement</p>
             </div>
           </div>
         </div>
