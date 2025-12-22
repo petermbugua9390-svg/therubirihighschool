@@ -49,6 +49,9 @@ const Uniform = () => {
                 <p>
                   <span className="font-semibold text-foreground">Trousers:</span> Dark grey or black tailored trousers
                 </p>
+                <p>
+                  <span className="font-semibold text-foreground">Socks:</span> Dark gray socks with maroon stripes
+                </p>
               </div>
             </div>
           </div>
