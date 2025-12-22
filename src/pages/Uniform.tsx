@@ -16,7 +16,7 @@ const Uniform = () => {
           <h2 className="text-3xl font-bold text-foreground mb-6">Official School Uniform</h2>
           <p className="text-muted-foreground text-lg">
             At The Rubiri High School, our uniform represents our values of discipline, unity, and excellence. 
-            The distinctive dark gray, maroon, and white colors symbolize our school's rich heritage and commitment to academic achievement.
+            The distinctive dark grey, maroon, and white colors symbolize our school's rich heritage and commitment to academic achievement.
           </p>
         </div>
 
@@ -47,10 +47,10 @@ const Uniform = () => {
                   <span className="font-semibold text-foreground">Tie:</span> Maroon and white striped school tie
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Trousers:</span> Dark grey or black tailored trousers
+                  <span className="font-semibold text-foreground">Trousers:</span> Dark grey tailored trousers
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Socks:</span> Dark gray socks with maroon stripes
+                  <span className="font-semibold text-foreground">Socks:</span> Dark grey socks with maroon stripes
                 </p>
               </div>
             </div>
@@ -81,7 +81,7 @@ const Uniform = () => {
                   <span className="font-semibold text-foreground">Tie:</span> Maroon and white striped school tie
                 </p>
                 <p>
-                  <span className="font-semibold text-foreground">Skirt:</span> Dark gray pleated skirt
+                  <span className="font-semibold text-foreground">Skirt:</span> Dark grey pleated skirt
                 </p>
                 <p>
                   <span className="font-semibold text-foreground">Socks:</span> White knee-high socks with maroon stripes
@@ -100,7 +100,7 @@ const Uniform = () => {
               at all school-related events. The uniform must be clean, well-maintained, and worn with pride.
             </p>
             <p>
-              <span className="font-semibold text-foreground">School Colors:</span> Our distinctive dark gray represents 
+              <span className="font-semibold text-foreground">School Colors:</span> Our distinctive dark grey represents 
               strength and discipline, maroon symbolizes determination and academic excellence, while white 
               represents purity, wisdom, and the bright future we strive to build for every student.
             </p>

@@ -121,13 +121,13 @@ const About = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-8 text-foreground">Our School Colors</h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
-            The Rubiri High School proudly wears Dark Gray, Maroon, White, and Golden Yellow — colors that symbolize 
+            The Rubiri High School proudly wears Dark Grey, Maroon, White, and Golden Yellow — colors that symbolize 
             strength, courage, purity, and excellence in our pursuit of academic achievement.
           </p>
           <div className="flex flex-wrap justify-center gap-8">
             <div className="text-center">
               <div className="w-32 h-32 rounded-full bg-[hsl(0,0%,30%)] shadow-lg mb-4 mx-auto"></div>
-              <p className="font-bold text-foreground">Dark Gray</p>
+              <p className="font-bold text-foreground">Dark Grey</p>
               <p className="text-sm text-muted-foreground">Strength & Discipline</p>
             </div>
             <div className="text-center">
