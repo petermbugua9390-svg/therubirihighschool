@@ -23,6 +23,36 @@ const Alumni = () => {
       field: "Journalism and Mass Communication",
       quote: "Rubiri gave me confidence to lead and speak boldly. I'm studying Journalism and Mass Communication — carrying the Rubiri spirit wherever I go.",
     },
+    {
+      name: "Grace Muthoni",
+      year: "Class of 2022",
+      field: "Medicine and Surgery",
+      quote: "The discipline and hard work ethic I developed at Rubiri prepared me for the demanding journey of medical school. Forever grateful for my foundation here.",
+    },
+    {
+      name: "James Kamau",
+      year: "Class of 2024",
+      field: "Computer Science",
+      quote: "Rubiri introduced me to the world of technology through our computer studies program. Now I'm building apps and dreaming of starting my own tech company.",
+    },
+    {
+      name: "Faith Achieng",
+      year: "Class of 2022",
+      field: "Business Administration",
+      quote: "The leadership skills I gained as a prefect at Rubiri gave me the confidence to pursue business. I'm now running my own small enterprise alongside my studies.",
+    },
+    {
+      name: "Peter Njoroge",
+      year: "Class of 2023",
+      field: "Agricultural Sciences",
+      quote: "Our agriculture practicals at Rubiri sparked my love for farming innovation. I'm now studying to transform Kenya's agricultural sector.",
+    },
+    {
+      name: "Diana Chebet",
+      year: "Class of 2024",
+      field: "Law",
+      quote: "Rubiri's debate club and public speaking opportunities prepared me perfectly for law school. The Mwanzo Mpya spirit keeps me pushing forward every day.",
+    },
   ];
 
   return (
