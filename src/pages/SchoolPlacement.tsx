@@ -1,6 +1,7 @@
-import { GraduationCap, School, Users, CheckCircle, AlertCircle, Phone, Mail, Calendar, FileText, MapPin, ArrowRight, BookOpen } from "lucide-react";
+import { GraduationCap, School, Users, CheckCircle, AlertCircle, Phone, Mail, Calendar, FileText, MapPin, ArrowRight, BookOpen, HelpCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Link } from "react-router-dom";
 import HeroSlideshow from "@/components/HeroSlideshow";
@@ -394,6 +395,228 @@ const SchoolPlacement = () => {
                 </ol>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-accent/20 rounded-full mb-4">
+                <HelpCircle className="w-8 h-8 text-accent" />
+              </div>
+              <h2 className="text-4xl font-bold mb-4 text-foreground">Frequently Asked Questions</h2>
+              <p className="text-lg text-muted-foreground">
+                Common questions from parents about the CBC transition and Grade 10 placement
+              </p>
+            </div>
+            
+            <Accordion type="single" collapsible className="space-y-4">
+              <AccordionItem value="item-1" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  What is the difference between the old 8-4-4 system and the new CBC system?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    The 8-4-4 system consisted of 8 years of primary, 4 years of secondary, and 4 years of university education. 
+                    The new CBC (Competency Based Curriculum) follows a 2-6-3-3-3 structure:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>2 years</strong> - Pre-Primary (PP1 & PP2)</li>
+                    <li><strong>6 years</strong> - Primary School (Grades 1-6)</li>
+                    <li><strong>3 years</strong> - Junior Secondary (Grades 7-9)</li>
+                    <li><strong>3 years</strong> - Senior Secondary (Grades 10-12)</li>
+                    <li><strong>3 years</strong> - University/TVET</li>
+                  </ul>
+                  <p className="mt-3">
+                    CBC focuses on developing competencies, skills, and practical application rather than just academic knowledge and examinations.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  Can my child change their career pathway after placement?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    Yes, pathway changes are possible but with some considerations:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li>Changes are typically allowed within the first term of Grade 10</li>
+                    <li>The receiving school must offer the desired pathway</li>
+                    <li>Changes require approval from the school principal and parents</li>
+                    <li>Learners may need to catch up on subjects specific to the new pathway</li>
+                  </ul>
+                  <p className="mt-3">
+                    It's advisable to carefully consider pathway choices during the selection process to minimize disruptions.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  What happens if my child is not placed in any of their 12 preferred schools?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    If a learner is not placed in any of their selected schools, the Ministry of Education will:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li>Automatically place them in a school within their county that offers their chosen pathway</li>
+                    <li>Prioritize schools with available capacity</li>
+                    <li>Consider the learner's KJSEA performance</li>
+                  </ul>
+                  <p className="mt-3">
+                    Parents can appeal the placement through the grievance redress mechanism if they are dissatisfied with the automatic placement.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  Are there fees for Senior Secondary School under CBC?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    Yes, there are fees but the government provides substantial subsidies:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>Day Schools:</strong> Government capitation covers most tuition; parents pay minimal levies for lunch and activities</li>
+                    <li><strong>Boarding Schools:</strong> Parents pay boarding fees while government covers tuition subsidy</li>
+                    <li><strong>Bursaries:</strong> Available for needy students through the Constituency Development Fund (CDF) and county bursaries</li>
+                  </ul>
+                  <p className="mt-3">
+                    Specific fee structures are communicated by individual schools upon admission.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  What subjects will my child study in Senior Secondary School?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    All learners study <strong>7 core subjects</strong> regardless of pathway:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2 mb-3">
+                    <li>English, Kiswahili, Mathematics</li>
+                    <li>Religious Education (CRE/IRE/HRE)</li>
+                    <li>Citizenship Education, Life Skills, Sports & Physical Education</li>
+                  </ul>
+                  <p className="mb-3">
+                    Additionally, learners choose <strong>3 subjects</strong> from their selected pathway track:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>STEM:</strong> Physics, Chemistry, Biology, Computer Science, Mathematics, Agriculture, etc.</li>
+                    <li><strong>Arts & Sports:</strong> Music, Theatre, Visual Arts, Sports Science, etc.</li>
+                    <li><strong>Social Sciences:</strong> History, Geography, Business Studies, Languages, etc.</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  How is the KJSEA different from the old KCPE examination?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    The Kenya Junior Secondary Education Assessment (KJSEA) differs significantly from KCPE:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>Continuous Assessment (40%):</strong> Includes KPSEA scores and school-based assessments from Grades 7-8</li>
+                    <li><strong>Summative Exam (60%):</strong> End of Grade 9 examination</li>
+                    <li><strong>Competency Focus:</strong> Tests practical skills and application, not just memorization</li>
+                    <li><strong>Portfolio Assessment:</strong> Includes projects, practical work, and creative submissions</li>
+                  </ul>
+                  <p className="mt-3">
+                    KJSEA provides a more holistic evaluation of learner abilities compared to the purely exam-based KCPE.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-7" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  Can my child attend a school outside their home county?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    Yes, learners can attend schools outside their home county. The selection structure allows:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>5 boarding schools</strong> outside the home county</li>
+                    <li><strong>4 boarding schools</strong> within the home county</li>
+                    <li><strong>3 day schools</strong> within the home sub-county</li>
+                  </ul>
+                  <p className="mt-3">
+                    This structure encourages national integration while ensuring learners have options close to home.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-8" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  What documents are required for Grade 10 admission?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    The following documents are typically required for Grade 10 admission:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li>Official Admission Letter (downloaded from the portal)</li>
+                    <li>Birth Certificate (original and copy)</li>
+                    <li>KJSEA Results Slip</li>
+                    <li>National Education Management Information System (NEMIS) printout</li>
+                    <li>Passport photos (recent)</li>
+                    <li>Medical examination report</li>
+                    <li>Transfer/Leaving certificate from Junior Secondary School</li>
+                    <li>Any special needs documentation (if applicable)</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-9" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  What career opportunities are available after Senior Secondary?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    After Grade 12, learners have multiple pathways based on their Senior School performance:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>University Education:</strong> 3-4 year degree programmes at public and private universities</li>
+                    <li><strong>TVET Institutions:</strong> Technical and vocational training for practical careers</li>
+                    <li><strong>Apprenticeships:</strong> Direct industry training and certification</li>
+                    <li><strong>Entrepreneurship:</strong> Start-up support for business-minded graduates</li>
+                  </ul>
+                  <p className="mt-3">
+                    Each pathway (STEM, Arts & Sports, Social Sciences) opens specific career doors aligned with the subjects studied.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-10" className="bg-card rounded-lg shadow-maroon border-none px-6">
+                <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                  How can I support my child during the CBC transition?
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">
+                  <p className="mb-3">
+                    Parents can support their children through the CBC transition by:
+                  </p>
+                  <ul className="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>Understanding the curriculum:</strong> Learn about CBC structure and expectations</li>
+                    <li><strong>Supporting pathway choices:</strong> Discuss interests and career aspirations with your child</li>
+                    <li><strong>Encouraging practical learning:</strong> Help with projects and portfolio development</li>
+                    <li><strong>Attending school meetings:</strong> Stay informed about your child's progress</li>
+                    <li><strong>Providing resources:</strong> Ensure access to textbooks, materials, and a conducive study environment</li>
+                    <li><strong>Emotional support:</strong> Recognize that transitions can be challenging and offer encouragement</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </section>
