@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Academics from "./pages/Academics";
 import CBC from "./pages/CBC";
+import SchoolPlacement from "./pages/SchoolPlacement";
 import CoCurricular from "./pages/CoCurricular";
 import Teachers from "./pages/Teachers";
 import Admissions from "./pages/Admissions";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/academics" element={<Academics />} />
           <Route path="/cbc" element={<CBC />} />
+          <Route path="/school-placement" element={<SchoolPlacement />} />
           <Route path="/co-curricular" element={<CoCurricular />} />
           <Route path="/teachers" element={<Teachers />} />
           <Route path="/admissions" element={<Admissions />} />
