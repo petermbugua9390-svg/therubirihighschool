@@ -405,6 +405,220 @@ const CBC = () => {
         </div>
       </section>
 
+      {/* Important Educational Resources */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold mb-6 text-center text-foreground">Important Educational Resources</h2>
+          <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto mb-12">
+            Stay informed with official resources from the Ministry of Education and partner organizations. 
+            These links provide essential information for parents, learners, and teachers.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Official Government Resources */}
+            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
+              <CardHeader className="bg-accent/10">
+                <CardTitle className="flex items-center gap-3 text-lg">
+                  <GraduationCap className="w-6 h-6 text-accent" />
+                  Ministry of Education
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4 space-y-3">
+                <a 
+                  href="https://www.education.go.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> Official MoE Website
+                </a>
+                <a 
+                  href="https://selection.education.go.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> School Selection Portal
+                </a>
+                <a 
+                  href="https://nemis.education.go.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> NEMIS Portal
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* KICD Resources */}
+            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
+              <CardHeader className="bg-accent/10">
+                <CardTitle className="flex items-center gap-3 text-lg">
+                  <BookOpen className="w-6 h-6 text-accent" />
+                  KICD Curriculum
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4 space-y-3">
+                <a 
+                  href="https://kicd.ac.ke/cbc-materials/curriculum-designs/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> CBC Curriculum Designs
+                </a>
+                <a 
+                  href="https://kicd.ac.ke/cbc-materials/curriculum-designs/grade-ten/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> Grade 10 Materials
+                </a>
+                <a 
+                  href="https://kicd.ac.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> KICD Official Website
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* KNEC Resources */}
+            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
+              <CardHeader className="bg-accent/10">
+                <CardTitle className="flex items-center gap-3 text-lg">
+                  <FileText className="w-6 h-6 text-accent" />
+                  KNEC Examinations
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4 space-y-3">
+                <a 
+                  href="https://www.knec.ac.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> KNEC Official Website
+                </a>
+                <a 
+                  href="https://www.knec.ac.ke/results/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> Results Portal
+                </a>
+                <a 
+                  href="https://cp2.knec.ac.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> KNEC CP2 Portal
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* Digital Learning */}
+            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
+              <CardHeader className="bg-accent/10">
+                <CardTitle className="flex items-center gap-3 text-lg">
+                  <Lightbulb className="w-6 h-6 text-accent" />
+                  Digital Learning
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4 space-y-3">
+                <a 
+                  href="https://kenyaeducationcloud.co.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> Kenya Education Cloud
+                </a>
+                <a 
+                  href="https://elimika.co.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> Elimika Platform
+                </a>
+                <a 
+                  href="https://www.kbc.co.ke/education/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> KBC Education
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* Teacher Resources */}
+            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
+              <CardHeader className="bg-accent/10">
+                <CardTitle className="flex items-center gap-3 text-lg">
+                  <Users className="w-6 h-6 text-accent" />
+                  Teacher Resources
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4 space-y-3">
+                <a 
+                  href="https://www.tsc.go.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> TSC Portal
+                </a>
+                <a 
+                  href="https://teachersonline.tsc.go.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> TSC Online Services
+                </a>
+                <a 
+                  href="https://tpd.tsc.go.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> TPD Training Portal
+                </a>
+              </CardContent>
+            </Card>
+
+            {/* KJSEA Calculator Tool */}
+            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300 border-2 border-accent">
+              <CardHeader className="bg-accent/20">
+                <CardTitle className="flex items-center gap-3 text-lg">
+                  <Calculator className="w-6 h-6 text-accent" />
+                  KJSEA Calculator
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <p className="text-sm text-muted-foreground mb-4">
+                  Estimate your child's KJSEA score and Grade 10 placement potential with our free calculator tool.
+                </p>
+                <Link 
+                  to="/school-placement"
+                  className="inline-flex items-center gap-2 text-accent hover:text-accent/80 font-semibold transition-colors text-sm"
+                >
+                  Open Calculator <ArrowRight className="w-4 h-4" />
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Grade 10 Ready */}
       <section className="py-16 bg-gradient-hero text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
