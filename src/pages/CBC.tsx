@@ -577,12 +577,28 @@ const CBC = () => {
                   <ArrowRight className="w-4 h-4" /> TSC Portal
                 </a>
                 <a 
-                  href="https://teachersonline.tsc.go.ke/" 
+                  href="https://tpad2.tsc.go.ke/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
                 >
-                  <ArrowRight className="w-4 h-4" /> TSC Online Services
+                  <ArrowRight className="w-4 h-4" /> TPAD Portal
+                </a>
+                <a 
+                  href="https://tpay.tsc.go.ke/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> TPAY Payslips
+                </a>
+                <a 
+                  href="https://eacc.go.ke/default/wealth-declaration/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-accent transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4" /> Wealth Declaration (EACC)
                 </a>
                 <a 
                   href="https://tpd.tsc.go.ke/" 
