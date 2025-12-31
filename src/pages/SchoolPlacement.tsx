@@ -1,10 +1,11 @@
-import { GraduationCap, School, Users, CheckCircle, AlertCircle, Phone, Mail, Calendar, FileText, MapPin, ArrowRight, BookOpen, HelpCircle } from "lucide-react";
+import { GraduationCap, School, Users, CheckCircle, AlertCircle, Phone, Mail, Calendar, FileText, MapPin, ArrowRight, BookOpen, HelpCircle, Calculator } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Link } from "react-router-dom";
 import HeroSlideshow from "@/components/HeroSlideshow";
+import KJSEACalculator from "@/components/KJSEACalculator";
 
 const SchoolPlacement = () => {
   const selectionSteps = [
@@ -174,7 +175,27 @@ const SchoolPlacement = () => {
                 </div>
               </div>
             </CardContent>
-          </Card>
+        </Card>
+        </div>
+      </section>
+
+      {/* KJSEA Calculator Tool */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-accent/20 rounded-full mb-4">
+              <Calculator className="w-8 h-8 text-accent" />
+            </div>
+            <h2 className="text-4xl font-bold mb-4 text-foreground">KJSEA Score Calculator</h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Use this tool to estimate your child's KJSEA performance and get placement recommendations 
+              based on the official assessment weighting structure.
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <KJSEACalculator />
+          </div>
         </div>
       </section>
 
