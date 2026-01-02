@@ -17,6 +17,7 @@ import Alumni from "./pages/Alumni";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import Uniform from "./pages/Uniform";
+import KUCCPS from "./pages/KUCCPS";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/alumni" element={<Alumni />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/uniform" element={<Uniform />} />
+          <Route path="/kuccps" element={<KUCCPS />} />
           <Route path="/contact" element={<Contact />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
