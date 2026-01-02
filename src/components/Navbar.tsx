@@ -14,6 +14,7 @@ const Navbar = () => {
     { name: "CBC Curriculum", path: "/cbc" },
     { name: "School Placement", path: "/school-placement" },
     { name: "KUCCPS", path: "/kuccps" },
+    { name: "HELB", path: "/helb" },
     { name: "Co-Curricular", path: "/co-curricular" },
     { name: "Teachers", path: "/teachers" },
     { name: "Admissions", path: "/admissions" },
