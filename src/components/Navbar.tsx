@@ -13,6 +13,7 @@ const Navbar = () => {
     { name: "Academics", path: "/academics" },
     { name: "CBC Curriculum", path: "/cbc" },
     { name: "School Placement", path: "/school-placement" },
+    { name: "KUCCPS", path: "/kuccps" },
     { name: "Co-Curricular", path: "/co-curricular" },
     { name: "Teachers", path: "/teachers" },
     { name: "Admissions", path: "/admissions" },
