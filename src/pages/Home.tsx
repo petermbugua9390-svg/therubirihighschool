@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap, Target, Users, Award } from "lucide-react";
+import { AnimatedSection, StaggeredContainer, StaggeredItem, AnimatedText } from "@/components/AnimatedSection";
 import heroImage from "@/assets/hero-students.jpg";
 import cbcImage from "@/assets/cbc-learning.jpg";
 import sportsImage from "@/assets/sports-action.jpg";
@@ -120,48 +121,58 @@ const Home = () => {
       {/* Core Values Section */}
       <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Our Core Values</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
-              <CardContent className="pt-6 text-center">
-                <GraduationCap className="w-16 h-16 mx-auto mb-4 text-accent" />
-                <h3 className="text-xl font-bold mb-2">Academic Excellence</h3>
-                <p className="text-muted-foreground">
-                  Committed to providing quality education that inspires intellectual growth.
-                </p>
-              </CardContent>
-            </Card>
+          <AnimatedSection>
+            <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Our Core Values</h2>
+          </AnimatedSection>
+          <StaggeredContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <StaggeredItem>
+              <Card className="shadow-maroon hover:scale-105 transition-transform duration-300 h-full">
+                <CardContent className="pt-6 text-center">
+                  <GraduationCap className="w-16 h-16 mx-auto mb-4 text-accent" />
+                  <h3 className="text-xl font-bold mb-2">Academic Excellence</h3>
+                  <p className="text-muted-foreground">
+                    Committed to providing quality education that inspires intellectual growth.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
 
-            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
-              <CardContent className="pt-6 text-center">
-                <Target className="w-16 h-16 mx-auto mb-4 text-accent" />
-                <h3 className="text-xl font-bold mb-2">Discipline</h3>
-                <p className="text-muted-foreground">
-                  Building character through structure, respect, and accountability.
-                </p>
-              </CardContent>
-            </Card>
+            <StaggeredItem>
+              <Card className="shadow-maroon hover:scale-105 transition-transform duration-300 h-full">
+                <CardContent className="pt-6 text-center">
+                  <Target className="w-16 h-16 mx-auto mb-4 text-accent" />
+                  <h3 className="text-xl font-bold mb-2">Discipline</h3>
+                  <p className="text-muted-foreground">
+                    Building character through structure, respect, and accountability.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
 
-            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
-              <CardContent className="pt-6 text-center">
-                <Users className="w-16 h-16 mx-auto mb-4 text-accent" />
-                <h3 className="text-xl font-bold mb-2">Mentorship</h3>
-                <p className="text-muted-foreground">
-                  Dedicated teachers guide students to discover their potential.
-                </p>
-              </CardContent>
-            </Card>
+            <StaggeredItem>
+              <Card className="shadow-maroon hover:scale-105 transition-transform duration-300 h-full">
+                <CardContent className="pt-6 text-center">
+                  <Users className="w-16 h-16 mx-auto mb-4 text-accent" />
+                  <h3 className="text-xl font-bold mb-2">Mentorship</h3>
+                  <p className="text-muted-foreground">
+                    Dedicated teachers guide students to discover their potential.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
 
-            <Card className="shadow-maroon hover:scale-105 transition-transform duration-300">
-              <CardContent className="pt-6 text-center">
-                <Award className="w-16 h-16 mx-auto mb-4 text-accent" />
-                <h3 className="text-xl font-bold mb-2">Transformation</h3>
-                <p className="text-muted-foreground">
-                  Empowering learners to become confident, purposeful leaders.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+            <StaggeredItem>
+              <Card className="shadow-maroon hover:scale-105 transition-transform duration-300 h-full">
+                <CardContent className="pt-6 text-center">
+                  <Award className="w-16 h-16 mx-auto mb-4 text-accent" />
+                  <h3 className="text-xl font-bold mb-2">Transformation</h3>
+                  <p className="text-muted-foreground">
+                    Empowering learners to become confident, purposeful leaders.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
+          </StaggeredContainer>
         </div>
       </section>
 
@@ -169,18 +180,26 @@ const Home = () => {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6 text-foreground">Welcome to The Rubiri High School</h2>
-            <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              A transformative learning institution where education inspires both character and intellect.
-              We empower learners through discipline, mentorship, and creativity — nurturing confident individuals who lead with purpose.
-            </p>
-            <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-              Rubiri High blends academic excellence with real-world skills. Every learner is valued, guided, and supported by a dedicated teaching staff.
-              Our philosophy, <span className="font-bold text-accent">"Mwanzo Mpya"</span>, reminds students that each day brings a chance to improve, dream, and lead.
-            </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              The school's environment promotes innovation, digital literacy, and teamwork — preparing students for a dynamic, changing world.
-            </p>
+            <AnimatedSection>
+              <h2 className="text-4xl font-bold mb-6 text-foreground">Welcome to The Rubiri High School</h2>
+            </AnimatedSection>
+            <AnimatedText delay={0.1}>
+              <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
+                A transformative learning institution where education inspires both character and intellect.
+                We empower learners through discipline, mentorship, and creativity — nurturing confident individuals who lead with purpose.
+              </p>
+            </AnimatedText>
+            <AnimatedText delay={0.2}>
+              <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
+                Rubiri High blends academic excellence with real-world skills. Every learner is valued, guided, and supported by a dedicated teaching staff.
+                Our philosophy, <span className="font-bold text-accent">"Mwanzo Mpya"</span>, reminds students that each day brings a chance to improve, dream, and lead.
+              </p>
+            </AnimatedText>
+            <AnimatedText delay={0.3}>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                The school's environment promotes innovation, digital literacy, and teamwork — preparing students for a dynamic, changing world.
+              </p>
+            </AnimatedText>
           </div>
         </div>
       </section>
@@ -189,21 +208,25 @@ const Home = () => {
       <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold mb-8 text-center text-foreground">Message from the Principal</h2>
-            <div className="bg-card p-8 rounded-lg shadow-maroon">
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                It is with great pride and honor that I welcome you to The Rubiri High School, an institution dedicated to nurturing young minds and shaping future leaders. Our commitment to academic excellence, character development, and holistic education remains unwavering as we prepare our students to face the challenges of tomorrow with confidence and competence.
-              </p>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                At Rubiri, we believe that education transcends the classroom. Through our comprehensive CBC curriculum, co-curricular activities, and mentorship programs, we provide a conducive environment where every learner discovers their potential and develops the skills necessary for success in an ever-evolving world. Our dedicated teaching staff works tirelessly to ensure that each student receives personalized attention and guidance throughout their educational journey.
-              </p>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                As we continue to uphold our motto, "Mwanzo Mpya" – every day is a new beginning – I encourage all our students to embrace every opportunity for growth, maintain discipline, and strive for excellence in all their endeavors. Together with our supportive parent community and committed staff, we are building a legacy of transformation and achievement that will positively impact generations to come.
-              </p>
-              <p className="text-right font-semibold text-foreground mt-8">
-                The Rubiri High School Principal
-              </p>
-            </div>
+            <AnimatedSection>
+              <h2 className="text-4xl font-bold mb-8 text-center text-foreground">Message from the Principal</h2>
+            </AnimatedSection>
+            <AnimatedSection delay={0.2}>
+              <div className="bg-card p-8 rounded-lg shadow-maroon">
+                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                  It is with great pride and honor that I welcome you to The Rubiri High School, an institution dedicated to nurturing young minds and shaping future leaders. Our commitment to academic excellence, character development, and holistic education remains unwavering as we prepare our students to face the challenges of tomorrow with confidence and competence.
+                </p>
+                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                  At Rubiri, we believe that education transcends the classroom. Through our comprehensive CBC curriculum, co-curricular activities, and mentorship programs, we provide a conducive environment where every learner discovers their potential and develops the skills necessary for success in an ever-evolving world. Our dedicated teaching staff works tirelessly to ensure that each student receives personalized attention and guidance throughout their educational journey.
+                </p>
+                <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                  As we continue to uphold our motto, "Mwanzo Mpya" – every day is a new beginning – I encourage all our students to embrace every opportunity for growth, maintain discipline, and strive for excellence in all their endeavors. Together with our supportive parent community and committed staff, we are building a legacy of transformation and achievement that will positively impact generations to come.
+                </p>
+                <p className="text-right font-semibold text-foreground mt-8">
+                  The Rubiri High School Principal
+                </p>
+              </div>
+            </AnimatedSection>
           </div>
         </div>
       </section>
@@ -211,65 +234,75 @@ const Home = () => {
       {/* Highlights Grid */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Life at Rubiri</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="relative overflow-hidden rounded-lg shadow-lg group">
-              <img
-                src={cbcImage}
-                alt="CBC Learning"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent flex items-end p-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-primary-foreground mb-2">CBC Ready</h3>
-                  <p className="text-primary-foreground">Modern curriculum with hands-on learning</p>
+          <AnimatedSection>
+            <h2 className="text-4xl font-bold text-center mb-12 text-foreground">Life at Rubiri</h2>
+          </AnimatedSection>
+          <StaggeredContainer className="grid grid-cols-1 md:grid-cols-3 gap-8" staggerDelay={0.15}>
+            <StaggeredItem>
+              <div className="relative overflow-hidden rounded-lg shadow-lg group">
+                <img
+                  src={cbcImage}
+                  alt="CBC Learning"
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent flex items-end p-6">
+                  <div>
+                    <h3 className="text-2xl font-bold text-primary-foreground mb-2">CBC Ready</h3>
+                    <p className="text-primary-foreground">Modern curriculum with hands-on learning</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </StaggeredItem>
 
-            <div className="relative overflow-hidden rounded-lg shadow-lg group">
-              <img
-                src={sportsImage}
-                alt="Sports Excellence"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent flex items-end p-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-primary-foreground mb-2">Sports & Games</h3>
-                  <p className="text-primary-foreground">Building teamwork and discipline</p>
+            <StaggeredItem>
+              <div className="relative overflow-hidden rounded-lg shadow-lg group">
+                <img
+                  src={sportsImage}
+                  alt="Sports Excellence"
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent flex items-end p-6">
+                  <div>
+                    <h3 className="text-2xl font-bold text-primary-foreground mb-2">Sports & Games</h3>
+                    <p className="text-primary-foreground">Building teamwork and discipline</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </StaggeredItem>
 
-            <div className="relative overflow-hidden rounded-lg shadow-lg group">
-              <img
-                src={cultureImage}
-                alt="Cultural Activities"
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent flex items-end p-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-primary-foreground mb-2">Music & Culture</h3>
-                  <p className="text-primary-foreground">Celebrating creativity and excellence</p>
+            <StaggeredItem>
+              <div className="relative overflow-hidden rounded-lg shadow-lg group">
+                <img
+                  src={cultureImage}
+                  alt="Cultural Activities"
+                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/50 to-transparent flex items-end p-6">
+                  <div>
+                    <h3 className="text-2xl font-bold text-primary-foreground mb-2">Music & Culture</h3>
+                    <p className="text-primary-foreground">Celebrating creativity and excellence</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </StaggeredItem>
+          </StaggeredContainer>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-16 bg-gradient-hero text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to Join Rubiri?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Begin your journey of transformation and excellence. Apply now for the 2026 CBC Grade 10 intake.
-          </p>
-          <Link to="/admissions">
-            <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-maroon">
-              Apply Now
-            </Button>
-          </Link>
+          <AnimatedSection>
+            <h2 className="text-4xl font-bold mb-6">Ready to Join Rubiri?</h2>
+            <p className="text-xl mb-8 max-w-2xl mx-auto">
+              Begin your journey of transformation and excellence. Apply now for the 2026 CBC Grade 10 intake.
+            </p>
+            <Link to="/admissions">
+              <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-maroon">
+                Apply Now
+              </Button>
+            </Link>
+          </AnimatedSection>
         </div>
       </section>
     </div>
