@@ -30,9 +30,9 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-primary shadow-lg">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center flex-shrink-0">
             <div className="text-primary-foreground">
-              <h1 className="text-xl font-bold">THE RUBIRI HIGH SCHOOL</h1>
+              <h1 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold whitespace-nowrap">THE RUBIRI HIGH SCHOOL</h1>
               <p className="text-xs text-accent-foreground">MWANZO MPYA</p>
             </div>
           </Link>
