@@ -1,6 +1,7 @@
 import { Target, Eye, Heart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import HeroSlideshow from "@/components/HeroSlideshow";
+import { AnimatedSection, StaggeredContainer, StaggeredItem } from "@/components/AnimatedSection";
 
 const About = () => {
   return (
@@ -14,7 +15,7 @@ const About = () => {
       {/* School Information */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <AnimatedSection className="max-w-4xl mx-auto">
             <h2 className="text-4xl font-bold mb-8 text-center text-foreground">Who We Are</h2>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
@@ -32,44 +33,50 @@ const About = () => {
                 changing world. At Rubiri, we don't just teach subjects; we build futures.
               </p>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Mission, Vision, Motto */}
       <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="shadow-maroon">
-              <CardContent className="pt-6">
-                <Target className="w-12 h-12 text-accent mb-4" />
-                <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  To provide quality education, skills, and practical knowledge for lifelong transformation.
-                </p>
-              </CardContent>
-            </Card>
+          <StaggeredContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <StaggeredItem>
+              <Card className="shadow-maroon h-full">
+                <CardContent className="pt-6">
+                  <Target className="w-12 h-12 text-accent mb-4" />
+                  <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    To provide quality education, skills, and practical knowledge for lifelong transformation.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
 
-            <Card className="shadow-maroon">
-              <CardContent className="pt-6">
-                <Eye className="w-12 h-12 text-accent mb-4" />
-                <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  To be a leading student-centered institution for learner empowerment.
-                </p>
-              </CardContent>
-            </Card>
+            <StaggeredItem>
+              <Card className="shadow-maroon h-full">
+                <CardContent className="pt-6">
+                  <Eye className="w-12 h-12 text-accent mb-4" />
+                  <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    To be a leading student-centered institution for learner empowerment.
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
 
-            <Card className="shadow-maroon">
-              <CardContent className="pt-6">
-                <Heart className="w-12 h-12 text-accent mb-4" />
-                <h3 className="text-2xl font-bold mb-4">Our Motto</h3>
-                <p className="text-3xl font-bold text-accent">
-                  Committed to Excellence
-                </p>
-              </CardContent>
-            </Card>
-          </div>
+            <StaggeredItem>
+              <Card className="shadow-maroon h-full">
+                <CardContent className="pt-6">
+                  <Heart className="w-12 h-12 text-accent mb-4" />
+                  <h3 className="text-2xl font-bold mb-4">Our Motto</h3>
+                  <p className="text-3xl font-bold text-accent">
+                    Committed to Excellence
+                  </p>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
+          </StaggeredContainer>
         </div>
       </section>
 
@@ -77,41 +84,55 @@ const About = () => {
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl font-bold mb-8 text-center text-foreground">School Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="border-l-4 border-accent pl-6">
-                <h3 className="text-xl font-bold mb-2">Official Name</h3>
-                <p className="text-muted-foreground">The Rubiri High School</p>
-              </div>
+            <AnimatedSection>
+              <h2 className="text-4xl font-bold mb-8 text-center text-foreground">School Information</h2>
+            </AnimatedSection>
+            <StaggeredContainer className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <StaggeredItem>
+                <div className="border-l-4 border-accent pl-6">
+                  <h3 className="text-xl font-bold mb-2">Official Name</h3>
+                  <p className="text-muted-foreground">The Rubiri High School</p>
+                </div>
+              </StaggeredItem>
 
-              <div className="border-l-4 border-accent pl-6">
-                <h3 className="text-xl font-bold mb-2">Slogan</h3>
-                <p className="text-muted-foreground">MWANZO MPYA (A New Beginning)</p>
-              </div>
+              <StaggeredItem>
+                <div className="border-l-4 border-accent pl-6">
+                  <h3 className="text-xl font-bold mb-2">Slogan</h3>
+                  <p className="text-muted-foreground">MWANZO MPYA (A New Beginning)</p>
+                </div>
+              </StaggeredItem>
 
-              <div className="border-l-4 border-accent pl-6">
-                <h3 className="text-xl font-bold mb-2">Location</h3>
-                <p className="text-muted-foreground">Naivasha, Nakuru County, Kenya</p>
-              </div>
+              <StaggeredItem>
+                <div className="border-l-4 border-accent pl-6">
+                  <h3 className="text-xl font-bold mb-2">Location</h3>
+                  <p className="text-muted-foreground">Naivasha, Nakuru County, Kenya</p>
+                </div>
+              </StaggeredItem>
 
-              <div className="border-l-4 border-accent pl-6">
-                <h3 className="text-xl font-bold mb-2">Postal Address</h3>
-                <p className="text-muted-foreground">P.O. Box 1828–20117, Naivasha</p>
-              </div>
+              <StaggeredItem>
+                <div className="border-l-4 border-accent pl-6">
+                  <h3 className="text-xl font-bold mb-2">Postal Address</h3>
+                  <p className="text-muted-foreground">P.O. Box 1828–20117, Naivasha</p>
+                </div>
+              </StaggeredItem>
 
-              <div className="border-l-4 border-accent pl-6">
-                <h3 className="text-xl font-bold mb-2">Contact</h3>
-                <p className="text-muted-foreground">
-                  +254708992922<br />
-                  +254708993177
-                </p>
-              </div>
+              <StaggeredItem>
+                <div className="border-l-4 border-accent pl-6">
+                  <h3 className="text-xl font-bold mb-2">Contact</h3>
+                  <p className="text-muted-foreground">
+                    +254708992922<br />
+                    +254708993177
+                  </p>
+                </div>
+              </StaggeredItem>
 
-              <div className="border-l-4 border-accent pl-6">
-                <h3 className="text-xl font-bold mb-2">Email</h3>
-                <p className="text-muted-foreground">rubirisecondaryschool@gmail.com</p>
-              </div>
-            </div>
+              <StaggeredItem>
+                <div className="border-l-4 border-accent pl-6">
+                  <h3 className="text-xl font-bold mb-2">Email</h3>
+                  <p className="text-muted-foreground">rubirisecondaryschool@gmail.com</p>
+                </div>
+              </StaggeredItem>
+            </StaggeredContainer>
           </div>
         </div>
       </section>
@@ -119,33 +140,35 @@ const About = () => {
       {/* Colors Section */}
       <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-8 text-foreground">Our School Colors</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
-            The Rubiri High School proudly wears Dark Grey, Maroon, White, and Golden Yellow — colors that symbolize 
-            strength, courage, purity, and excellence in our pursuit of academic achievement.
-          </p>
-          <div className="flex flex-wrap justify-center gap-8">
-            <div className="text-center">
+          <AnimatedSection>
+            <h2 className="text-4xl font-bold mb-8 text-foreground">Our School Colors</h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
+              The Rubiri High School proudly wears Dark Grey, Maroon, White, and Golden Yellow — colors that symbolize 
+              strength, courage, purity, and excellence in our pursuit of academic achievement.
+            </p>
+          </AnimatedSection>
+          <StaggeredContainer className="flex flex-wrap justify-center gap-8">
+            <StaggeredItem className="text-center">
               <div className="w-32 h-32 rounded-full bg-[hsl(0,0%,30%)] shadow-lg mb-4 mx-auto"></div>
               <p className="font-bold text-foreground">Dark Grey</p>
               <p className="text-sm text-muted-foreground">Strength & Discipline</p>
-            </div>
-            <div className="text-center">
+            </StaggeredItem>
+            <StaggeredItem className="text-center">
               <div className="w-32 h-32 rounded-full bg-accent shadow-lg mb-4 mx-auto"></div>
               <p className="font-bold text-foreground">Maroon</p>
               <p className="text-sm text-muted-foreground">Courage & Ambition</p>
-            </div>
-            <div className="text-center">
+            </StaggeredItem>
+            <StaggeredItem className="text-center">
               <div className="w-32 h-32 rounded-full bg-background border-4 border-border shadow-lg mb-4 mx-auto"></div>
               <p className="font-bold text-foreground">White</p>
               <p className="text-sm text-muted-foreground">Purity & Clarity</p>
-            </div>
-            <div className="text-center">
+            </StaggeredItem>
+            <StaggeredItem className="text-center">
               <div className="w-32 h-32 rounded-full bg-[hsl(45,100%,50%)] shadow-lg mb-4 mx-auto"></div>
               <p className="font-bold text-foreground">Golden Yellow</p>
               <p className="text-sm text-muted-foreground">Excellence & Achievement</p>
-            </div>
-          </div>
+            </StaggeredItem>
+          </StaggeredContainer>
         </div>
       </section>
     </div>
