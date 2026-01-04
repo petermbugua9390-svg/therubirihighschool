@@ -23,6 +23,7 @@ import Contact from "./pages/Contact";
 import Uniform from "./pages/Uniform";
 import KUCCPS from "./pages/KUCCPS";
 import HELB from "./pages/HELB";
+import CareerGuidance from "./pages/CareerGuidance";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +47,7 @@ const AnimatedRoutes = () => {
         <Route path="/uniform" element={<PageTransition><Uniform /></PageTransition>} />
         <Route path="/kuccps" element={<PageTransition><KUCCPS /></PageTransition>} />
         <Route path="/helb" element={<PageTransition><HELB /></PageTransition>} />
+        <Route path="/career-guidance" element={<PageTransition><CareerGuidance /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
