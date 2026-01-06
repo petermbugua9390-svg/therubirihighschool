@@ -20,7 +20,9 @@ import {
   Phone, 
   MapPin,
   Globe,
-  Linkedin
+  Linkedin,
+  Layout,
+  Check
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -58,8 +60,38 @@ interface Reference {
   email: string;
 }
 
+type CVTemplate = 'classic' | 'modern' | 'executive' | 'creative';
+
+const templates: { id: CVTemplate; name: string; description: string; preview: string }[] = [
+  { 
+    id: 'classic', 
+    name: 'Classic', 
+    description: 'Traditional and professional, perfect for corporate roles',
+    preview: 'bg-gradient-to-br from-gray-100 to-gray-200'
+  },
+  { 
+    id: 'modern', 
+    name: 'Modern', 
+    description: 'Clean and contemporary with a sidebar layout',
+    preview: 'bg-gradient-to-br from-blue-100 to-blue-200'
+  },
+  { 
+    id: 'executive', 
+    name: 'Executive', 
+    description: 'Elegant and sophisticated for senior positions',
+    preview: 'bg-gradient-to-br from-amber-100 to-amber-200'
+  },
+  { 
+    id: 'creative', 
+    name: 'Creative', 
+    description: 'Bold and unique for creative industries',
+    preview: 'bg-gradient-to-br from-purple-100 to-purple-200'
+  }
+];
+
 const CVBuilder = () => {
   const cvRef = useRef<HTMLDivElement>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<CVTemplate>('classic');
   
   // Personal Info
   const [personalInfo, setPersonalInfo] = useState({
@@ -209,25 +241,16 @@ const CVBuilder = () => {
     setReferences(references.map(r => r.id === id ? { ...r, [field]: value } : r));
   };
 
-  const handleDownload = () => {
-    if (!personalInfo.fullName) {
-      toast.error("Please enter your full name before downloading");
-      return;
-    }
+  const getTemplateStyles = (template: CVTemplate) => {
+    const baseStyles = `
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @media print { body { padding: 20px; } }
+    `;
 
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) {
-      toast.error("Please allow popups to download your CV");
-      return;
-    }
-
-    const cvHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>${personalInfo.fullName} - CV</title>
-        <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
+    switch (template) {
+      case 'classic':
+        return `
+          ${baseStyles}
           body { font-family: 'Georgia', serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 40px; }
           .header { text-align: center; border-bottom: 2px solid #800020; padding-bottom: 20px; margin-bottom: 30px; }
           .name { font-size: 32px; font-weight: bold; color: #800020; margin-bottom: 5px; }
@@ -249,10 +272,211 @@ const CVBuilder = () => {
           .reference { margin-bottom: 15px; }
           .reference-name { font-weight: bold; }
           .reference-title { font-style: italic; color: #666; }
-          @media print { body { padding: 20px; } }
-        </style>
-      </head>
-      <body>
+        `;
+      case 'modern':
+        return `
+          ${baseStyles}
+          body { font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.5; color: #2d3748; max-width: 800px; margin: 0 auto; padding: 0; display: flex; }
+          .sidebar { width: 280px; background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%); color: white; padding: 40px 25px; min-height: 100vh; }
+          .main-content { flex: 1; padding: 40px 30px; background: #fff; }
+          .name { font-size: 28px; font-weight: 700; margin-bottom: 5px; }
+          .title { font-size: 14px; opacity: 0.9; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+          .contact { margin-bottom: 30px; }
+          .contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px; }
+          .sidebar-section { margin-bottom: 25px; }
+          .sidebar-section-title { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid rgba(255,255,255,0.3); }
+          .skill-item { background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 4px; margin-bottom: 6px; font-size: 13px; }
+          .section { margin-bottom: 30px; }
+          .section-title { font-size: 16px; font-weight: 700; color: #1e3a5f; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #1e3a5f; }
+          .summary { color: #4a5568; line-height: 1.7; }
+          .item { margin-bottom: 18px; }
+          .item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+          .item-title { font-weight: 600; font-size: 15px; color: #2d3748; }
+          .item-subtitle { color: #1e3a5f; font-size: 14px; }
+          .item-date { color: #718096; font-size: 13px; }
+          .item-description { color: #4a5568; font-size: 14px; margin-top: 5px; }
+          .achievements-list, .hobbies-list { list-style-type: none; padding-left: 0; }
+          .achievements-list li, .hobbies-list li { position: relative; padding-left: 18px; margin-bottom: 6px; font-size: 14px; }
+          .achievements-list li:before, .hobbies-list li:before { content: "▸"; position: absolute; left: 0; color: #1e3a5f; }
+          .reference { margin-bottom: 12px; }
+          .reference-name { font-weight: 600; font-size: 14px; }
+          .reference-title { color: #718096; font-size: 13px; }
+        `;
+      case 'executive':
+        return `
+          ${baseStyles}
+          body { font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif; line-height: 1.7; color: #1a1a1a; max-width: 800px; margin: 0 auto; padding: 50px; background: #fff; }
+          .header { text-align: center; margin-bottom: 40px; padding-bottom: 30px; border-bottom: 3px double #b8860b; }
+          .name { font-size: 38px; font-weight: 400; color: #1a1a1a; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; }
+          .title { font-size: 16px; color: #b8860b; letter-spacing: 2px; margin-bottom: 20px; }
+          .contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; font-size: 13px; color: #555; }
+          .contact-item { display: flex; align-items: center; gap: 8px; }
+          .section { margin-bottom: 30px; }
+          .section-title { font-size: 14px; font-weight: 600; color: #b8860b; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid #e0d5b8; }
+          .summary { text-align: justify; font-style: italic; color: #333; padding: 15px 25px; background: #fdfbf7; border-left: 3px solid #b8860b; }
+          .item { margin-bottom: 20px; }
+          .item-header { display: flex; justify-content: space-between; align-items: baseline; }
+          .item-title { font-weight: 600; font-size: 16px; color: #1a1a1a; }
+          .item-subtitle { color: #666; font-size: 14px; }
+          .item-date { color: #999; font-size: 13px; font-style: italic; }
+          .item-description { margin-top: 8px; color: #444; }
+          .skills-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+          .skill-tag { background: #fdfbf7; border: 1px solid #e0d5b8; padding: 6px 16px; font-size: 13px; color: #555; }
+          .achievements-list, .hobbies-list { list-style-type: none; padding-left: 0; }
+          .achievements-list li, .hobbies-list li { position: relative; padding-left: 20px; margin-bottom: 8px; }
+          .achievements-list li:before, .hobbies-list li:before { content: "◆"; position: absolute; left: 0; color: #b8860b; font-size: 10px; top: 4px; }
+          .reference { margin-bottom: 15px; padding-left: 15px; border-left: 2px solid #e0d5b8; }
+          .reference-name { font-weight: 600; }
+          .reference-title { color: #666; font-size: 14px; }
+        `;
+      case 'creative':
+        return `
+          ${baseStyles}
+          body { font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 0; }
+          .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 50px 40px; text-align: center; }
+          .name { font-size: 36px; font-weight: 300; margin-bottom: 8px; letter-spacing: 2px; }
+          .title { font-size: 18px; font-weight: 500; opacity: 0.9; margin-bottom: 20px; }
+          .contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; font-size: 14px; }
+          .contact-item { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 20px; }
+          .content { padding: 40px; }
+          .section { margin-bottom: 35px; }
+          .section-title { font-size: 13px; font-weight: 700; color: #667eea; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+          .section-title:after { content: ""; flex: 1; height: 2px; background: linear-gradient(90deg, #667eea, transparent); }
+          .summary { color: #555; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%); border-radius: 12px; }
+          .item { margin-bottom: 20px; padding: 15px; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+          .item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+          .item-title { font-weight: 600; font-size: 16px; color: #333; }
+          .item-subtitle { color: #667eea; font-size: 14px; font-weight: 500; }
+          .item-date { color: #999; font-size: 13px; background: #f0f0f0; padding: 3px 10px; border-radius: 10px; }
+          .item-description { color: #666; font-size: 14px; }
+          .skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+          .skill-tag { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 18px; border-radius: 25px; font-size: 13px; font-weight: 500; }
+          .achievements-list, .hobbies-list { list-style-type: none; padding-left: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+          .achievements-list li, .hobbies-list li { background: #f5f7fa; padding: 8px 16px; border-radius: 8px; font-size: 14px; }
+          .reference { margin-bottom: 15px; padding: 15px; background: #f5f7fa; border-radius: 10px; }
+          .reference-name { font-weight: 600; color: #667eea; }
+          .reference-title { color: #666; font-size: 14px; }
+        `;
+      default:
+        return baseStyles;
+    }
+  };
+
+  const generateCVContent = (template: CVTemplate) => {
+    const educationHTML = education.filter(e => e.institution).map(e => `
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <div class="item-title">${e.degree}${e.field ? ` in ${e.field}` : ''}</div>
+            <div class="item-subtitle">${e.institution}</div>
+          </div>
+          <div class="item-date">${e.startYear}${e.endYear ? ` - ${e.endYear}` : ''}</div>
+        </div>
+        ${e.grade ? `<div class="item-description">Grade: ${e.grade}</div>` : ''}
+      </div>
+    `).join('');
+
+    const experienceHTML = experience.filter(e => e.company).map(e => `
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <div class="item-title">${e.position}</div>
+            <div class="item-subtitle">${e.company}</div>
+          </div>
+          <div class="item-date">${e.startDate}${e.endDate ? ` - ${e.endDate}` : ''}</div>
+        </div>
+        ${e.description ? `<div class="item-description">${e.description}</div>` : ''}
+      </div>
+    `).join('');
+
+    const skillsHTML = skills.filter(s => s.name).map(s => 
+      template === 'modern' 
+        ? `<div class="skill-item">${s.name} (${s.level})</div>`
+        : `<span class="skill-tag">${s.name} (${s.level})</span>`
+    ).join('');
+
+    const achievementsHTML = achievements.filter(a => a).map(a => `<li>${a}</li>`).join('');
+    const hobbiesHTML = hobbies.filter(h => h).map(h => `<li>${h}</li>`).join('');
+    
+    const referencesHTML = references.filter(r => r.name).map(r => `
+      <div class="reference">
+        <div class="reference-name">${r.name}</div>
+        <div class="reference-title">${r.title}${r.organization ? `, ${r.organization}` : ''}</div>
+        ${r.phone ? `<div>📱 ${r.phone}</div>` : ''}
+        ${r.email ? `<div>📧 ${r.email}</div>` : ''}
+      </div>
+    `).join('');
+
+    if (template === 'modern') {
+      return `
+        <div class="sidebar">
+          <div class="name">${personalInfo.fullName}</div>
+          ${personalInfo.title ? `<div class="title">${personalInfo.title}</div>` : ''}
+          
+          <div class="contact">
+            ${personalInfo.email ? `<div class="contact-item">📧 ${personalInfo.email}</div>` : ''}
+            ${personalInfo.phone ? `<div class="contact-item">📱 ${personalInfo.phone}</div>` : ''}
+            ${personalInfo.address ? `<div class="contact-item">📍 ${personalInfo.address}</div>` : ''}
+            ${personalInfo.linkedin ? `<div class="contact-item">💼 ${personalInfo.linkedin}</div>` : ''}
+            ${personalInfo.website ? `<div class="contact-item">🌐 ${personalInfo.website}</div>` : ''}
+          </div>
+          
+          ${skills.some(s => s.name) ? `
+            <div class="sidebar-section">
+              <div class="sidebar-section-title">Skills</div>
+              ${skillsHTML}
+            </div>
+          ` : ''}
+          
+          ${hobbies.some(h => h) ? `
+            <div class="sidebar-section">
+              <div class="sidebar-section-title">Interests</div>
+              <ul class="hobbies-list">${hobbiesHTML}</ul>
+            </div>
+          ` : ''}
+        </div>
+        
+        <div class="main-content">
+          ${personalInfo.summary ? `
+            <div class="section">
+              <div class="section-title">About Me</div>
+              <p class="summary">${personalInfo.summary}</p>
+            </div>
+          ` : ''}
+          
+          ${experience.some(e => e.company) ? `
+            <div class="section">
+              <div class="section-title">Experience</div>
+              ${experienceHTML}
+            </div>
+          ` : ''}
+          
+          ${education.some(e => e.institution) ? `
+            <div class="section">
+              <div class="section-title">Education</div>
+              ${educationHTML}
+            </div>
+          ` : ''}
+          
+          ${achievements.some(a => a) ? `
+            <div class="section">
+              <div class="section-title">Achievements</div>
+              <ul class="achievements-list">${achievementsHTML}</ul>
+            </div>
+          ` : ''}
+          
+          ${references.some(r => r.name) ? `
+            <div class="section">
+              <div class="section-title">References</div>
+              ${referencesHTML}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    if (template === 'creative') {
+      return `
         <div class="header">
           <div class="name">${personalInfo.fullName}</div>
           ${personalInfo.title ? `<div class="title">${personalInfo.title}</div>` : ''}
@@ -261,95 +485,148 @@ const CVBuilder = () => {
             ${personalInfo.phone ? `<span class="contact-item">📱 ${personalInfo.phone}</span>` : ''}
             ${personalInfo.address ? `<span class="contact-item">📍 ${personalInfo.address}</span>` : ''}
             ${personalInfo.linkedin ? `<span class="contact-item">💼 ${personalInfo.linkedin}</span>` : ''}
-            ${personalInfo.website ? `<span class="contact-item">🌐 ${personalInfo.website}</span>` : ''}
           </div>
         </div>
+        
+        <div class="content">
+          ${personalInfo.summary ? `
+            <div class="section">
+              <div class="section-title">Profile</div>
+              <p class="summary">${personalInfo.summary}</p>
+            </div>
+          ` : ''}
+          
+          ${experience.some(e => e.company) ? `
+            <div class="section">
+              <div class="section-title">Experience</div>
+              ${experienceHTML}
+            </div>
+          ` : ''}
+          
+          ${education.some(e => e.institution) ? `
+            <div class="section">
+              <div class="section-title">Education</div>
+              ${educationHTML}
+            </div>
+          ` : ''}
+          
+          ${skills.some(s => s.name) ? `
+            <div class="section">
+              <div class="section-title">Skills</div>
+              <div class="skills-grid">${skillsHTML}</div>
+            </div>
+          ` : ''}
+          
+          ${achievements.some(a => a) ? `
+            <div class="section">
+              <div class="section-title">Achievements</div>
+              <ul class="achievements-list">${achievementsHTML}</ul>
+            </div>
+          ` : ''}
+          
+          ${hobbies.some(h => h) ? `
+            <div class="section">
+              <div class="section-title">Interests</div>
+              <ul class="hobbies-list">${hobbiesHTML}</ul>
+            </div>
+          ` : ''}
+          
+          ${references.some(r => r.name) ? `
+            <div class="section">
+              <div class="section-title">References</div>
+              ${referencesHTML}
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
 
-        ${personalInfo.summary ? `
+    // Classic and Executive templates share similar structure
+    return `
+      <div class="header">
+        <div class="name">${personalInfo.fullName}</div>
+        ${personalInfo.title ? `<div class="title">${personalInfo.title}</div>` : ''}
+        <div class="contact">
+          ${personalInfo.email ? `<span class="contact-item">📧 ${personalInfo.email}</span>` : ''}
+          ${personalInfo.phone ? `<span class="contact-item">📱 ${personalInfo.phone}</span>` : ''}
+          ${personalInfo.address ? `<span class="contact-item">📍 ${personalInfo.address}</span>` : ''}
+          ${personalInfo.linkedin ? `<span class="contact-item">💼 ${personalInfo.linkedin}</span>` : ''}
+          ${personalInfo.website ? `<span class="contact-item">🌐 ${personalInfo.website}</span>` : ''}
+        </div>
+      </div>
+
+      ${personalInfo.summary ? `
         <div class="section">
           <div class="section-title">Professional Summary</div>
           <p class="summary">${personalInfo.summary}</p>
         </div>
-        ` : ''}
+      ` : ''}
 
-        ${education.some(e => e.institution) ? `
+      ${education.some(e => e.institution) ? `
         <div class="section">
           <div class="section-title">Education</div>
-          ${education.filter(e => e.institution).map(e => `
-            <div class="item">
-              <div class="item-header">
-                <div>
-                  <div class="item-title">${e.degree}${e.field ? ` in ${e.field}` : ''}</div>
-                  <div class="item-subtitle">${e.institution}</div>
-                </div>
-                <div class="item-date">${e.startYear}${e.endYear ? ` - ${e.endYear}` : ''}</div>
-              </div>
-              ${e.grade ? `<div class="item-description">Grade: ${e.grade}</div>` : ''}
-            </div>
-          `).join('')}
+          ${educationHTML}
         </div>
-        ` : ''}
+      ` : ''}
 
-        ${experience.some(e => e.company) ? `
+      ${experience.some(e => e.company) ? `
         <div class="section">
           <div class="section-title">Work Experience</div>
-          ${experience.filter(e => e.company).map(e => `
-            <div class="item">
-              <div class="item-header">
-                <div>
-                  <div class="item-title">${e.position}</div>
-                  <div class="item-subtitle">${e.company}</div>
-                </div>
-                <div class="item-date">${e.startDate}${e.endDate ? ` - ${e.endDate}` : ''}</div>
-              </div>
-              ${e.description ? `<div class="item-description">${e.description}</div>` : ''}
-            </div>
-          `).join('')}
+          ${experienceHTML}
         </div>
-        ` : ''}
+      ` : ''}
 
-        ${skills.some(s => s.name) ? `
+      ${skills.some(s => s.name) ? `
         <div class="section">
           <div class="section-title">Skills</div>
-          <div class="skills-grid">
-            ${skills.filter(s => s.name).map(s => `
-              <span class="skill-tag">${s.name} (${s.level})</span>
-            `).join('')}
-          </div>
+          <div class="skills-grid">${skillsHTML}</div>
         </div>
-        ` : ''}
+      ` : ''}
 
-        ${achievements.some(a => a) ? `
+      ${achievements.some(a => a) ? `
         <div class="section">
           <div class="section-title">Achievements & Awards</div>
-          <ul class="achievements-list">
-            ${achievements.filter(a => a).map(a => `<li>${a}</li>`).join('')}
-          </ul>
+          <ul class="achievements-list">${achievementsHTML}</ul>
         </div>
-        ` : ''}
+      ` : ''}
 
-        ${hobbies.some(h => h) ? `
+      ${hobbies.some(h => h) ? `
         <div class="section">
           <div class="section-title">Hobbies & Interests</div>
-          <ul class="hobbies-list">
-            ${hobbies.filter(h => h).map(h => `<li>${h}</li>`).join('')}
-          </ul>
+          <ul class="hobbies-list">${hobbiesHTML}</ul>
         </div>
-        ` : ''}
+      ` : ''}
 
-        ${references.some(r => r.name) ? `
+      ${references.some(r => r.name) ? `
         <div class="section">
           <div class="section-title">References</div>
-          ${references.filter(r => r.name).map(r => `
-            <div class="reference">
-              <div class="reference-name">${r.name}</div>
-              <div class="reference-title">${r.title}${r.organization ? `, ${r.organization}` : ''}</div>
-              ${r.phone ? `<div>📱 ${r.phone}</div>` : ''}
-              ${r.email ? `<div>📧 ${r.email}</div>` : ''}
-            </div>
-          `).join('')}
+          ${referencesHTML}
         </div>
-        ` : ''}
+      ` : ''}
+    `;
+  };
+
+  const handleDownload = () => {
+    if (!personalInfo.fullName) {
+      toast.error("Please enter your full name before downloading");
+      return;
+    }
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      toast.error("Please allow popups to download your CV");
+      return;
+    }
+
+    const cvHTML = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>${personalInfo.fullName} - CV</title>
+        <style>${getTemplateStyles(selectedTemplate)}</style>
+      </head>
+      <body>
+        ${generateCVContent(selectedTemplate)}
       </body>
       </html>
     `;
@@ -377,6 +654,71 @@ const CVBuilder = () => {
                 Whether you're a student applying for your first job or an alumni updating your career profile, 
                 our CV builder helps you create a polished, professional resume that stands out.
               </p>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* Template Selector */}
+      <section className="py-12 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <AnimatedSection>
+            <div className="max-w-5xl mx-auto">
+              <h3 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">
+                <Layout className="h-6 w-6 text-primary" />
+                Choose Your Template
+              </h3>
+              <p className="text-muted-foreground mb-6">Select a professional design that best represents your style</p>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {templates.map((template) => (
+                  <div
+                    key={template.id}
+                    onClick={() => setSelectedTemplate(template.id)}
+                    className={`relative cursor-pointer rounded-xl overflow-hidden border-2 transition-all duration-300 hover:scale-105 ${
+                      selectedTemplate === template.id 
+                        ? 'border-primary shadow-lg ring-2 ring-primary/20' 
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                  >
+                    {/* Template Preview */}
+                    <div className={`aspect-[3/4] ${template.preview} p-3`}>
+                      <div className="h-full bg-white/90 rounded-lg shadow-sm p-2 flex flex-col">
+                        {/* Mini header */}
+                        <div className={`h-6 rounded mb-2 ${
+                          template.id === 'classic' ? 'bg-[#800020]' :
+                          template.id === 'modern' ? 'bg-[#1e3a5f]' :
+                          template.id === 'executive' ? 'bg-[#b8860b]' :
+                          'bg-gradient-to-r from-[#667eea] to-[#764ba2]'
+                        }`} />
+                        {/* Mini content lines */}
+                        <div className="space-y-1.5 flex-1">
+                          <div className="h-1.5 bg-gray-200 rounded w-3/4" />
+                          <div className="h-1.5 bg-gray-200 rounded w-full" />
+                          <div className="h-1.5 bg-gray-200 rounded w-5/6" />
+                          <div className="h-1.5 bg-gray-200 rounded w-2/3" />
+                          <div className="mt-2 h-1 bg-gray-300 rounded w-1/2" />
+                          <div className="h-1.5 bg-gray-200 rounded w-full" />
+                          <div className="h-1.5 bg-gray-200 rounded w-4/5" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Selected indicator */}
+                    {selectedTemplate === template.id && (
+                      <div className="absolute top-2 right-2 bg-primary text-primary-foreground rounded-full p-1">
+                        <Check className="h-4 w-4" />
+                      </div>
+                    )}
+                    
+                    {/* Template info */}
+                    <div className="p-3 bg-background">
+                      <h4 className="font-semibold text-foreground">{template.name}</h4>
+                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{template.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </AnimatedSection>
         </div>
