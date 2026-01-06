@@ -16,6 +16,7 @@ const Navbar = () => {
     { name: "KUCCPS", path: "/kuccps" },
     { name: "HELB", path: "/helb" },
     { name: "Career Guidance", path: "/career-guidance" },
+    { name: "CV Builder", path: "/cv-builder" },
     { name: "Co-Curricular", path: "/co-curricular" },
     { name: "Teachers", path: "/teachers" },
     { name: "Admissions", path: "/admissions" },
