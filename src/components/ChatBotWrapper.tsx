@@ -21,6 +21,7 @@ const pageContexts: Record<string, string> = {
   '/portal': 'Portal page - Login portal for students, teachers, alumni, and staff',
   '/portal/auth': 'Portal Authentication - Login and registration',
   '/portal/dashboard': 'Portal Dashboard - User dashboard with materials and profile',
+  '/portal/admin': 'Admin Dashboard - User management, registration approvals, and access control',
 };
 
 const ChatBotWrapper = () => {

@@ -12,14 +12,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
 import { z } from 'zod';
 
-type PortalType = 'student' | 'alumni' | 'teacher' | 'staff' | 'non_teaching_staff';
+type PortalType = 'student' | 'alumni' | 'teacher' | 'staff' | 'non_teaching_staff' | 'admin';
 
 const portalTitles: Record<PortalType, string> = {
   student: 'Student Portal',
   alumni: 'Alumni Portal',
   teacher: 'Teachers Portal',
   staff: 'Staff Portal',
-  non_teaching_staff: 'Non-Teaching Staff Portal'
+  non_teaching_staff: 'Non-Teaching Staff Portal',
+  admin: 'Admin Portal'
 };
 
 // Validation schemas

@@ -30,6 +30,7 @@ import CVBuilder from "./pages/CVBuilder";
 import Portal from "./pages/Portal";
 import PortalAuth from "./pages/PortalAuth";
 import PortalDashboard from "./pages/PortalDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ const AnimatedRoutes = () => {
         <Route path="/portal" element={<PageTransition><Portal /></PageTransition>} />
         <Route path="/portal/auth" element={<PageTransition><PortalAuth /></PageTransition>} />
         <Route path="/portal/dashboard" element={<PageTransition><PortalDashboard /></PageTransition>} />
+        <Route path="/portal/admin" element={<PageTransition><AdminDashboard /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
