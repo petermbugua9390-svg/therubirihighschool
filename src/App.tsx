@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import BackToTop from "./components/BackToTop";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import ChatBotWrapper from "./components/ChatBotWrapper";
 import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -77,6 +78,7 @@ const App = () => (
           <AnimatedRoutes />
           <Footer />
           <BackToTop />
+          <ChatBotWrapper />
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>
