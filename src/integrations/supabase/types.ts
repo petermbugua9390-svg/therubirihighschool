@@ -101,6 +101,60 @@ export type Database = {
         }
         Relationships: []
       }
+      registration_requests: {
+        Row: {
+          admission_number: string | null
+          created_at: string
+          department: string | null
+          email: string | null
+          full_name: string
+          id: string
+          phone: string | null
+          position: string | null
+          rejection_reason: string | null
+          requested_role: Database["public"]["Enums"]["app_role"]
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          user_id: string
+          year_of_graduation: string | null
+        }
+        Insert: {
+          admission_number?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          phone?: string | null
+          position?: string | null
+          rejection_reason?: string | null
+          requested_role: Database["public"]["Enums"]["app_role"]
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id: string
+          year_of_graduation?: string | null
+        }
+        Update: {
+          admission_number?: string | null
+          created_at?: string
+          department?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          phone?: string | null
+          position?: string | null
+          rejection_reason?: string | null
+          requested_role?: Database["public"]["Enums"]["app_role"]
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          user_id?: string
+          year_of_graduation?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -146,6 +200,7 @@ export type Database = {
         | "teacher"
         | "staff"
         | "non_teaching_staff"
+        | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -273,7 +328,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["student", "alumni", "teacher", "staff", "non_teaching_staff"],
+      app_role: [
+        "student",
+        "alumni",
+        "teacher",
+        "staff",
+        "non_teaching_staff",
+        "admin",
+      ],
     },
   },
 } as const

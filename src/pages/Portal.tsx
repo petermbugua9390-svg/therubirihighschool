@@ -1,12 +1,12 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { GraduationCap, Users, BookOpen, Briefcase, UserCheck } from 'lucide-react';
+import { GraduationCap, Users, BookOpen, Briefcase, UserCheck, Shield } from 'lucide-react';
 import { AnimatedSection } from '@/components/AnimatedSection';
+import { useAuth } from '@/contexts/AuthContext';
 
-type PortalType = 'student' | 'alumni' | 'teacher' | 'staff' | 'non_teaching_staff';
+type PortalType = 'student' | 'alumni' | 'teacher' | 'staff' | 'non_teaching_staff' | 'admin';
 
 interface PortalOption {
   type: PortalType;
@@ -56,9 +56,23 @@ const portalOptions: PortalOption[] = [
 
 const Portal = () => {
   const navigate = useNavigate();
+  const { user, isAdmin, role } = useAuth();
 
   const handlePortalSelect = (type: PortalType) => {
-    navigate(`/portal/auth?type=${type}`);
+    if (type === 'admin') {
+      navigate('/portal/admin');
+    } else {
+      navigate(`/portal/auth?type=${type}`);
+    }
+  };
+
+  // If user is already logged in, redirect to appropriate dashboard
+  const handleContinueToDashboard = () => {
+    if (isAdmin) {
+      navigate('/portal/admin');
+    } else {
+      navigate('/portal/dashboard');
+    }
   };
 
   return (
@@ -81,6 +95,22 @@ const Portal = () => {
           >
             Select your portal to access personalized resources and tools
           </motion.p>
+          {user && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-6"
+            >
+              <Button
+                onClick={handleContinueToDashboard}
+                size="lg"
+                variant="secondary"
+              >
+                Continue to {isAdmin ? 'Admin Dashboard' : 'Your Dashboard'}
+              </Button>
+            </motion.div>
+          )}
         </div>
       </section>
 
@@ -119,6 +149,31 @@ const Portal = () => {
                 </Card>
               </AnimatedSection>
             ))}
+
+            {/* Admin Portal - Only show for admins or when not logged in */}
+            {(isAdmin || !user) && (
+              <AnimatedSection delay={0.5}>
+                <Card 
+                  className="h-full cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-2 border-2 hover:border-red-500/50 border-red-200"
+                  onClick={() => handlePortalSelect('admin')}
+                >
+                  <CardHeader className="text-center">
+                    <div className="mx-auto p-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white mb-4">
+                      <Shield className="h-12 w-12" />
+                    </div>
+                    <CardTitle className="text-xl">Admin Portal</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-center text-base">
+                      Manage users, approve registrations, and control system access
+                    </CardDescription>
+                    <Button className="w-full mt-4" variant="outline">
+                      Access Admin
+                    </Button>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
+            )}
           </div>
         </div>
       </section>
