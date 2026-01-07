@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import BackToTop from "./components/BackToTop";
 import Footer from "./components/Footer";
 import PageTransition from "./components/PageTransition";
+import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Academics from "./pages/Academics";
@@ -25,6 +26,9 @@ import KUCCPS from "./pages/KUCCPS";
 import HELB from "./pages/HELB";
 import CareerGuidance from "./pages/CareerGuidance";
 import CVBuilder from "./pages/CVBuilder";
+import Portal from "./pages/Portal";
+import PortalAuth from "./pages/PortalAuth";
+import PortalDashboard from "./pages/PortalDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +54,9 @@ const AnimatedRoutes = () => {
         <Route path="/helb" element={<PageTransition><HELB /></PageTransition>} />
         <Route path="/career-guidance" element={<PageTransition><CareerGuidance /></PageTransition>} />
         <Route path="/cv-builder" element={<PageTransition><CVBuilder /></PageTransition>} />
+        <Route path="/portal" element={<PageTransition><Portal /></PageTransition>} />
+        <Route path="/portal/auth" element={<PageTransition><PortalAuth /></PageTransition>} />
+        <Route path="/portal/dashboard" element={<PageTransition><PortalDashboard /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
@@ -61,15 +68,17 @@ const AnimatedRoutes = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Navbar />
-        <AnimatedRoutes />
-        <Footer />
-        <BackToTop />
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Navbar />
+          <AnimatedRoutes />
+          <Footer />
+          <BackToTop />
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
