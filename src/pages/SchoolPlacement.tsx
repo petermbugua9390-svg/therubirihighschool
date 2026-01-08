@@ -645,9 +645,9 @@ const SchoolPlacement = () => {
       {/* Rubiri CTA */}
       <section className="py-16 bg-gradient-hero text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Join Rubiri High School</h2>
+          <h2 className="text-4xl font-bold mb-6">Join Rubiri Senior School</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            The Rubiri High School is fully equipped to receive CBC Grade 10 learners across all three pathways. 
+            The Rubiri Senior School is fully equipped to receive CBC Grade 10 learners across all three pathways. 
             Our experienced teachers and modern facilities ensure every student thrives.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -8,7 +8,7 @@ const About = () => {
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
       <HeroSlideshow
-        title="About The Rubiri High School"
+        title="About The Rubiri Senior School"
         subtitle="A transformative learning institution where excellence meets character development"
       />
 
@@ -19,12 +19,12 @@ const About = () => {
             <h2 className="text-4xl font-bold mb-8 text-center text-foreground">Who We Are</h2>
             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
               <p>
-                Welcome to <span className="font-bold text-accent">The Rubiri High School</span>, a transformative learning institution 
+                Welcome to <span className="font-bold text-accent">The Rubiri Senior School</span>, a transformative learning institution 
                 where education inspires both character and intellect. We empower learners through discipline, mentorship, and creativity — 
                 nurturing confident individuals who lead with purpose.
               </p>
               <p>
-                Rubiri High blends academic excellence with real-world skills. Every learner is valued, guided, and supported by a 
+                Rubiri Senior blends academic excellence with real-world skills. Every learner is valued, guided, and supported by a 
                 dedicated teaching staff. Our philosophy, <span className="font-bold text-accent">"Mwanzo Mpya"</span>, reminds students 
                 that each day brings a chance to improve, dream, and lead.
               </p>
@@ -91,7 +91,7 @@ const About = () => {
               <StaggeredItem>
                 <div className="border-l-4 border-accent pl-6">
                   <h3 className="text-xl font-bold mb-2">Official Name</h3>
-                  <p className="text-muted-foreground">The Rubiri High School</p>
+                  <p className="text-muted-foreground">The Rubiri Senior School</p>
                 </div>
               </StaggeredItem>
 
@@ -143,7 +143,7 @@ const About = () => {
           <AnimatedSection>
             <h2 className="text-4xl font-bold mb-8 text-foreground">Our School Colors</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-3xl mx-auto">
-              The Rubiri High School proudly wears Dark Grey, Maroon, White, and Golden Yellow — colors that symbolize 
+              The Rubiri Senior School proudly wears Dark Grey, Maroon, White, and Golden Yellow — colors that symbolize 
               strength, courage, purity, and excellence in our pursuit of academic achievement.
             </p>
           </AnimatedSection>

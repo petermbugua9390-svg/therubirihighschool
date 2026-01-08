@@ -90,7 +90,7 @@ const Home = () => {
         {/* Hero Content */}
         <div className="container mx-auto px-4 z-10">
           <h1 className="text-5xl md:text-7xl font-bold text-primary-foreground mb-6 animate-fade-in">
-            THE RUBIRI HIGH SCHOOL
+            THE RUBIRI SENIOR SCHOOL
           </h1>
           <p className="text-2xl md:text-3xl text-accent-foreground font-semibold mb-4 animate-fade-in">
             Where Every Day Is a Mwanzo Mpya
@@ -181,7 +181,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <AnimatedSection>
-              <h2 className="text-4xl font-bold mb-6 text-foreground">Welcome to The Rubiri High School</h2>
+              <h2 className="text-4xl font-bold mb-6 text-foreground">Welcome to The Rubiri Senior School</h2>
             </AnimatedSection>
             <AnimatedText delay={0.1}>
               <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
@@ -191,7 +191,7 @@ const Home = () => {
             </AnimatedText>
             <AnimatedText delay={0.2}>
               <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-                Rubiri High blends academic excellence with real-world skills. Every learner is valued, guided, and supported by a dedicated teaching staff.
+                Rubiri Senior blends academic excellence with real-world skills. Every learner is valued, guided, and supported by a dedicated teaching staff.
                 Our philosophy, <span className="font-bold text-accent">"Mwanzo Mpya"</span>, reminds students that each day brings a chance to improve, dream, and lead.
               </p>
             </AnimatedText>
@@ -214,7 +214,7 @@ const Home = () => {
             <AnimatedSection delay={0.2}>
               <div className="bg-card p-8 rounded-lg shadow-maroon">
                 <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                  It is with great pride and honor that I welcome you to The Rubiri High School, an institution dedicated to nurturing young minds and shaping future leaders. Our commitment to academic excellence, character development, and holistic education remains unwavering as we prepare our students to face the challenges of tomorrow with confidence and competence.
+                  It is with great pride and honor that I welcome you to The Rubiri Senior School, an institution dedicated to nurturing young minds and shaping future leaders. Our commitment to academic excellence, character development, and holistic education remains unwavering as we prepare our students to face the challenges of tomorrow with confidence and competence.
                 </p>
                 <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
                   At Rubiri, we believe that education transcends the classroom. Through our comprehensive CBC curriculum, co-curricular activities, and mentorship programs, we provide a conducive environment where every learner discovers their potential and develops the skills necessary for success in an ever-evolving world. Our dedicated teaching staff works tirelessly to ensure that each student receives personalized attention and guidance throughout their educational journey.
@@ -223,7 +223,7 @@ const Home = () => {
                   As we continue to uphold our motto, "Mwanzo Mpya" – every day is a new beginning – I encourage all our students to embrace every opportunity for growth, maintain discipline, and strive for excellence in all their endeavors. Together with our supportive parent community and committed staff, we are building a legacy of transformation and achievement that will positively impact generations to come.
                 </p>
                 <p className="text-right font-semibold text-foreground mt-8">
-                  The Rubiri High School Principal
+                  The Rubiri Senior School Principal
                 </p>
               </div>
             </AnimatedSection>

@@ -51,7 +51,7 @@ const CoCurricular = () => {
             <div className="lg:w-1/2">
               <h2 className="text-4xl font-bold mb-6 text-foreground">Clubs & Societies</h2>
               <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-                At The Rubiri High School, we believe that education extends beyond the classroom. Our diverse range of 
+                At The Rubiri Senior School, we believe that education extends beyond the classroom. Our diverse range of 
                 clubs and societies provides students with opportunities to explore their interests, develop new skills, 
                 and build meaningful relationships.
               </p>
@@ -88,7 +88,7 @@ const CoCurricular = () => {
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-6 text-foreground">Tree Planting & Environmental Conservation</h2>
             <p className="text-xl text-muted-foreground max-w-4xl mx-auto mb-8 leading-relaxed">
-              At The Rubiri High School, we believe in nurturing not just minds, but also our planet. Our comprehensive 
+              At The Rubiri Senior School, we believe in nurturing not just minds, but also our planet. Our comprehensive 
               tree planting program is a cornerstone of our commitment to environmental sustainability and responsible citizenship.
             </p>
             <blockquote className="text-2xl font-bold text-accent italic border-l-4 border-accent pl-6 max-w-4xl mx-auto bg-background p-6 rounded-lg shadow-maroon">
@@ -173,7 +173,7 @@ const CoCurricular = () => {
             <div className="lg:w-1/2">
               <h2 className="text-4xl font-bold mb-6 text-foreground">Music, Drama & Culture</h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                Rubiri High has a proud cultural legacy that celebrates creativity, artistic expression, and Kenya's rich heritage.
+                Rubiri Senior has a proud cultural legacy that celebrates creativity, artistic expression, and Kenya's rich heritage.
               </p>
               
               <div className="space-y-4">
@@ -238,7 +238,7 @@ const CoCurricular = () => {
             <div className="lg:w-1/2">
               <h2 className="text-4xl font-bold mb-6 text-foreground">Sports & Games</h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                Rubiri High promotes physical fitness, teamwork, and discipline through various sports. Our teams have 
+                Rubiri Senior promotes physical fitness, teamwork, and discipline through various sports. Our teams have 
                 participated at regional and county levels, inspiring pride and sportsmanship.
               </p>
 

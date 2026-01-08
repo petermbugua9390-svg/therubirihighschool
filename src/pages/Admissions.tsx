@@ -10,7 +10,7 @@ const Admissions = () => {
       {/* Hero Section */}
       <HeroSlideshow
         title="Admissions"
-        subtitle="Join The Rubiri High School family — where excellence begins and futures are built"
+        subtitle="Join The Rubiri Senior School family — where excellence begins and futures are built"
       />
 
       {/* Introduction */}
@@ -19,7 +19,7 @@ const Admissions = () => {
           <AnimatedSection className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6 text-foreground">Admissions Open</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-              The Rubiri High School welcomes applications for CBC Grade 10 (2026 intake) and continuing senior levels. 
+              The Rubiri Senior School welcomes applications for CBC Grade 10 (2026 intake) and continuing senior levels. 
               We are looking for students who are eager to learn, grow, and contribute to our vibrant school community.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">

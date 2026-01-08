@@ -68,7 +68,7 @@ const Gallery = () => {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">Gallery</h1>
           <p className="text-xl max-w-3xl mx-auto">
-            Capturing moments of excellence, growth, and community at The Rubiri High School
+            Capturing moments of excellence, growth, and community at The Rubiri Senior School
           </p>
         </div>
       </section>
@@ -126,7 +126,7 @@ const Gallery = () => {
                   healthier future — a legacy of hope and responsibility that defines the Rubiri spirit."
                 </blockquote>
                 <p className="text-lg text-muted-foreground mt-6 text-center leading-relaxed">
-                  At The Rubiri High School, environmental conservation is more than a program — it's a commitment to sustainable stewardship 
+                  At The Rubiri Senior School, environmental conservation is more than a program — it's a commitment to sustainable stewardship 
                   and a better tomorrow for all.
                 </p>
               </div>
@@ -167,7 +167,7 @@ const Gallery = () => {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6 text-foreground">Student Life at Rubiri</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              Life at The Rubiri High School is vibrant, engaging, and transformative. From classroom learning to 
+              Life at The Rubiri Senior School is vibrant, engaging, and transformative. From classroom learning to 
               sports competitions, cultural celebrations to community service — every moment contributes to the 
               holistic development of our students.
             </p>

@@ -54,7 +54,7 @@ const CBC = () => {
               tertiary education.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              At The Rubiri High School, CBC learning is hands-on — learners think, create, and lead. The motto 
+              At The Rubiri Senior School, CBC learning is hands-on — learners think, create, and lead. The motto 
               <span className="font-bold text-accent"> "Committed to Excellence"</span> lives in every classroom and activity, 
               ensuring students are prepared for the challenges and opportunities of tomorrow.
             </p>
@@ -293,7 +293,7 @@ const CBC = () => {
       {/* CBC at Rubiri */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center text-foreground">CBC Implementation at Rubiri High</h2>
+          <h2 className="text-4xl font-bold mb-12 text-center text-foreground">CBC Implementation at Rubiri Senior</h2>
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="border-l-4 border-accent pl-6">
               <h3 className="text-2xl font-bold mb-3">CBC-Trained Teachers</h3>
@@ -314,7 +314,7 @@ const CBC = () => {
             <div className="border-l-4 border-accent pl-6">
               <h3 className="text-2xl font-bold mb-3">All Three Pathways Available</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Rubiri High School is equipped to offer all three CBC pathways — STEM, Arts & Sports Science, and Social Sciences — 
+                Rubiri Senior School is equipped to offer all three CBC pathways — STEM, Arts & Sports Science, and Social Sciences — 
                 allowing students to pursue their passions and align their education with their career aspirations.
               </p>
             </div>
@@ -322,7 +322,7 @@ const CBC = () => {
             <div className="border-l-4 border-accent pl-6">
               <h3 className="text-2xl font-bold mb-3">Modern Laboratories & ICT Integration</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Rubiri High is equipped with state-of-the-art science labs, computer rooms, and digital learning tools that 
+                Rubiri Senior is equipped with state-of-the-art science labs, computer rooms, and digital learning tools that 
                 support practical, technology-enhanced education required for all CBC pathways.
               </p>
             </div>

@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* School Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4 text-accent-foreground">The Rubiri High School</h3>
+            <h3 className="text-xl font-bold mb-4 text-accent-foreground">The Rubiri Senior School</h3>
             <p className="text-sm mb-2 italic">MWANZO MPYA</p>
             <p className="text-sm font-semibold mb-4">Committed to Excellence</p>
             <p className="text-sm opacity-90">
@@ -95,7 +95,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-sm">
-          <p>&copy; 2025 The Rubiri High School — Committed to Excellence</p>
+          <p>&copy; 2025 The Rubiri Senior School — Committed to Excellence</p>
         </div>
       </div>
     </footer>
