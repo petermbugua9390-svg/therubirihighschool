@@ -31,7 +31,7 @@ const Contact = () => {
       {/* Hero Section */}
       <HeroSlideshow
         title="Contact Us"
-        subtitle="Get in touch with The Rubiri High School — we're here to answer your questions"
+        subtitle="Get in touch with The Rubiri Senior School — we're here to answer your questions"
       />
 
       {/* Contact Info & Form */}

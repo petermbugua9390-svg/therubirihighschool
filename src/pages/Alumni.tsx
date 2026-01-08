@@ -9,7 +9,7 @@ const Alumni = () => {
       name: "Raiz Ade",
       year: "Class of 2024",
       field: "Electrical Engineering",
-      quote: "Rubiri High shaped my passion for innovation and discipline. I'm now pursuing Electrical Engineering at university — proud to be a Rubiri alumnus.",
+      quote: "Rubiri Senior shaped my passion for innovation and discipline. I'm now pursuing Electrical Engineering at university — proud to be a Rubiri alumnus.",
     },
     {
       name: "Mary Wanjiku",
@@ -70,7 +70,7 @@ const Alumni = () => {
             <GraduationCap className="w-20 h-20 text-accent mx-auto mb-6" />
             <h2 className="text-4xl font-bold mb-6 text-foreground">Once a Rubiri Student, Always a Rubiri Leader</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-              The Rubiri High School alumni network is a testament to the transformative power of quality education, 
+              The Rubiri Senior School alumni network is a testament to the transformative power of quality education, 
               mentorship, and discipline. Our graduates have gone on to excel in various fields — from engineering and 
               medicine to education, journalism, business, and the arts.
             </p>
@@ -186,7 +186,7 @@ const Alumni = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Be the Next Success Story</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join The Rubiri High School and write your own chapter of excellence. Your journey to greatness starts here.
+            Join The Rubiri Senior School and write your own chapter of excellence. Your journey to greatness starts here.
           </p>
         </div>
       </section>

@@ -17,7 +17,7 @@ const Uniform = () => {
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold text-foreground mb-6">Official School Uniform</h2>
             <p className="text-muted-foreground text-lg">
-              At The Rubiri High School, our uniform represents our values of discipline, unity, and excellence. 
+              At The Rubiri Senior School, our uniform represents our values of discipline, unity, and excellence. 
               The distinctive dark grey, maroon, and white colors with <strong>golden yellow trims</strong> symbolize our school's rich heritage and commitment to academic achievement.
             </p>
           </div>

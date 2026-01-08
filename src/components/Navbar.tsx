@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import schoolLogo from "@/assets/school-logo.jpeg";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -131,11 +132,16 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-primary shadow-lg">
       <div className="container mx-auto px-4">
         {/* Top Row - Branding */}
-        <div className="flex items-center justify-between h-14 border-b border-primary-foreground/10">
+        <div className="flex items-center justify-between h-16 border-b border-primary-foreground/10">
           <Link to="/" className="flex items-center gap-3">
+            <img 
+              src={schoolLogo} 
+              alt="Rubiri Senior School Crest" 
+              className="h-12 w-12 rounded-full object-cover border-2 border-accent shadow-md"
+            />
             <div className="text-primary-foreground">
               <h1 className="text-lg md:text-xl lg:text-2xl font-bold tracking-wide">
-                THE RUBIRI HIGH SCHOOL
+                THE RUBIRI SENIOR SCHOOL
               </h1>
               <p className="text-xs md:text-sm text-accent-foreground font-medium tracking-widest">
                 MWANZO MPYA

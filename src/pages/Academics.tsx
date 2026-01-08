@@ -36,12 +36,12 @@ const Academics = () => {
           <AnimatedSection className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-6 text-foreground">Our Academic Approach</h2>
             <p className="text-lg text-muted-foreground leading-relaxed mb-4">
-              At The Rubiri High School, we pride ourselves on delivering quality education that combines academic rigor 
+              At The Rubiri Senior School, we pride ourselves on delivering quality education that combines academic rigor 
               with practical skills development. Our CBC-aligned curriculum ensures that every student receives a 
               well-rounded education that prepares them for success in higher education and beyond.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              With modern facilities, dedicated CBC-trained teachers, and a learner-centered approach, Rubiri High creates 
+              With modern facilities, dedicated CBC-trained teachers, and a learner-centered approach, Rubiri Senior creates 
               an environment where students thrive academically, socially, and personally.
             </p>
           </AnimatedSection>
@@ -62,7 +62,7 @@ const Academics = () => {
             <AnimatedText className="lg:w-1/2" delay={0.2}>
               <h2 className="text-4xl font-bold mb-6 text-foreground">CBC Grade 10 Ready</h2>
               <p className="text-lg text-muted-foreground mb-4 leading-relaxed">
-                The Rubiri High School is fully prepared for the 2026 CBC Grade 10 intake with:
+                The Rubiri Senior School is fully prepared for the 2026 CBC Grade 10 intake with:
               </p>
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start">
@@ -126,7 +126,7 @@ const Academics = () => {
           <AnimatedSection>
             <h2 className="text-4xl font-bold mb-4 text-center text-foreground">Subject Combinations</h2>
             <p className="text-lg text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-              Choose your pathway based on your interests and career goals. Rubiri High offers diverse combinations across STEM, Arts, Sports, and Social Sciences.
+              Choose your pathway based on your interests and career goals. Rubiri Senior offers diverse combinations across STEM, Arts, Sports, and Social Sciences.
             </p>
           </AnimatedSection>
 

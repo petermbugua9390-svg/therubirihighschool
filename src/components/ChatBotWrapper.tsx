@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import ChatBot from './ChatBot';
 
 const pageContexts: Record<string, string> = {
-  '/': 'Home page - Main landing page of Rubiri High School',
+  '/': 'Home page - Main landing page of Rubiri Senior School',
   '/about': 'About page - School history, mission, vision, and values',
   '/academics': 'Academics page - Academic programs, subjects, and curriculum information',
   '/cbc': 'CBC Curriculum page - Competency-Based Curriculum details and implementation',
