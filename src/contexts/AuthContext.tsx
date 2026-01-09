@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
-type UserRole = 'student' | 'alumni' | 'teacher' | 'staff' | 'non_teaching_staff' | 'admin';
+type UserRole = 'student' | 'alumni' | 'teacher' | 'staff' | 'non_teaching_staff' | 'admin' | 'superadmin';
 
 interface Profile {
   id: string;
@@ -122,7 +122,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setRole(null);
   };
 
-  const isAdmin = role === 'admin';
+  const isAdmin = role === 'admin' || role === 'superadmin';
 
   return (
     <AuthContext.Provider value={{ user, session, profile, role, loading, isAdmin, signOut, refreshProfile }}>
