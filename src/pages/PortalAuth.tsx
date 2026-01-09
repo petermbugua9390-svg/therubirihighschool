@@ -75,10 +75,10 @@ const PortalAuth = () => {
 
   useEffect(() => {
     if (!authLoading && user) {
-      // If user is admin and on admin portal, redirect to admin dashboard
-      if (role === 'admin' && portalType === 'admin') {
+      // If user is admin/superadmin, redirect to admin dashboard
+      if ((role === 'admin' || role === 'superadmin') && portalType === 'admin') {
         navigate('/portal/admin');
-      } else if (role === 'admin') {
+      } else if (role === 'admin' || role === 'superadmin') {
         navigate('/portal/admin');
       } else {
         navigate('/portal/dashboard');
