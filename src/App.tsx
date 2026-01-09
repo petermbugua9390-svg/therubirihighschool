@@ -25,6 +25,7 @@ import Contact from "./pages/Contact";
 import Uniform from "./pages/Uniform";
 import KUCCPS from "./pages/KUCCPS";
 import HELB from "./pages/HELB";
+import LearningMaterials from "./pages/LearningMaterials";
 import CareerGuidance from "./pages/CareerGuidance";
 import CVBuilder from "./pages/CVBuilder";
 import Portal from "./pages/Portal";
@@ -54,6 +55,7 @@ const AnimatedRoutes = () => {
         <Route path="/uniform" element={<PageTransition><Uniform /></PageTransition>} />
         <Route path="/kuccps" element={<PageTransition><KUCCPS /></PageTransition>} />
         <Route path="/helb" element={<PageTransition><HELB /></PageTransition>} />
+        <Route path="/learning-materials" element={<PageTransition><LearningMaterials /></PageTransition>} />
         <Route path="/career-guidance" element={<PageTransition><CareerGuidance /></PageTransition>} />
         <Route path="/cv-builder" element={<PageTransition><CVBuilder /></PageTransition>} />
         <Route path="/portal" element={<PageTransition><Portal /></PageTransition>} />
