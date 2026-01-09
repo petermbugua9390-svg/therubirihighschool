@@ -59,9 +59,11 @@ const Portal = () => {
   const { user, isAdmin, role } = useAuth();
 
   const handlePortalSelect = (type: PortalType) => {
-    if (type === 'admin') {
+    if (type === 'admin' && isAdmin) {
+      // Already logged in as admin, go directly to admin dashboard
       navigate('/portal/admin');
     } else {
+      // Go to auth page for login/register
       navigate(`/portal/auth?type=${type}`);
     }
   };
@@ -85,7 +87,7 @@ const Portal = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-5xl font-bold mb-4"
           >
-            Rubiri High School Portal
+            Rubiri Senior School Portal
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
