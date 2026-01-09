@@ -48,7 +48,7 @@ const PortalAuth = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, role } = useAuth();
   
   const portalType = (searchParams.get('type') as PortalType) || 'student';
   
@@ -72,11 +72,19 @@ const PortalAuth = () => {
   });
   const [resetEmail, setResetEmail] = useState('');
 
+
   useEffect(() => {
     if (!authLoading && user) {
-      navigate(`/portal/dashboard`);
+      // If user is admin and on admin portal, redirect to admin dashboard
+      if (role === 'admin' && portalType === 'admin') {
+        navigate('/portal/admin');
+      } else if (role === 'admin') {
+        navigate('/portal/admin');
+      } else {
+        navigate('/portal/dashboard');
+      }
     }
-  }, [user, authLoading, navigate]);
+  }, [user, authLoading, navigate, role, portalType]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
