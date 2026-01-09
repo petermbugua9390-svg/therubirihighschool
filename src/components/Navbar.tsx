@@ -25,6 +25,7 @@ const Navbar = () => {
   const studentResources = [
     { name: "CBC Curriculum", path: "/cbc" },
     { name: "School Placement", path: "/school-placement" },
+    { name: "Learning Materials", path: "/learning-materials" },
     { name: "KUCCPS", path: "/kuccps" },
     { name: "HELB", path: "/helb" },
   ];
