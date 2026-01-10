@@ -26,6 +26,7 @@ import Uniform from "./pages/Uniform";
 import KUCCPS from "./pages/KUCCPS";
 import HELB from "./pages/HELB";
 import LearningMaterials from "./pages/LearningMaterials";
+import StudyTimetable from "./pages/StudyTimetable";
 import CareerGuidance from "./pages/CareerGuidance";
 import CVBuilder from "./pages/CVBuilder";
 import Portal from "./pages/Portal";
@@ -56,6 +57,7 @@ const AnimatedRoutes = () => {
         <Route path="/kuccps" element={<PageTransition><KUCCPS /></PageTransition>} />
         <Route path="/helb" element={<PageTransition><HELB /></PageTransition>} />
         <Route path="/learning-materials" element={<PageTransition><LearningMaterials /></PageTransition>} />
+        <Route path="/study-timetable" element={<PageTransition><StudyTimetable /></PageTransition>} />
         <Route path="/career-guidance" element={<PageTransition><CareerGuidance /></PageTransition>} />
         <Route path="/cv-builder" element={<PageTransition><CVBuilder /></PageTransition>} />
         <Route path="/portal" element={<PageTransition><Portal /></PageTransition>} />
