@@ -559,7 +559,6 @@ Return ONLY the JSON array, no other text.`;
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
