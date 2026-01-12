@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BookOpen, Download, Search, FileText, GraduationCap, Calculator, Beaker, Globe, BookOpenCheck, Languages, Palette, Music, Dumbbell, Computer, Briefcase, Filter, ChevronDown, Upload, Plus, Trash2, X } from "lucide-react";
+import { BookOpen, Download, Search, FileText, GraduationCap, Calculator, Beaker, Globe, BookOpenCheck, Languages, Palette, Music, Dumbbell, Computer, Briefcase, Filter, ChevronDown, Upload, Plus, Trash2, X, Eye, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -843,6 +843,8 @@ const LearningMaterials = () => {
   const [selectedYear, setSelectedYear] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewMaterial, setPreviewMaterial] = useState<Material | null>(null);
   const [databaseMaterials, setDatabaseMaterials] = useState<DatabaseMaterial[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -1037,6 +1039,23 @@ const LearningMaterials = () => {
     setUploadFile(null);
   };
 
+  const handlePreview = (material: Material) => {
+    // Check if it's a PDF that can be previewed
+    if (material.isDatabase && material.downloadUrl) {
+      setPreviewMaterial(material);
+      setIsPreviewOpen(true);
+    } else {
+      // For external links, open in new tab
+      window.open(material.downloadUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const isPdfPreviewable = (material: Material): boolean => {
+    if (!material.isDatabase || !material.downloadUrl) return false;
+    const url = material.downloadUrl.toLowerCase();
+    return url.endsWith('.pdf') || url.includes('.pdf');
+  };
+
   return (
     <main className="pt-32 pb-16">
       <div className="container mx-auto px-4">
@@ -1183,6 +1202,47 @@ const LearningMaterials = () => {
             </div>
           </AnimatedSection>
         )}
+
+        {/* PDF Preview Dialog */}
+        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+          <DialogContent className="max-w-5xl h-[90vh] flex flex-col">
+            <DialogHeader className="flex-shrink-0">
+              <DialogTitle className="flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                {previewMaterial?.title}
+              </DialogTitle>
+              <DialogDescription>
+                {previewMaterial?.subject} • {previewMaterial?.formLevel}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex-1 min-h-0 mt-4">
+              {previewMaterial?.downloadUrl && (
+                <iframe
+                  src={previewMaterial.downloadUrl}
+                  className="w-full h-full rounded-lg border border-border"
+                  title={previewMaterial.title}
+                />
+              )}
+            </div>
+            <div className="flex-shrink-0 flex justify-between items-center pt-4 border-t border-border">
+              <Button
+                variant="outline"
+                onClick={() => window.open(previewMaterial?.downloadUrl, '_blank')}
+                className="gap-2"
+              >
+                <ExternalLink size={16} />
+                Open in New Tab
+              </Button>
+              <Button
+                onClick={() => handleDownload(previewMaterial?.downloadUrl || '', previewMaterial?.title || '', true)}
+                className="gap-2"
+              >
+                <Download size={16} />
+                Download PDF
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
 
         {/* Search and Filters */}
         <AnimatedSection delay={0.1} className="mb-8">
@@ -1332,14 +1392,26 @@ const LearningMaterials = () => {
                               </span>
                               <span>{material.subject}</span>
                             </div>
-                            <Button 
-                              onClick={() => handleDownload(material.downloadUrl, material.title, material.isDatabase)}
-                              className="w-full group-hover:bg-accent group-hover:text-accent-foreground"
-                              variant="outline"
-                            >
-                              <Download size={16} className="mr-2" />
-                              Download PDF
-                            </Button>
+                            <div className="flex gap-2">
+                              {isPdfPreviewable(material) && (
+                                <Button 
+                                  onClick={() => handlePreview(material)}
+                                  variant="outline"
+                                  className="flex-1"
+                                >
+                                  <Eye size={16} className="mr-2" />
+                                  Preview
+                                </Button>
+                              )}
+                              <Button 
+                                onClick={() => handleDownload(material.downloadUrl, material.title, material.isDatabase)}
+                                className={`group-hover:bg-accent group-hover:text-accent-foreground ${isPdfPreviewable(material) ? 'flex-1' : 'w-full'}`}
+                                variant="outline"
+                              >
+                                <Download size={16} className="mr-2" />
+                                Download
+                              </Button>
+                            </div>
                           </CardContent>
                         </Card>
                       );
