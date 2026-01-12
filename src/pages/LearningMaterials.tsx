@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { BookOpen, Download, Search, FileText, GraduationCap, Calculator, Beaker, Globe, BookOpenCheck, Languages, Palette, Music, Dumbbell, Computer, Briefcase, Filter, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { BookOpen, Download, Search, FileText, GraduationCap, Calculator, Beaker, Globe, BookOpenCheck, Languages, Palette, Music, Dumbbell, Computer, Briefcase, Filter, ChevronDown, Upload, Plus, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,8 +7,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Material {
+  id?: string;
   title: string;
   description: string;
   category: string;
@@ -18,9 +26,24 @@ interface Material {
   type: "notes" | "exam" | "revision" | "scheme" | "assignment";
   icon: React.ElementType;
   year?: string;
+  isDatabase?: boolean;
+  uploadedBy?: string;
 }
 
-const materials: Material[] = [
+interface DatabaseMaterial {
+  id: string;
+  title: string;
+  description: string | null;
+  subject: string | null;
+  class_level: string | null;
+  file_url: string | null;
+  file_type: string | null;
+  uploaded_by: string | null;
+  created_at: string;
+}
+
+// Static materials from teacher.co.ke
+const staticMaterials: Material[] = [
   // ==================== FORM 1 NOTES ====================
   {
     title: "Form 1 Mathematics Notes",
@@ -500,7 +523,7 @@ const materials: Material[] = [
   },
   {
     title: "Form 4 Agriculture Notes",
-    description: "Complete agriculture notes for KCSE preparation",
+    description: "Complete agriculture notes for KCSE examination",
     category: "Notes",
     subject: "Agriculture",
     formLevel: "Form 4",
@@ -509,396 +532,236 @@ const materials: Material[] = [
     icon: Globe,
   },
 
-  // ==================== 2025 EXAMINATIONS ====================
-  {
-    title: "2025 End Term 3 Form 2, 3 Exams Set 2",
-    description: "Complete end term examinations with marking schemes for Form 2 and 3 - Set 2",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 2-3",
-    downloadUrl: "https://teacher.co.ke/2025-end-term-3-form-2-3-exams-plus-marking-scheme-set2/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 End Term 3 Form 2, 3, 4 Exams Set 1",
-    description: "Complete end term examinations with marking schemes for Form 2, 3, and 4",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 2-4",
-    downloadUrl: "https://teacher.co.ke/2025-end-term-3-form-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Term 3 Opener Form 2, 3, 4 Exams",
-    description: "Opening term examinations with marking schemes for all forms",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 2-4",
-    downloadUrl: "https://teacher.co.ke/2025-term-3-opener-form-2-3-4-exams-plus-marking-scheme-set-1/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 End Term 2 Form 2, 3, 4 Exams",
-    description: "End of term 2 examinations with comprehensive marking schemes",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 2-4",
-    downloadUrl: "https://teacher.co.ke/2025-end-term-2-form-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Mid Term 2 Form 2, 3, 4 Exams",
-    description: "Mid-term examinations with marking schemes for revision",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 2-4",
-    downloadUrl: "https://teacher.co.ke/2025-mid-term-2-form-2-3-4-exams-plus-marking-scheme-dup/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Term 2 Opener Form 2, 3, 4 Exams",
-    description: "Term 2 opening examinations with marking schemes",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 2-4",
-    downloadUrl: "https://teacher.co.ke/2025-term-2-opener-form-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Term 1 Opener Form 2, 3, 4 Exams",
-    description: "Term 1 opening examinations with comprehensive marking schemes",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 2-4",
-    downloadUrl: "https://teacher.co.ke/2025-term-1-opener-form-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-
-  // ==================== 2025 MOCK EXAMINATIONS ====================
-  {
-    title: "2025 Maranda High School F4 Mock",
-    description: "Maranda High School Form 4 mock examination papers with marking schemes",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-maranda-high-school-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Starehe Girls F4 Mock",
-    description: "Starehe Girls Form 4 mock examination papers with marking schemes",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-starehe-girls-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Pangani Girls F4 Mock",
-    description: "Pangani Girls Form 4 mock examination papers with marking schemes",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-pangani-girls-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Muranga East Joint F4 Mock",
-    description: "Muranga East Joint Form 4 mock examination papers",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-muranga-east-joint-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 SULIMO Joint F4 Mock",
-    description: "SULIMO Joint Form 4 mock examination papers with marking schemes",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-sulimo-joint-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Kisii School F4 Mock",
-    description: "Kisii School Form 4 mock examination papers with marking schemes",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-kisii-school-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 Butere Girls F4 Mock",
-    description: "Butere Girls Form 4 mock examination papers with marking schemes",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-butere-girls-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-  {
-    title: "2025 BUKAKA Joint F4 Mock",
-    description: "BUKAKA Joint Form 4 mock examination papers with marking schemes",
-    category: "Mocks",
-    subject: "All Subjects",
-    formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/2025-bukaka-joint-f4-mock-examination/",
-    type: "exam",
-    icon: FileText,
-    year: "2025",
-  },
-
-  // ==================== 2024 EXAMINATIONS ====================
+  // ==================== KCSE PAST PAPERS ====================
   {
     title: "2024 KCSE Past Papers with Marking Schemes",
-    description: "Complete set of 2024 KCSE examination papers with official marking schemes",
-    category: "Past Papers",
+    description: "Complete 2024 KCSE examination papers with official marking schemes for all subjects",
+    category: "Exam",
     subject: "All Subjects",
     formLevel: "Form 4",
     downloadUrl: "https://teacher.co.ke/2024-kcse-past-papers-with-marking-schemes/",
     type: "exam",
-    icon: FileText,
+    icon: GraduationCap,
     year: "2024",
   },
   {
-    title: "2024 End Term 3 Set 3 Form 1-4 Exams",
-    description: "End term 3 examinations Set 3 with marking schemes for all forms",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 1-4",
-    downloadUrl: "https://teacher.co.ke/2024-end-term-3-set-3-form-1-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2024",
-  },
-  {
-    title: "2024 End Term 3 Set 2 Form 1-4 Exams",
-    description: "End term 3 examinations Set 2 with marking schemes for all forms",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 1-4",
-    downloadUrl: "https://teacher.co.ke/2024-end-term-3-set-2-form-1-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2024",
-  },
-  {
-    title: "2024 End Term 3 Set 1 Form 1-4 Exams",
-    description: "End term 3 examinations Set 1 with marking schemes for all forms",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 1-4",
-    downloadUrl: "https://teacher.co.ke/2024-end-term-3-set-1-form-1-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2024",
-  },
-  {
-    title: "2024 End Term 2 Form 1-4 Exams",
-    description: "End term 2 examinations with marking schemes for all forms",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 1-4",
-    downloadUrl: "https://teacher.co.ke/2024-end-term-2-form-1-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2024",
-  },
-  {
-    title: "2024 Mid Term 2 Form 1-4 Exams",
-    description: "Mid-term 2 examinations with marking schemes for all forms",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 1-4",
-    downloadUrl: "https://teacher.co.ke/2024-mid-term-2-form-1-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2024",
-  },
-  {
-    title: "2024 End Term 1 Set 2 Form 1-4 Exams",
-    description: "End term 1 Set 2 examinations with marking schemes",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 1-4",
-    downloadUrl: "https://teacher.co.ke/2024-end-term-1-set-2-form-1-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2024",
-  },
-  {
-    title: "2024 End Term 1 Set 1 Form 1-4 Exams",
-    description: "End term 1 Set 1 examinations with marking schemes",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Form 1-4",
-    downloadUrl: "https://teacher.co.ke/2024-end-term-1-set-1-form-1-2-3-4-exams-plus-marking-scheme/",
-    type: "exam",
-    icon: FileText,
-    year: "2024",
-  },
-
-  // ==================== HOLIDAY ASSIGNMENTS ====================
-  {
-    title: "Form 4 April 2024 Holiday Assignment",
-    description: "Form Four holiday assignment for extended April holiday",
-    category: "Assignment",
+    title: "2023 KCSE Past Papers",
+    description: "2023 KCSE examination papers with marking schemes",
+    category: "Exam",
     subject: "All Subjects",
     formLevel: "Form 4",
-    downloadUrl: "https://teacher.co.ke/form-four-2024-april-assignment-for-extended-holiday/",
-    type: "assignment",
-    icon: FileText,
-    year: "2024",
+    downloadUrl: "https://teacher.co.ke/2023-kcse-past-papers/",
+    type: "exam",
+    icon: GraduationCap,
+    year: "2023",
+  },
+
+  // ==================== MOCK EXAMINATIONS ====================
+  {
+    title: "2025 Maranda High School Form 4 Mock",
+    description: "Latest 2025 mock examination papers from Maranda High School",
+    category: "Exam",
+    subject: "All Subjects",
+    formLevel: "Form 4",
+    downloadUrl: "https://teacher.co.ke/2025-maranda-high-school-f4-mock-examination/",
+    type: "exam",
+    icon: GraduationCap,
+    year: "2025",
   },
   {
-    title: "Form 3 April 2024 Holiday Assignment",
-    description: "Form Three holiday assignment for extended April holiday",
-    category: "Assignment",
+    title: "2025 Alliance High School Mock",
+    description: "2025 mock examination papers from Alliance High School",
+    category: "Exam",
     subject: "All Subjects",
-    formLevel: "Form 3",
-    downloadUrl: "https://teacher.co.ke/form-three-2024-april-assignment-for-extended-holiday/",
-    type: "assignment",
-    icon: FileText,
-    year: "2024",
+    formLevel: "Form 4",
+    downloadUrl: "https://teacher.co.ke/2025-alliance-mock-exams/",
+    type: "exam",
+    icon: GraduationCap,
+    year: "2025",
   },
   {
-    title: "Form 2 April 2024 Holiday Assignment",
-    description: "Form Two holiday assignment for extended April holiday",
-    category: "Assignment",
+    title: "2024 KCSE County Mocks",
+    description: "County mock examinations from various counties across Kenya",
+    category: "Exam",
     subject: "All Subjects",
-    formLevel: "Form 2",
-    downloadUrl: "https://teacher.co.ke/form-two-2024-april-assignment-for-extended-holiday/",
-    type: "assignment",
-    icon: FileText,
+    formLevel: "Form 4",
+    downloadUrl: "https://teacher.co.ke/2024-kcse-county-mocks/",
+    type: "exam",
+    icon: GraduationCap,
     year: "2024",
   },
 
-  // ==================== JUNIOR SECONDARY (GRADE 7-9) ====================
+  // ==================== CBC MATERIALS ====================
   {
-    title: "Grade 7-9 Junior Secondary Materials",
-    description: "Complete learning materials for Junior Secondary School (JSS) students",
+    title: "Grade 7 CBC Notes - All Subjects",
+    description: "Comprehensive Grade 7 notes aligned with CBC curriculum",
     category: "Notes",
     subject: "All Subjects",
     formLevel: "Grade 7-9",
-    downloadUrl: "https://teacher.co.ke/download-grade-7-9-junior-secondary-school-materials/",
+    downloadUrl: "https://teacher.co.ke/grade-7-notes/",
     type: "notes",
-    icon: GraduationCap,
+    icon: BookOpen,
   },
   {
-    title: "Grade 8 Notes - All Subjects",
-    description: "Comprehensive Grade 8 notes covering all subjects under CBC curriculum",
+    title: "Grade 8 CBC Notes - All Subjects",
+    description: "Complete Grade 8 notes for Junior Secondary curriculum",
     category: "Notes",
     subject: "All Subjects",
     formLevel: "Grade 8",
     downloadUrl: "https://teacher.co.ke/grade-8-notes/",
     type: "notes",
-    icon: GraduationCap,
+    icon: BookOpen,
   },
   {
-    title: "Grade 8 Examinations Set 22",
-    description: "Grade 8 examination papers with marking schemes",
-    category: "Exams",
-    subject: "All Subjects",
-    formLevel: "Grade 8",
-    downloadUrl: "https://teacher.co.ke/grade-8-set-22-exams/",
-    type: "exam",
-    icon: FileText,
-  },
-
-  // ==================== PRIMARY MATERIALS ====================
-  {
-    title: "Upper Primary Materials (Grade 1-6)",
-    description: "Complete learning materials for upper primary students",
+    title: "CBC Primary Notes (Grade 1-6)",
+    description: "Primary school notes aligned with CBC curriculum",
     category: "Notes",
     subject: "All Subjects",
     formLevel: "Grade 1-6",
-    downloadUrl: "https://teacher.co.ke/upper-primary-materials/",
+    downloadUrl: "https://teacher.co.ke/cbc-primary-notes/",
     type: "notes",
-    icon: GraduationCap,
+    icon: BookOpen,
   },
   {
-    title: "Pre-Primary Materials (PP1-PP2)",
-    description: "Free pre-primary learning materials for PP1 and PP2",
+    title: "PP1-PP2 CBC Resources",
+    description: "Pre-primary learning resources and activities for CBC",
     category: "Notes",
     subject: "All Subjects",
     formLevel: "PP1-PP2",
-    downloadUrl: "https://teacher.co.ke/download-free-pre-primary-1-2-materials-pp1-pp2/",
+    downloadUrl: "https://teacher.co.ke/pp1-pp2-resources/",
     type: "notes",
-    icon: GraduationCap,
+    icon: BookOpen,
   },
 
   // ==================== SCHEMES OF WORK ====================
   {
-    title: "Form 1-4 Complete Schemes of Work",
-    description: "Complete schemes of work for all subjects from Form 1 to Form 4",
-    category: "Schemes",
+    title: "Form 1-4 Schemes of Work",
+    description: "Complete schemes of work for all subjects Form 1 to Form 4",
+    category: "Scheme",
     subject: "All Subjects",
-    formLevel: "All Forms",
-    downloadUrl: "https://teacher.co.ke/form-1-4-materials-2/",
+    formLevel: "Form 1-4",
+    downloadUrl: "https://teacher.co.ke/schemes-of-work/",
     type: "scheme",
-    icon: BookOpen,
+    icon: FileText,
+  },
+  {
+    title: "CBC Schemes of Work",
+    description: "Schemes of work aligned with Competency Based Curriculum",
+    category: "Scheme",
+    subject: "All Subjects",
+    formLevel: "Grade 1-6",
+    downloadUrl: "https://teacher.co.ke/cbc-schemes-of-work/",
+    type: "scheme",
+    icon: FileText,
+  },
+  {
+    title: "Junior Secondary Schemes of Work",
+    description: "Schemes of work for Grade 7-9 Junior Secondary",
+    category: "Scheme",
+    subject: "All Subjects",
+    formLevel: "Grade 7-9",
+    downloadUrl: "https://teacher.co.ke/junior-secondary-schemes/",
+    type: "scheme",
+    icon: FileText,
+  },
+
+  // ==================== HOLIDAY ASSIGNMENTS ====================
+  {
+    title: "Form 1-4 Holiday Assignments",
+    description: "Holiday revision assignments for all forms and subjects",
+    category: "Assignment",
+    subject: "All Subjects",
+    formLevel: "Form 1-4",
+    downloadUrl: "https://teacher.co.ke/holiday-assignments/",
+    type: "assignment",
+    icon: FileText,
+  },
+  {
+    title: "December Holiday Assignments 2024",
+    description: "End of year holiday revision assignments with answers",
+    category: "Assignment",
+    subject: "All Subjects",
+    formLevel: "Form 1-4",
+    downloadUrl: "https://teacher.co.ke/december-2024-assignments/",
+    type: "assignment",
+    icon: FileText,
+    year: "2024",
   },
 
   // ==================== TEACHER RESOURCES ====================
   {
     title: "Free Teaching Resources",
-    description: "Collection of free teaching resources, lesson plans, and teaching aids",
-    category: "Teaching",
-    subject: "All Subjects",
+    description: "Teaching aids, lesson plans, and classroom resources",
+    category: "Notes",
+    subject: "Education",
     formLevel: "All Forms",
     downloadUrl: "https://teacher.co.ke/free-teaching-resources/",
-    type: "revision",
-    icon: GraduationCap,
-  },
-  {
-    title: "Primary Teacher Education (PTE) Notes",
-    description: "Study notes and exam revision papers for PTE students",
-    category: "College",
-    subject: "Education",
-    formLevel: "College",
-    downloadUrl: "https://teacher.co.ke/primary-teacher-education-study-notes-and-exam-revision-papers/",
     type: "notes",
     icon: GraduationCap,
   },
   {
-    title: "KASNEB Resources",
-    description: "KASNEB study materials and examination resources",
-    category: "College",
+    title: "KNEC Syllabi",
+    description: "Official KNEC syllabi for secondary school subjects",
+    category: "Scheme",
+    subject: "All Subjects",
+    formLevel: "Form 1-4",
+    downloadUrl: "https://teacher.co.ke/knec-syllabi/",
+    type: "scheme",
+    icon: FileText,
+  },
+
+  // ==================== COLLEGE/TERTIARY ====================
+  {
+    title: "KNEC Diploma Past Papers",
+    description: "KNEC diploma examination past papers for various courses",
+    category: "Exam",
+    subject: "All Subjects",
+    formLevel: "College",
+    downloadUrl: "https://teacher.co.ke/knec-diploma-past-papers/",
+    type: "exam",
+    icon: GraduationCap,
+  },
+  {
+    title: "KASNEB Past Papers",
+    description: "KASNEB CPA, ATD, CS past papers with answers",
+    category: "Exam",
     subject: "Accounting",
     formLevel: "College",
-    downloadUrl: "https://teacher.co.ke/kuccps/teachers-colleges/kasneb-teachers-colleges/",
-    type: "notes",
+    downloadUrl: "https://teacher.co.ke/kasneb-past-papers/",
+    type: "exam",
     icon: Briefcase,
+  },
+
+  // ==================== END OF TERM EXAMS ====================
+  {
+    title: "Form 1 End of Term Exams",
+    description: "End of term examinations with marking schemes for Form 1",
+    category: "Exam",
+    subject: "All Subjects",
+    formLevel: "Form 1",
+    downloadUrl: "https://teacher.co.ke/form-1-end-term-exams/",
+    type: "exam",
+    icon: FileText,
+  },
+  {
+    title: "Form 2 End of Term Exams",
+    description: "End of term examinations with marking schemes for Form 2",
+    category: "Exam",
+    subject: "All Subjects",
+    formLevel: "Form 2",
+    downloadUrl: "https://teacher.co.ke/form-2-end-term-exams/",
+    type: "exam",
+    icon: FileText,
+  },
+  {
+    title: "Form 3 End of Term Exams",
+    description: "End of term examinations with marking schemes for Form 3",
+    category: "Exam",
+    subject: "All Subjects",
+    formLevel: "Form 3",
+    downloadUrl: "https://teacher.co.ke/form-3-end-term-exams/",
+    type: "exam",
+    icon: FileText,
   },
 
   // ==================== REVISION MATERIALS ====================
@@ -935,18 +798,110 @@ const subjectIcons: Record<string, React.ElementType> = {
   "Accounting": Briefcase,
 };
 
+const subjectOptions = [
+  "Mathematics",
+  "English",
+  "Kiswahili",
+  "Biology",
+  "Chemistry",
+  "Physics",
+  "History",
+  "Geography",
+  "CRE",
+  "Computer Studies",
+  "Business Studies",
+  "Agriculture",
+  "Art & Design",
+  "Music",
+  "PE",
+];
+
+const classLevelOptions = [
+  "Form 1",
+  "Form 2",
+  "Form 3",
+  "Form 4",
+  "Grade 1-6",
+  "Grade 7-9",
+  "PP1-PP2",
+  "College",
+];
+
+const fileTypeOptions = [
+  { value: "notes", label: "Notes" },
+  { value: "exam", label: "Exam/Past Paper" },
+  { value: "revision", label: "Revision Material" },
+  { value: "scheme", label: "Scheme of Work" },
+  { value: "assignment", label: "Assignment" },
+];
+
 const LearningMaterials = () => {
+  const { user, role, isAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedForm, setSelectedForm] = useState("all");
   const [selectedSubject, setSelectedSubject] = useState("all");
   const [selectedYear, setSelectedYear] = useState("all");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  const [databaseMaterials, setDatabaseMaterials] = useState<DatabaseMaterial[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  // Upload form state
+  const [uploadTitle, setUploadTitle] = useState("");
+  const [uploadDescription, setUploadDescription] = useState("");
+  const [uploadSubject, setUploadSubject] = useState("");
+  const [uploadClassLevel, setUploadClassLevel] = useState("");
+  const [uploadFileType, setUploadFileType] = useState("");
+  const [uploadFile, setUploadFile] = useState<File | null>(null);
+
+  const canUpload = role === "teacher" || role === "staff" || isAdmin;
+
+  // Fetch database materials
+  useEffect(() => {
+    fetchDatabaseMaterials();
+  }, []);
+
+  const fetchDatabaseMaterials = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("learning_materials")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setDatabaseMaterials(data || []);
+    } catch (error) {
+      console.error("Error fetching materials:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Convert database materials to Material format
+  const convertedDbMaterials: Material[] = databaseMaterials.map((dbMaterial) => ({
+    id: dbMaterial.id,
+    title: dbMaterial.title,
+    description: dbMaterial.description || "",
+    category: dbMaterial.file_type ? fileTypeOptions.find(f => f.value === dbMaterial.file_type)?.label || "Notes" : "Notes",
+    subject: dbMaterial.subject || "All Subjects",
+    formLevel: dbMaterial.class_level || "All Forms",
+    downloadUrl: dbMaterial.file_url || "",
+    type: (dbMaterial.file_type as Material["type"]) || "notes",
+    icon: subjectIcons[dbMaterial.subject || "All Subjects"] || FileText,
+    isDatabase: true,
+    uploadedBy: dbMaterial.uploaded_by || undefined,
+  }));
+
+  // Combine static and database materials
+  const allMaterials = [...convertedDbMaterials, ...staticMaterials];
 
   const formLevels = ["all", "Form 1", "Form 2", "Form 3", "Form 4", "Form 1-4", "Form 2-3", "Form 2-4", "Grade 7-9", "Grade 8", "Grade 1-6", "PP1-PP2", "College", "All Forms"];
-  const subjects = ["all", ...new Set(materials.map(m => m.subject))];
+  const subjects = ["all", ...new Set(allMaterials.map(m => m.subject))];
   const years = ["all", "2025", "2024"];
 
-  const filteredMaterials = materials.filter((material) => {
+  const filteredMaterials = allMaterials.filter((material) => {
     const matchesSearch = 
       material.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       material.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -976,9 +931,110 @@ const LearningMaterials = () => {
     }
   };
 
-  const handleDownload = (url: string, title: string) => {
-    // Open the material page in a new tab for direct download
-    window.open(url, '_blank', 'noopener,noreferrer');
+  const handleDownload = (url: string, title: string, isDatabase?: boolean) => {
+    if (isDatabase) {
+      // Direct download for database files
+      window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Open the material page in a new tab for teacher.co.ke
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!uploadFile || !uploadTitle || !uploadSubject || !uploadClassLevel || !uploadFileType) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    if (!user) {
+      toast.error("You must be logged in to upload materials");
+      return;
+    }
+
+    setUploading(true);
+    try {
+      // Upload file to storage
+      const fileExt = uploadFile.name.split('.').pop();
+      const fileName = `${user.id}/${Date.now()}-${uploadFile.name}`;
+      
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from("learning-materials")
+        .upload(fileName, uploadFile);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from("learning-materials")
+        .getPublicUrl(fileName);
+
+      // Insert record into database
+      const { error: dbError } = await supabase
+        .from("learning_materials")
+        .insert({
+          title: uploadTitle,
+          description: uploadDescription,
+          subject: uploadSubject,
+          class_level: uploadClassLevel,
+          file_type: uploadFileType,
+          file_url: publicUrl,
+          uploaded_by: user.id,
+        });
+
+      if (dbError) throw dbError;
+
+      toast.success("Material uploaded successfully!");
+      setIsUploadOpen(false);
+      resetUploadForm();
+      fetchDatabaseMaterials();
+    } catch (error: any) {
+      console.error("Upload error:", error);
+      toast.error(error.message || "Failed to upload material");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDeleteMaterial = async (materialId: string) => {
+    if (!confirm("Are you sure you want to delete this material?")) return;
+
+    try {
+      // Get the material to find its file URL
+      const material = databaseMaterials.find(m => m.id === materialId);
+      if (material?.file_url) {
+        // Extract file path from URL and delete from storage
+        const urlParts = material.file_url.split('/learning-materials/');
+        if (urlParts[1]) {
+          await supabase.storage
+            .from("learning-materials")
+            .remove([urlParts[1]]);
+        }
+      }
+
+      // Delete from database
+      const { error } = await supabase
+        .from("learning_materials")
+        .delete()
+        .eq("id", materialId);
+
+      if (error) throw error;
+
+      toast.success("Material deleted successfully!");
+      fetchDatabaseMaterials();
+    } catch (error: any) {
+      console.error("Delete error:", error);
+      toast.error(error.message || "Failed to delete material");
+    }
+  };
+
+  const resetUploadForm = () => {
+    setUploadTitle("");
+    setUploadDescription("");
+    setUploadSubject("");
+    setUploadClassLevel("");
+    setUploadFileType("");
+    setUploadFile(null);
   };
 
   return (
@@ -990,24 +1046,143 @@ const LearningMaterials = () => {
             Learning <span className="text-accent">Materials</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Access {materials.length}+ free downloadable PDF notes, past papers, examinations, and revision materials 
-            for Form 1-4 and CBC students. All resources sourced from teacher.co.ke.
+            Access {allMaterials.length}+ free downloadable PDF notes, past papers, examinations, and revision materials 
+            for Form 1-4 and CBC students. 
+            {databaseMaterials.length > 0 && ` Including ${databaseMaterials.length} materials uploaded by our teachers.`}
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <Badge variant="secondary" className="text-sm">
-              📚 {materials.filter(m => m.type === "notes").length} Notes
+              📚 {allMaterials.filter(m => m.type === "notes").length} Notes
             </Badge>
             <Badge variant="secondary" className="text-sm">
-              📝 {materials.filter(m => m.type === "exam").length} Exams
+              📝 {allMaterials.filter(m => m.type === "exam").length} Exams
             </Badge>
             <Badge variant="secondary" className="text-sm">
-              📖 {materials.filter(m => m.type === "revision").length} Revision
+              📖 {allMaterials.filter(m => m.type === "revision").length} Revision
             </Badge>
             <Badge variant="secondary" className="text-sm">
-              📋 {materials.filter(m => m.type === "scheme").length} Schemes
+              📋 {allMaterials.filter(m => m.type === "scheme").length} Schemes
             </Badge>
+            {databaseMaterials.length > 0 && (
+              <Badge variant="default" className="text-sm">
+                🏫 {databaseMaterials.length} School Uploads
+              </Badge>
+            )}
           </div>
         </AnimatedSection>
+
+        {/* Upload Button for Teachers/Admins */}
+        {canUpload && (
+          <AnimatedSection delay={0.05} className="mb-8">
+            <div className="flex justify-center">
+              <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
+                <DialogTrigger asChild>
+                  <Button size="lg" className="gap-2">
+                    <Upload className="h-5 w-5" />
+                    Upload Learning Material
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[500px]">
+                  <DialogHeader>
+                    <DialogTitle>Upload Learning Material</DialogTitle>
+                    <DialogDescription>
+                      Share your educational resources with students. Upload notes, exams, or revision materials.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 mt-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">Title *</Label>
+                      <Input
+                        id="title"
+                        placeholder="e.g., Form 3 Chemistry Notes - Organic Chemistry"
+                        value={uploadTitle}
+                        onChange={(e) => setUploadTitle(e.target.value)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Description</Label>
+                      <Textarea
+                        id="description"
+                        placeholder="Brief description of the content..."
+                        value={uploadDescription}
+                        onChange={(e) => setUploadDescription(e.target.value)}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Subject *</Label>
+                        <Select value={uploadSubject} onValueChange={setUploadSubject}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select subject" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {subjectOptions.map((subject) => (
+                              <SelectItem key={subject} value={subject}>
+                                {subject}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Class Level *</Label>
+                        <Select value={uploadClassLevel} onValueChange={setUploadClassLevel}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select level" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {classLevelOptions.map((level) => (
+                              <SelectItem key={level} value={level}>
+                                {level}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Material Type *</Label>
+                      <Select value={uploadFileType} onValueChange={setUploadFileType}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {fileTypeOptions.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="file">File (PDF, DOC, DOCX) *</Label>
+                      <Input
+                        id="file"
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+                      />
+                      {uploadFile && (
+                        <p className="text-sm text-muted-foreground">
+                          Selected: {uploadFile.name} ({(uploadFile.size / 1024 / 1024).toFixed(2)} MB)
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex justify-end gap-2 mt-6">
+                      <Button variant="outline" onClick={() => setIsUploadOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button onClick={handleUpload} disabled={uploading}>
+                        {uploading ? "Uploading..." : "Upload"}
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </AnimatedSection>
+        )}
 
         {/* Search and Filters */}
         <AnimatedSection delay={0.1} className="mb-8">
@@ -1072,7 +1247,7 @@ const LearningMaterials = () => {
             </div>
             
             <div className="mt-4 text-sm text-muted-foreground">
-              Showing {filteredMaterials.length} of {materials.length} materials
+              Showing {filteredMaterials.length} of {allMaterials.length} materials
             </div>
           </div>
         </AnimatedSection>
@@ -1080,8 +1255,9 @@ const LearningMaterials = () => {
         {/* Materials Tabs */}
         <AnimatedSection delay={0.2}>
           <Tabs defaultValue="all" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 gap-2 bg-muted p-2 rounded-xl">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-7 gap-2 bg-muted p-2 rounded-xl">
               <TabsTrigger value="all" className="rounded-lg">All ({filteredMaterials.length})</TabsTrigger>
+              <TabsTrigger value="uploaded" className="rounded-lg">🏫 Uploaded ({filteredMaterials.filter(m => m.isDatabase).length})</TabsTrigger>
               <TabsTrigger value="notes" className="rounded-lg">Notes ({filteredMaterials.filter(m => m.type === "notes").length})</TabsTrigger>
               <TabsTrigger value="exam" className="rounded-lg">Exams ({filteredMaterials.filter(m => m.type === "exam").length})</TabsTrigger>
               <TabsTrigger value="revision" className="rounded-lg">Revision</TabsTrigger>
@@ -1089,16 +1265,22 @@ const LearningMaterials = () => {
               <TabsTrigger value="assignment" className="rounded-lg">Assignments</TabsTrigger>
             </TabsList>
 
-            {["all", "notes", "exam", "revision", "scheme", "assignment"].map((tab) => (
+            {["all", "uploaded", "notes", "exam", "revision", "scheme", "assignment"].map((tab) => (
               <TabsContent key={tab} value={tab} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredMaterials
-                    .filter((m) => tab === "all" || m.type === tab)
+                    .filter((m) => {
+                      if (tab === "all") return true;
+                      if (tab === "uploaded") return m.isDatabase;
+                      return m.type === tab;
+                    })
                     .map((material, index) => {
                       const IconComponent = material.icon || subjectIcons[material.subject] || FileText;
+                      const canDelete = material.isDatabase && (isAdmin || material.uploadedBy === user?.id);
+                      
                       return (
                         <Card 
-                          key={index} 
+                          key={material.id || index} 
                           className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-border"
                         >
                           <CardHeader>
@@ -1106,14 +1288,32 @@ const LearningMaterials = () => {
                               <div className="p-3 rounded-xl bg-accent/10 group-hover:bg-accent/20 transition-colors">
                                 <IconComponent className="h-6 w-6 text-accent" />
                               </div>
-                              <div className="flex gap-2 flex-wrap justify-end">
+                              <div className="flex gap-2 flex-wrap justify-end items-start">
                                 <Badge className={getTypeColor(material.type)}>
                                   {material.category}
                                 </Badge>
+                                {material.isDatabase && (
+                                  <Badge variant="default" className="text-xs">
+                                    🏫 School
+                                  </Badge>
+                                )}
                                 {material.year && (
                                   <Badge variant="outline" className="text-xs">
                                     {material.year}
                                   </Badge>
+                                )}
+                                {canDelete && (
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="h-6 w-6 text-destructive hover:text-destructive"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleDeleteMaterial(material.id!);
+                                    }}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </Button>
                                 )}
                               </div>
                             </div>
@@ -1133,7 +1333,7 @@ const LearningMaterials = () => {
                               <span>{material.subject}</span>
                             </div>
                             <Button 
-                              onClick={() => handleDownload(material.downloadUrl, material.title)}
+                              onClick={() => handleDownload(material.downloadUrl, material.title, material.isDatabase)}
                               className="w-full group-hover:bg-accent group-hover:text-accent-foreground"
                               variant="outline"
                             >
@@ -1146,13 +1346,23 @@ const LearningMaterials = () => {
                     })}
                 </div>
 
-                {filteredMaterials.filter((m) => tab === "all" || m.type === tab).length === 0 && (
+                {filteredMaterials.filter((m) => {
+                  if (tab === "all") return true;
+                  if (tab === "uploaded") return m.isDatabase;
+                  return m.type === tab;
+                }).length === 0 && (
                   <div className="text-center py-12">
                     <FileText className="h-16 w-16 mx-auto text-muted-foreground/50 mb-4" />
                     <h3 className="text-xl font-semibold mb-2">No materials found</h3>
                     <p className="text-muted-foreground">
-                      Try adjusting your search or filter criteria
+                      {tab === "uploaded" ? "No materials have been uploaded by teachers yet." : "Try adjusting your search or filter criteria"}
                     </p>
+                    {tab === "uploaded" && canUpload && (
+                      <Button className="mt-4" onClick={() => setIsUploadOpen(true)}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Upload First Material
+                      </Button>
+                    )}
                   </div>
                 )}
               </TabsContent>
@@ -1201,6 +1411,7 @@ const LearningMaterials = () => {
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
               We partner with Teacher.co.ke to bring you thousands of free educational resources. 
               Click any download button to access materials directly from the source.
+              {canUpload && " As a teacher, you can also upload your own materials to share with students."}
             </p>
             <Button asChild size="lg">
               <a 
