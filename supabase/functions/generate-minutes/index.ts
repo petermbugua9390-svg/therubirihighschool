@@ -18,60 +18,122 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const prompt = `Generate detailed, professional meeting minutes based on the following information:
+    const prompt = `You are tasked with generating HIGHLY DETAILED, PROFESSIONAL meeting minutes that read as authentic official records. Generate minutes based on:
 
-MEETING TITLE: ${meetingTitle || "Meeting"}
-DATE: ${meetingDate || new Date().toLocaleDateString()}
-VENUE: ${venue || "Not specified"}
-ATTENDEES: ${attendees || "Not specified"}
+═══════════════════════════════════════════════════════════════
+MEETING DETAILS
+═══════════════════════════════════════════════════════════════
+Title: ${meetingTitle || "General Meeting"}
+Date: ${meetingDate || new Date().toLocaleDateString()}
+Venue: ${venue || "Conference Room"}
+Attendees: ${attendees || "Committee Members"}
 
-AGENDA ITEMS:
+═══════════════════════════════════════════════════════════════
+AGENDA ITEMS TO EXPAND
+═══════════════════════════════════════════════════════════════
 ${agendas}
 
-Please generate comprehensive meeting minutes that include:
-1. A formal header with meeting details
-2. Call to order
-3. Each agenda item with:
-   - Discussion points (create realistic, detailed discussion content)
-   - Key decisions made
-   - Action items with responsible persons and deadlines
-4. Any other business (AOB)
-5. Date and time of next meeting (suggest one)
-6. Adjournment
+═══════════════════════════════════════════════════════════════
+QUALITY REQUIREMENTS - FOLLOW STRICTLY
+═══════════════════════════════════════════════════════════════
 
-Format the minutes professionally with clear sections. Use formal language appropriate for official meeting records. Make the content detailed and realistic as if the meeting actually took place.
+1. **DISCUSSION CONTENT** (Most Critical):
+   - Write 150-300 words per agenda item
+   - Include specific names of speakers with their contributions in quotes
+   - Show back-and-forth dialogue: "Mr. Kamau raised concerns about... Mrs. Wanjiku responded by clarifying that..."
+   - Add realistic statistics, figures, and data points where applicable
+   - Include phrases like "After extensive deliberation...", "Following a motion by...", "The committee unanimously agreed..."
+   - Reference previous meetings, policies, or documents when relevant
+   - Show different perspectives: concerns raised, solutions proposed, compromises reached
+
+2. **DECISIONS** (Be Specific):
+   - State decisions formally: "RESOLVED: That the committee shall..."
+   - Include voting outcomes where applicable: "The motion was carried by majority vote (8-2)"
+   - Add conditions or timelines: "...subject to budget approval", "...effective from Term 2"
+
+3. **ACTION ITEMS** (Detailed & Accountable):
+   - Be specific about tasks: Not "Review budget" but "Prepare detailed budget breakdown for infrastructure repairs totaling KSh 2.5M"
+   - Assign to specific named individuals with titles
+   - Include realistic deadlines: "By Friday, 24th January 2025" not just "Next week"
+   - Add follow-up mechanisms: "to be tabled at the next BOM meeting"
+
+4. **PROFESSIONAL LANGUAGE**:
+   - Use formal minute-writing conventions
+   - Include procedural language: "The motion was duly seconded by..."
+   - Reference attendee titles: "The Principal", "The Chairperson", "Hon. Member"
+   - Use passive voice appropriately: "It was noted that...", "The matter was deferred..."
+
+5. **ADDITIONAL ELEMENTS**:
+   - Include an "Apologies" section with reasons where possible
+   - Add a "Matters Arising" section referencing follow-ups from previous minutes
+   - Make AOB section substantive with 2-3 items discussed
+   - Include exact adjournment time and a formal closing
 
 Return ONLY valid JSON in this exact format:
 {
   "header": {
-    "title": "string",
-    "date": "string",
-    "venue": "string",
-    "attendees": ["array of attendee names"],
-    "absentees": ["array if any"],
-    "chairperson": "string",
-    "secretary": "string"
+    "title": "Full formal meeting title",
+    "date": "Full date with day (e.g., Friday, 17th January 2025)",
+    "time": "Meeting time (e.g., 2:00 PM - 4:30 PM)",
+    "venue": "Full venue name with location details",
+    "attendees": ["List each attendee with their title/role"],
+    "absentees": ["List absentees with apology reasons"],
+    "chairperson": "Full name and title",
+    "secretary": "Full name and title",
+    "quorum": "Statement confirming quorum was met"
   },
-  "callToOrder": "string describing when meeting was called to order",
-  "previousMinutes": "string about approval of previous minutes",
+  "callToOrder": "Detailed paragraph about meeting commencement, prayer if applicable, and chairperson's opening remarks",
+  "previousMinutes": "Detailed paragraph about reading, corrections if any, and adoption of previous minutes including proposer and seconder",
+  "mattersArising": [
+    {
+      "item": "Brief item description",
+      "status": "Update on status with details",
+      "remarks": "Any additional comments or carry-forward notes"
+    }
+  ],
   "agendaItems": [
     {
       "number": "1",
-      "title": "string",
-      "discussion": "detailed discussion content",
-      "decisions": ["array of decisions"],
+      "title": "Exact agenda title",
+      "presenter": "Name and title of person presenting",
+      "discussion": "EXTENSIVE discussion content (150-300 words) with named speakers, their contributions in quotes, different viewpoints, statistics, and deliberations",
+      "decisions": ["Formal resolution statements with specific details"],
       "actionItems": [
         {
-          "task": "string",
-          "responsible": "string",
-          "deadline": "string"
+          "task": "Specific, detailed task description",
+          "responsible": "Full name with title",
+          "deadline": "Specific date (e.g., 24th January 2025)",
+          "followUp": "How progress will be monitored"
         }
       ]
     }
   ],
-  "aob": "any other business discussed",
-  "nextMeeting": "date and time of next meeting",
-  "adjournment": "string describing when meeting was adjourned"
+  "aob": {
+    "items": [
+      {
+        "topic": "Topic title",
+        "raisedBy": "Name of person",
+        "discussion": "Brief discussion summary",
+        "outcome": "What was decided or action to take"
+      }
+    ]
+  },
+  "nextMeeting": {
+    "date": "Proposed date",
+    "time": "Proposed time",
+    "venue": "Proposed venue",
+    "tentativeAgenda": ["Key items for next meeting"]
+  },
+  "adjournment": {
+    "time": "Exact time of adjournment",
+    "closingRemarks": "Summary of chairperson's closing remarks",
+    "closingPrayer": "Who led the closing prayer if applicable",
+    "vote_of_thanks": "Who proposed and brief content"
+  },
+  "signatures": {
+    "chairperson": "Space for chairperson signature and date",
+    "secretary": "Space for secretary signature and date"
+  }
 }`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -85,13 +147,28 @@ Return ONLY valid JSON in this exact format:
         messages: [
           { 
             role: "system", 
-            content: `You are an expert meeting secretary who creates professional, detailed meeting minutes. 
-            Always respond with valid JSON only, no markdown or other text.
-            Create realistic, comprehensive content that reads as if the meeting actually happened.
-            Be formal and professional in tone.` 
+            content: `You are an expert executive secretary with 20+ years of experience writing official meeting minutes for corporate boards, government committees, and educational institutions. 
+
+Your minutes are known for being:
+- EXCEPTIONALLY DETAILED - capturing the full essence of discussions
+- PROFESSIONALLY FORMATTED - following international minute-writing standards
+- AUTHENTIC - reading as if you were present at the actual meeting
+- ACTIONABLE - with clear, specific, and trackable action items
+
+Key principles:
+1. Every discussion section must be substantial (150-300 words minimum)
+2. Always include named speakers with their actual quoted statements
+3. Show the deliberation process - concerns raised, solutions proposed, consensus reached
+4. Use precise language: "RESOLVED", "NOTED", "AGREED", "ACTION"
+5. Include realistic Kenyan context where appropriate (institutions, currency in KSh, local references)
+6. Make action items specific with named individuals and exact dates
+
+CRITICAL: Respond with valid JSON only. No markdown, no code blocks, just pure JSON.` 
           },
           { role: "user", content: prompt },
         ],
+        temperature: 0.7,
+        max_tokens: 8000,
       }),
     });
 
@@ -124,17 +201,42 @@ Return ONLY valid JSON in this exact format:
     // Parse the JSON response
     let minutes;
     try {
-      // Try to extract JSON from the response
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      // Try to extract JSON from the response - handle potential markdown wrapping
+      let jsonStr = content;
+      
+      // Remove markdown code blocks if present
+      if (jsonStr.includes("```json")) {
+        jsonStr = jsonStr.replace(/```json\s*/g, "").replace(/```\s*/g, "");
+      } else if (jsonStr.includes("```")) {
+        jsonStr = jsonStr.replace(/```\s*/g, "");
+      }
+      
+      // Find the JSON object
+      const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         minutes = JSON.parse(jsonMatch[0]);
       } else {
         throw new Error("No JSON object found in response");
       }
+      
+      // Ensure backward compatibility with older format
+      if (!minutes.mattersArising) {
+        minutes.mattersArising = [];
+      }
+      if (typeof minutes.aob === 'string') {
+        minutes.aob = { items: [{ topic: "General", discussion: minutes.aob, outcome: "Noted" }] };
+      }
+      if (typeof minutes.adjournment === 'string') {
+        minutes.adjournment = { time: "End of meeting", closingRemarks: minutes.adjournment };
+      }
+      if (typeof minutes.nextMeeting === 'string') {
+        minutes.nextMeeting = { date: minutes.nextMeeting, time: "TBD", venue: "TBD" };
+      }
+      
     } catch (parseError) {
       console.error("Failed to parse minutes JSON:", parseError);
       console.error("Raw content:", content);
-      return new Response(JSON.stringify({ error: "Failed to parse minutes response" }), {
+      return new Response(JSON.stringify({ error: "Failed to parse minutes response. Please try again." }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });

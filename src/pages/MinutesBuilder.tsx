@@ -40,32 +40,68 @@ interface ActionItem {
   task: string;
   responsible: string;
   deadline: string;
+  followUp?: string;
 }
 
 interface AgendaItem {
   number: string;
   title: string;
+  presenter?: string;
   discussion: string;
   decisions: string[];
   actionItems: ActionItem[];
+}
+
+interface MatterArising {
+  item: string;
+  status: string;
+  remarks?: string;
+}
+
+interface AOBItem {
+  topic: string;
+  raisedBy?: string;
+  discussion?: string;
+  outcome?: string;
+}
+
+interface NextMeetingInfo {
+  date: string;
+  time?: string;
+  venue?: string;
+  tentativeAgenda?: string[];
+}
+
+interface AdjournmentInfo {
+  time?: string;
+  closingRemarks?: string;
+  closingPrayer?: string;
+  vote_of_thanks?: string;
 }
 
 interface MinutesData {
   header: {
     title: string;
     date: string;
+    time?: string;
     venue: string;
     attendees: string[];
     absentees?: string[];
     chairperson: string;
     secretary: string;
+    quorum?: string;
   };
   callToOrder: string;
   previousMinutes: string;
+  mattersArising?: MatterArising[];
   agendaItems: AgendaItem[];
-  aob: string;
-  nextMeeting: string;
-  adjournment: string;
+  aob: string | { items: AOBItem[] };
+  nextMeeting: string | NextMeetingInfo;
+  adjournment: string | AdjournmentInfo;
+  signatures?: {
+    chairperson?: string;
+    secretary?: string;
+  };
 }
 
 interface MeetingTemplate {
@@ -534,10 +570,42 @@ const MinutesBuilder = () => {
     }
   };
 
+  // Helper functions to format complex types
+  const formatAOB = (aob: string | { items: AOBItem[] }): string => {
+    if (typeof aob === 'string') return aob;
+    if (aob.items && Array.isArray(aob.items)) {
+      return aob.items.map((item, i) => 
+        `${i + 1}. ${item.topic}${item.raisedBy ? ` (Raised by: ${item.raisedBy})` : ''}\n   ${item.discussion || ''}\n   Outcome: ${item.outcome || 'Noted'}`
+      ).join('\n\n');
+    }
+    return 'No additional business discussed.';
+  };
+
+  const formatNextMeeting = (next: string | NextMeetingInfo): string => {
+    if (typeof next === 'string') return next;
+    let result = `Date: ${next.date}`;
+    if (next.time) result += `\nTime: ${next.time}`;
+    if (next.venue) result += `\nVenue: ${next.venue}`;
+    if (next.tentativeAgenda && next.tentativeAgenda.length > 0) {
+      result += `\n\nTentative Agenda:\n${next.tentativeAgenda.map((a, i) => `  ${i + 1}. ${a}`).join('\n')}`;
+    }
+    return result;
+  };
+
+  const formatAdjournment = (adj: string | AdjournmentInfo): string => {
+    if (typeof adj === 'string') return adj;
+    let result = '';
+    if (adj.time) result += `The meeting was adjourned at ${adj.time}.`;
+    if (adj.closingRemarks) result += `\n\n${adj.closingRemarks}`;
+    if (adj.vote_of_thanks) result += `\n\nVote of Thanks: ${adj.vote_of_thanks}`;
+    if (adj.closingPrayer) result += `\n\nClosing Prayer: ${adj.closingPrayer}`;
+    return result || 'The meeting was duly adjourned.';
+  };
+
   const formatMinutesAsText = (): string => {
     if (!generatedMinutes) return "";
 
-    const { header, callToOrder, previousMinutes, agendaItems, aob, nextMeeting, adjournment } = generatedMinutes;
+    const { header, callToOrder, previousMinutes, mattersArising, agendaItems, aob, nextMeeting, adjournment } = generatedMinutes;
 
     let text = `
 ═══════════════════════════════════════════════════════════════
@@ -545,10 +613,11 @@ const MinutesBuilder = () => {
 ═══════════════════════════════════════════════════════════════
 
 MEETING: ${header.title}
-DATE: ${header.date}
+DATE: ${header.date}${header.time ? `\nTIME: ${header.time}` : ''}
 VENUE: ${header.venue}
 CHAIRPERSON: ${header.chairperson}
 SECRETARY: ${header.secretary}
+${header.quorum ? `QUORUM: ${header.quorum}` : ''}
 
 ATTENDEES:
 ${header.attendees.map(a => `  • ${a}`).join("\n")}
@@ -562,16 +631,27 @@ ${callToOrder}
 2. CONFIRMATION OF PREVIOUS MINUTES
 ${previousMinutes}
 
-───────────────────────────────────────────────────────────────
+`;
+
+    // Add Matters Arising if present
+    if (mattersArising && mattersArising.length > 0) {
+      text += `3. MATTERS ARISING FROM PREVIOUS MINUTES
+${mattersArising.map((m, i) => `  ${i + 1}. ${m.item}\n     Status: ${m.status}${m.remarks ? `\n     Remarks: ${m.remarks}` : ''}`).join('\n\n')}
+
+`;
+    }
+
+    text += `───────────────────────────────────────────────────────────────
                         AGENDA ITEMS
 ───────────────────────────────────────────────────────────────
 
 `;
 
+    const startNumber = mattersArising && mattersArising.length > 0 ? 4 : 3;
     agendaItems.forEach((item, index) => {
       text += `
-${index + 3}. ${item.title.toUpperCase()}
-
+${startNumber + index}. ${item.title.toUpperCase()}
+${item.presenter ? `Presented by: ${item.presenter}\n` : ''}
 Discussion:
 ${item.discussion}
 
@@ -581,7 +661,7 @@ ${item.decisions.map(d => `  ✓ ${d}`).join("\n")}
 Action Items:
 ${item.actionItems.map(a => `  → ${a.task}
     Responsible: ${a.responsible}
-    Deadline: ${a.deadline}`).join("\n\n")}
+    Deadline: ${a.deadline}${a.followUp ? `\n    Follow-up: ${a.followUp}` : ''}`).join("\n\n")}
 
 `;
     });
@@ -590,17 +670,22 @@ ${item.actionItems.map(a => `  → ${a.task}
 ───────────────────────────────────────────────────────────────
 
 ANY OTHER BUSINESS (AOB)
-${aob}
+${formatAOB(aob)}
 
 NEXT MEETING
-${nextMeeting}
+${formatNextMeeting(nextMeeting)}
 
 ADJOURNMENT
-${adjournment}
+${formatAdjournment(adjournment)}
 
 ═══════════════════════════════════════════════════════════════
                     END OF MINUTES
 ═══════════════════════════════════════════════════════════════
+
+_________________________                    _________________________
+Chairperson's Signature                      Secretary's Signature
+
+Date: ___________________                    Date: ___________________
 `;
 
     return text;
@@ -765,17 +850,17 @@ ${adjournment}
 
     // AOB
     addText("ANY OTHER BUSINESS (AOB)", 12, true, [0, 100, 0]);
-    addText(generatedMinutes.aob, 10);
+    addText(formatAOB(generatedMinutes.aob), 10);
     addSpace(5);
 
     // Next Meeting
     addText("NEXT MEETING", 12, true, [0, 100, 0]);
-    addText(generatedMinutes.nextMeeting, 10);
+    addText(formatNextMeeting(generatedMinutes.nextMeeting), 10);
     addSpace(5);
 
     // Adjournment
     addText("ADJOURNMENT", 12, true, [0, 100, 0]);
-    addText(generatedMinutes.adjournment, 10);
+    addText(formatAdjournment(generatedMinutes.adjournment), 10);
     addSpace(10);
 
     // Footer
@@ -1145,19 +1230,19 @@ ${adjournment}
                         {/* AOB */}
                         <div>
                           <h4 className="font-semibold text-primary mb-2">Any Other Business</h4>
-                          <p className="text-sm text-muted-foreground">{generatedMinutes.aob}</p>
+                          <p className="text-sm text-muted-foreground whitespace-pre-line">{formatAOB(generatedMinutes.aob)}</p>
                         </div>
 
                         {/* Next Meeting */}
                         <div>
                           <h4 className="font-semibold text-primary mb-2">Next Meeting</h4>
-                          <p className="text-sm text-muted-foreground">{generatedMinutes.nextMeeting}</p>
+                          <p className="text-sm text-muted-foreground whitespace-pre-line">{formatNextMeeting(generatedMinutes.nextMeeting)}</p>
                         </div>
 
                         {/* Adjournment */}
                         <div>
                           <h4 className="font-semibold text-primary mb-2">Adjournment</h4>
-                          <p className="text-sm text-muted-foreground">{generatedMinutes.adjournment}</p>
+                          <p className="text-sm text-muted-foreground whitespace-pre-line">{formatAdjournment(generatedMinutes.adjournment)}</p>
                         </div>
                       </div>
                     </ScrollArea>
