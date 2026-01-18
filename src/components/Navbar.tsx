@@ -34,6 +34,7 @@ const Navbar = () => {
   const careerLinks = [
     { name: "Career Guidance", path: "/career-guidance" },
     { name: "CV Builder", path: "/cv-builder" },
+    { name: "Minutes Builder", path: "/minutes-builder" },
   ];
 
   const communityLinks = [

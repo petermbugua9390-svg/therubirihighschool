@@ -26,7 +26,8 @@ import {
   ArrowRight,
   FileText,
   MessageCircle,
-  Calendar
+  Calendar,
+  ClipboardList
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
@@ -694,6 +695,36 @@ const CareerGuidance = () => {
                   </p>
                   <Button asChild variant="outline" className="w-full">
                     <Link to="/cbc">View CBC Guide</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
+
+            <StaggeredItem>
+              <Card className="h-full text-center hover:shadow-lg transition-shadow border-accent/20">
+                <CardContent className="p-8">
+                  <FileText className="h-12 w-12 text-accent mx-auto mb-4" />
+                  <h3 className="font-bold text-lg text-primary mb-2">CV Builder</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Create professional resumes with our easy-to-use CV builder tool
+                  </p>
+                  <Button asChild className="w-full bg-accent hover:bg-accent/90 text-accent-foreground">
+                    <Link to="/cv-builder">Build Your CV</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </StaggeredItem>
+
+            <StaggeredItem>
+              <Card className="h-full text-center hover:shadow-lg transition-shadow border-primary/20">
+                <CardContent className="p-8">
+                  <ClipboardList className="h-12 w-12 text-primary mx-auto mb-4" />
+                  <h3 className="font-bold text-lg text-primary mb-2">Minutes Builder</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Generate professional meeting minutes with AI from your agendas
+                  </p>
+                  <Button asChild className="w-full">
+                    <Link to="/minutes-builder">Create Minutes</Link>
                   </Button>
                 </CardContent>
               </Card>
