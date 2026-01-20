@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { AnimatedSection } from "@/components/AnimatedSection";
+import { LayoutPreview } from "@/components/LayoutPreview";
 import { 
   FileText, 
   Sparkles, 
@@ -1296,43 +1297,19 @@ Date: ___________________                    Date: ___________________
                       </CardDescription>
                     </div>
                     {generatedMinutes && (
-                      <div className="flex flex-col gap-3 w-full sm:w-auto">
-                        {/* Layout Selector */}
-                        <div className="flex items-center gap-2">
-                          <Palette className="w-4 h-4 text-muted-foreground" />
-                          <Select value={selectedLayout} onValueChange={(value: LayoutType) => setSelectedLayout(value)}>
-                            <SelectTrigger className="w-full sm:w-[200px] h-8 text-xs">
-                              <SelectValue placeholder="Choose layout..." />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {layoutOptions.map((layout) => (
-                                <SelectItem key={layout.id} value={layout.id}>
-                                  <div className="flex items-center gap-2">
-                                    <span>{layout.icon}</span>
-                                    <div className="flex flex-col">
-                                      <span className="text-xs font-medium">{layout.name}</span>
-                                    </div>
-                                  </div>
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        {/* Download Buttons */}
-                        <div className="flex flex-wrap gap-2">
-                          <Button variant="outline" size="sm" onClick={copyToClipboard}>
-                            <Copy className="w-4 h-4 mr-1" />
-                            Copy
-                          </Button>
-                          <Button variant="outline" size="sm" onClick={downloadMinutes}>
-                            <Download className="w-4 h-4 mr-1" />
-                            TXT
-                          </Button>
-                          <Button variant="default" size="sm" onClick={downloadAsPDF}>
-                            <FileDown className="w-4 h-4 mr-1" />
-                            PDF
-                          </Button>
-                        </div>
+                      <div className="flex flex-wrap gap-2">
+                        <Button variant="outline" size="sm" onClick={copyToClipboard}>
+                          <Copy className="w-4 h-4 mr-1" />
+                          Copy
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={downloadMinutes}>
+                          <Download className="w-4 h-4 mr-1" />
+                          TXT
+                        </Button>
+                        <Button variant="default" size="sm" onClick={downloadAsPDF}>
+                          <FileDown className="w-4 h-4 mr-1" />
+                          PDF
+                        </Button>
                       </div>
                     )}
                   </div>
@@ -1347,6 +1324,27 @@ Date: ___________________                    Date: ___________________
                   ) : generatedMinutes ? (
                     <ScrollArea className="h-[600px] pr-4">
                       <div className="space-y-6">
+                        {/* Layout Selection with Previews */}
+                        <div className="bg-muted/30 rounded-lg p-4 border">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Palette className="w-4 h-4 text-primary" />
+                            <h4 className="text-sm font-medium">Choose PDF Layout</h4>
+                          </div>
+                          <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                            {layoutOptions.map((layout) => (
+                              <LayoutPreview
+                                key={layout.id}
+                                layout={layout}
+                                isSelected={selectedLayout === layout.id}
+                                onClick={() => setSelectedLayout(layout.id)}
+                              />
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-3">
+                            Selected: <span className="font-medium text-foreground">{layoutOptions.find(l => l.id === selectedLayout)?.name}</span>
+                          </p>
+                        </div>
+
                         {/* Header */}
                         <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
                           <h3 className="text-xl font-bold text-center mb-4">
