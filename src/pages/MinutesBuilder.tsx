@@ -25,7 +25,8 @@ import {
   Clock,
   User,
   FileDown,
-  LayoutTemplate
+  LayoutTemplate,
+  Palette
 } from "lucide-react";
 import {
   Select,
@@ -103,6 +104,103 @@ interface MinutesData {
     secretary?: string;
   };
 }
+
+type LayoutType = "corporate" | "academic" | "formal" | "modern" | "minimal" | "legal";
+
+interface LayoutOption {
+  id: LayoutType;
+  name: string;
+  description: string;
+  icon: string;
+  primaryColor: [number, number, number];
+  secondaryColor: [number, number, number];
+  accentColor: [number, number, number];
+  headerStyle: "centered" | "left" | "boxed";
+  useLines: boolean;
+  useBorders: boolean;
+  fontFamily: string;
+}
+
+const layoutOptions: LayoutOption[] = [
+  {
+    id: "corporate",
+    name: "Corporate Professional",
+    description: "Clean business layout with blue accents",
+    icon: "🏢",
+    primaryColor: [0, 82, 155],
+    secondaryColor: [51, 51, 51],
+    accentColor: [0, 122, 204],
+    headerStyle: "centered",
+    useLines: true,
+    useBorders: true,
+    fontFamily: "helvetica"
+  },
+  {
+    id: "academic",
+    name: "Academic Institutional",
+    description: "Formal academic style with green tones",
+    icon: "🎓",
+    primaryColor: [0, 100, 0],
+    secondaryColor: [34, 34, 34],
+    accentColor: [34, 139, 34],
+    headerStyle: "boxed",
+    useLines: true,
+    useBorders: true,
+    fontFamily: "times"
+  },
+  {
+    id: "formal",
+    name: "Formal Government",
+    description: "Official government-style document",
+    icon: "🏛️",
+    primaryColor: [25, 25, 112],
+    secondaryColor: [0, 0, 0],
+    accentColor: [70, 70, 150],
+    headerStyle: "centered",
+    useLines: true,
+    useBorders: false,
+    fontFamily: "times"
+  },
+  {
+    id: "modern",
+    name: "Modern Sleek",
+    description: "Contemporary design with purple accents",
+    icon: "✨",
+    primaryColor: [102, 51, 153],
+    secondaryColor: [64, 64, 64],
+    accentColor: [138, 43, 226],
+    headerStyle: "left",
+    useLines: false,
+    useBorders: true,
+    fontFamily: "helvetica"
+  },
+  {
+    id: "minimal",
+    name: "Minimal Clean",
+    description: "Simple and distraction-free layout",
+    icon: "📄",
+    primaryColor: [60, 60, 60],
+    secondaryColor: [100, 100, 100],
+    accentColor: [80, 80, 80],
+    headerStyle: "left",
+    useLines: false,
+    useBorders: false,
+    fontFamily: "helvetica"
+  },
+  {
+    id: "legal",
+    name: "Legal Document",
+    description: "Numbered paragraphs, formal legal style",
+    icon: "⚖️",
+    primaryColor: [0, 0, 0],
+    secondaryColor: [50, 50, 50],
+    accentColor: [100, 100, 100],
+    headerStyle: "centered",
+    useLines: true,
+    useBorders: false,
+    fontFamily: "times"
+  }
+];
 
 interface MeetingTemplate {
   id: string;
@@ -508,6 +606,7 @@ const MinutesBuilder = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedMinutes, setGeneratedMinutes] = useState<MinutesData | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<string>("");
+  const [selectedLayout, setSelectedLayout] = useState<LayoutType>("corporate");
   const { toast } = useToast();
 
   const applyTemplate = (templateId: string) => {
@@ -720,6 +819,7 @@ Date: ___________________                    Date: ___________________
   const downloadAsPDF = () => {
     if (!generatedMinutes) return;
 
+    const layout = layoutOptions.find(l => l.id === selectedLayout) || layoutOptions[0];
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
@@ -727,43 +827,70 @@ Date: ___________________                    Date: ___________________
     const lineHeight = 7;
     let yPosition = margin;
 
-    const addText = (text: string, fontSize: number = 10, isBold: boolean = false, color: [number, number, number] = [0, 0, 0]) => {
+    // Set font based on layout
+    const fontFamily = layout.fontFamily as "helvetica" | "times" | "courier";
+
+    const checkPageBreak = (requiredSpace: number = lineHeight) => {
+      if (yPosition > pageHeight - margin - requiredSpace) {
+        pdf.addPage();
+        yPosition = margin;
+        return true;
+      }
+      return false;
+    };
+
+    const addText = (text: string, fontSize: number = 10, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor) => {
       pdf.setFontSize(fontSize);
-      pdf.setFont("helvetica", isBold ? "bold" : "normal");
+      pdf.setFont(fontFamily, isBold ? "bold" : "normal");
       pdf.setTextColor(color[0], color[1], color[2]);
       
       const lines = pdf.splitTextToSize(text, pageWidth - margin * 2);
       
       lines.forEach((line: string) => {
-        if (yPosition > pageHeight - margin) {
-          pdf.addPage();
-          yPosition = margin;
-        }
+        checkPageBreak();
         pdf.text(line, margin, yPosition);
         yPosition += lineHeight;
       });
     };
 
-    const addCenteredText = (text: string, fontSize: number = 10, isBold: boolean = false) => {
+    const addCenteredText = (text: string, fontSize: number = 10, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor) => {
       pdf.setFontSize(fontSize);
-      pdf.setFont("helvetica", isBold ? "bold" : "normal");
-      pdf.setTextColor(0, 0, 0);
+      pdf.setFont(fontFamily, isBold ? "bold" : "normal");
+      pdf.setTextColor(color[0], color[1], color[2]);
       
-      if (yPosition > pageHeight - margin) {
-        pdf.addPage();
-        yPosition = margin;
-      }
-      
+      checkPageBreak();
       pdf.text(text, pageWidth / 2, yPosition, { align: "center" });
       yPosition += lineHeight;
     };
 
+    const addLeftText = (text: string, fontSize: number = 10, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor) => {
+      pdf.setFontSize(fontSize);
+      pdf.setFont(fontFamily, isBold ? "bold" : "normal");
+      pdf.setTextColor(color[0], color[1], color[2]);
+      
+      checkPageBreak();
+      pdf.text(text, margin, yPosition);
+      yPosition += lineHeight;
+    };
+
     const addSeparator = () => {
-      if (yPosition > pageHeight - margin) {
-        pdf.addPage();
-        yPosition = margin;
+      if (!layout.useLines) {
+        yPosition += 5;
+        return;
       }
+      checkPageBreak();
       pdf.setDrawColor(200, 200, 200);
+      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+      yPosition += 10;
+    };
+
+    const addColoredSeparator = () => {
+      if (!layout.useLines) {
+        yPosition += 5;
+        return;
+      }
+      checkPageBreak();
+      pdf.setDrawColor(layout.primaryColor[0], layout.primaryColor[1], layout.primaryColor[2]);
       pdf.line(margin, yPosition, pageWidth - margin, yPosition);
       yPosition += 10;
     };
@@ -772,119 +899,209 @@ Date: ___________________                    Date: ___________________
       yPosition += space;
     };
 
-    // Header
-    addCenteredText("MEETING MINUTES", 18, true);
-    addSpace(5);
-    addSeparator();
+    const addBoxedHeader = (title: string, subtitle: string) => {
+      pdf.setFillColor(layout.primaryColor[0], layout.primaryColor[1], layout.primaryColor[2]);
+      pdf.rect(margin, yPosition, pageWidth - margin * 2, 25, 'F');
+      yPosition += 10;
+      pdf.setFontSize(16);
+      pdf.setFont(fontFamily, "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text(title, pageWidth / 2, yPosition, { align: "center" });
+      yPosition += 8;
+      pdf.setFontSize(12);
+      pdf.text(subtitle, pageWidth / 2, yPosition, { align: "center" });
+      yPosition += 15;
+    };
 
-    // Meeting Details
-    addCenteredText(generatedMinutes.header.title, 14, true);
-    addSpace(5);
-
-    addText(`Date: ${generatedMinutes.header.date}`, 10, true);
-    addText(`Venue: ${generatedMinutes.header.venue}`, 10, true);
-    addText(`Chairperson: ${generatedMinutes.header.chairperson}`, 10, true);
-    addText(`Secretary: ${generatedMinutes.header.secretary}`, 10, true);
-    addSpace(5);
-
-    addText("Attendees:", 10, true);
-    generatedMinutes.header.attendees.forEach(attendee => {
-      addText(`  • ${attendee}`, 10);
-    });
-
-    if (generatedMinutes.header.absentees && generatedMinutes.header.absentees.length > 0) {
+    // Layout-specific header rendering
+    if (layout.headerStyle === "boxed") {
+      addBoxedHeader("MEETING MINUTES", generatedMinutes.header.title);
+    } else if (layout.headerStyle === "centered") {
+      if (layout.useBorders) {
+        pdf.setDrawColor(layout.primaryColor[0], layout.primaryColor[1], layout.primaryColor[2]);
+        pdf.setLineWidth(0.5);
+        pdf.rect(margin - 5, yPosition - 5, pageWidth - margin * 2 + 10, 30);
+        yPosition += 5;
+      }
+      addCenteredText("MEETING MINUTES", 18, true, layout.primaryColor);
+      addCenteredText(generatedMinutes.header.title, 14, true, layout.accentColor);
+      if (layout.useBorders) {
+        yPosition += 5;
+      }
+      addSpace(5);
+    } else {
+      // Left aligned header
+      addLeftText("MEETING MINUTES", 18, true, layout.primaryColor);
       addSpace(3);
-      addText("Apologies:", 10, true);
-      generatedMinutes.header.absentees.forEach(absentee => {
-        addText(`  • ${absentee}`, 10);
-      });
+      addLeftText(generatedMinutes.header.title, 14, true, layout.accentColor);
+      addSpace(5);
     }
 
+    addColoredSeparator();
+
+    // Meeting Details Section
+    const renderMeetingDetails = () => {
+      const details = [
+        { label: "Date", value: generatedMinutes.header.date },
+        { label: "Venue", value: generatedMinutes.header.venue },
+        { label: "Chairperson", value: generatedMinutes.header.chairperson },
+        { label: "Secretary", value: generatedMinutes.header.secretary }
+      ];
+
+      if (layout.useBorders && layout.id !== "minimal") {
+        pdf.setDrawColor(layout.accentColor[0], layout.accentColor[1], layout.accentColor[2]);
+        pdf.setLineWidth(0.3);
+        pdf.rect(margin, yPosition, pageWidth - margin * 2, 35 + (generatedMinutes.header.attendees.length > 4 ? 15 : 0));
+        yPosition += 5;
+      }
+
+      details.forEach(detail => {
+        addText(`${detail.label}: ${detail.value}`, 10, true, layout.secondaryColor);
+      });
+
+      addSpace(3);
+      addText("Attendees:", 10, true, layout.primaryColor);
+      generatedMinutes.header.attendees.forEach(attendee => {
+        addText(`  • ${attendee}`, 10, false, layout.secondaryColor);
+      });
+
+      if (generatedMinutes.header.absentees && generatedMinutes.header.absentees.length > 0) {
+        addSpace(3);
+        addText("Apologies:", 10, true, layout.primaryColor);
+        generatedMinutes.header.absentees.forEach(absentee => {
+          addText(`  • ${absentee}`, 10, false, layout.secondaryColor);
+        });
+      }
+
+      if (layout.useBorders && layout.id !== "minimal") {
+        yPosition += 5;
+      }
+    };
+
+    renderMeetingDetails();
     addSpace(5);
     addSeparator();
 
     // Call to Order
-    addText("1. CALL TO ORDER", 12, true, [0, 100, 0]);
-    addText(generatedMinutes.callToOrder, 10);
+    addText("1. CALL TO ORDER", 12, true, layout.primaryColor);
+    addText(generatedMinutes.callToOrder, 10, false, layout.secondaryColor);
     addSpace(5);
 
     // Previous Minutes
-    addText("2. CONFIRMATION OF PREVIOUS MINUTES", 12, true, [0, 100, 0]);
-    addText(generatedMinutes.previousMinutes, 10);
+    addText("2. CONFIRMATION OF PREVIOUS MINUTES", 12, true, layout.primaryColor);
+    addText(generatedMinutes.previousMinutes, 10, false, layout.secondaryColor);
     addSpace(5);
     addSeparator();
 
-    // Agenda Items
-    addCenteredText("AGENDA ITEMS", 14, true);
+    // Agenda Items Header
+    if (layout.headerStyle === "boxed") {
+      pdf.setFillColor(layout.accentColor[0], layout.accentColor[1], layout.accentColor[2]);
+      pdf.rect(margin, yPosition, pageWidth - margin * 2, 12, 'F');
+      yPosition += 8;
+      pdf.setFontSize(12);
+      pdf.setFont(fontFamily, "bold");
+      pdf.setTextColor(255, 255, 255);
+      pdf.text("AGENDA ITEMS", pageWidth / 2, yPosition, { align: "center" });
+      yPosition += 12;
+    } else {
+      addCenteredText("AGENDA ITEMS", 14, true, layout.primaryColor);
+    }
     addSpace(5);
 
+    // Render Agenda Items
     generatedMinutes.agendaItems.forEach((item, index) => {
-      addText(`${index + 3}. ${item.title.toUpperCase()}`, 12, true, [0, 100, 0]);
+      checkPageBreak(40);
+      
+      if (layout.useBorders) {
+        pdf.setDrawColor(220, 220, 220);
+        pdf.setLineWidth(0.2);
+        const boxHeight = Math.min(80, 20 + item.decisions.length * 7 + item.actionItems.length * 21);
+        pdf.roundedRect(margin, yPosition, pageWidth - margin * 2, boxHeight, 2, 2);
+        yPosition += 5;
+      }
+
+      addText(`${index + 3}. ${item.title.toUpperCase()}`, 12, true, layout.primaryColor);
+      if (item.presenter) {
+        addText(`Presented by: ${item.presenter}`, 9, false, layout.accentColor);
+      }
       addSpace(3);
 
-      addText("Discussion:", 10, true);
-      addText(item.discussion, 10);
+      addText("Discussion:", 10, true, layout.secondaryColor);
+      addText(item.discussion, 10, false, layout.secondaryColor);
       addSpace(3);
 
       if (item.decisions.length > 0) {
-        addText("Decisions:", 10, true);
+        addText("Decisions:", 10, true, layout.secondaryColor);
         item.decisions.forEach(decision => {
-          addText(`  ✓ ${decision}`, 10);
+          addText(`  ✓ ${decision}`, 10, false, layout.secondaryColor);
         });
         addSpace(3);
       }
 
       if (item.actionItems.length > 0) {
-        addText("Action Items:", 10, true);
+        addText("Action Items:", 10, true, layout.secondaryColor);
         item.actionItems.forEach(action => {
-          addText(`  → ${action.task}`, 10);
-          addText(`      Responsible: ${action.responsible}`, 9);
-          addText(`      Deadline: ${action.deadline}`, 9);
+          addText(`  → ${action.task}`, 10, false, layout.secondaryColor);
+          addText(`      Responsible: ${action.responsible}`, 9, false, layout.accentColor);
+          addText(`      Deadline: ${action.deadline}`, 9, false, layout.accentColor);
+          if (action.followUp) {
+            addText(`      Follow-up: ${action.followUp}`, 9, false, layout.accentColor);
+          }
         });
       }
 
-      addSpace(8);
+      addSpace(layout.useBorders ? 10 : 8);
     });
 
     addSeparator();
 
     // AOB
-    addText("ANY OTHER BUSINESS (AOB)", 12, true, [0, 100, 0]);
-    addText(formatAOB(generatedMinutes.aob), 10);
+    addText("ANY OTHER BUSINESS (AOB)", 12, true, layout.primaryColor);
+    addText(formatAOB(generatedMinutes.aob), 10, false, layout.secondaryColor);
     addSpace(5);
 
     // Next Meeting
-    addText("NEXT MEETING", 12, true, [0, 100, 0]);
-    addText(formatNextMeeting(generatedMinutes.nextMeeting), 10);
+    addText("NEXT MEETING", 12, true, layout.primaryColor);
+    addText(formatNextMeeting(generatedMinutes.nextMeeting), 10, false, layout.secondaryColor);
     addSpace(5);
 
     // Adjournment
-    addText("ADJOURNMENT", 12, true, [0, 100, 0]);
-    addText(formatAdjournment(generatedMinutes.adjournment), 10);
+    addText("ADJOURNMENT", 12, true, layout.primaryColor);
+    addText(formatAdjournment(generatedMinutes.adjournment), 10, false, layout.secondaryColor);
     addSpace(10);
 
     // Footer
-    addSeparator();
-    addCenteredText("END OF MINUTES", 12, true);
+    addColoredSeparator();
+    addCenteredText("END OF MINUTES", 12, true, layout.primaryColor);
 
     // Signature Lines
     addSpace(20);
-    pdf.setDrawColor(0, 0, 0);
+    checkPageBreak(30);
+    pdf.setDrawColor(layout.secondaryColor[0], layout.secondaryColor[1], layout.secondaryColor[2]);
     pdf.line(margin, yPosition, margin + 60, yPosition);
     pdf.line(pageWidth - margin - 60, yPosition, pageWidth - margin, yPosition);
     yPosition += 5;
     
     pdf.setFontSize(9);
+    pdf.setFont(fontFamily, "normal");
+    pdf.setTextColor(layout.secondaryColor[0], layout.secondaryColor[1], layout.secondaryColor[2]);
     pdf.text("Chairperson's Signature", margin, yPosition);
     pdf.text("Secretary's Signature", pageWidth - margin - 50, yPosition);
 
+    yPosition += 15;
+    pdf.line(margin, yPosition, margin + 60, yPosition);
+    pdf.line(pageWidth - margin - 60, yPosition, pageWidth - margin, yPosition);
+    yPosition += 5;
+    pdf.text("Date: _______________", margin, yPosition);
+    pdf.text("Date: _______________", pageWidth - margin - 50, yPosition);
+
     // Save the PDF
-    const fileName = `minutes-${meetingTitle || "meeting"}-${meetingDate || new Date().toISOString().split("T")[0]}.pdf`;
+    const fileName = `minutes-${meetingTitle || "meeting"}-${meetingDate || new Date().toISOString().split("T")[0]}-${layout.id}.pdf`;
     pdf.save(fileName);
 
     toast({
       title: "PDF Downloaded!",
-      description: "Minutes saved as PDF file.",
+      description: `Minutes saved with ${layout.name} layout.`,
     });
   };
 
@@ -1079,19 +1296,43 @@ Date: ___________________                    Date: ___________________
                       </CardDescription>
                     </div>
                     {generatedMinutes && (
-                      <div className="flex flex-wrap gap-2">
-                        <Button variant="outline" size="sm" onClick={copyToClipboard}>
-                          <Copy className="w-4 h-4 mr-1" />
-                          Copy
-                        </Button>
-                        <Button variant="outline" size="sm" onClick={downloadMinutes}>
-                          <Download className="w-4 h-4 mr-1" />
-                          TXT
-                        </Button>
-                        <Button variant="default" size="sm" onClick={downloadAsPDF}>
-                          <FileDown className="w-4 h-4 mr-1" />
-                          PDF
-                        </Button>
+                      <div className="flex flex-col gap-3 w-full sm:w-auto">
+                        {/* Layout Selector */}
+                        <div className="flex items-center gap-2">
+                          <Palette className="w-4 h-4 text-muted-foreground" />
+                          <Select value={selectedLayout} onValueChange={(value: LayoutType) => setSelectedLayout(value)}>
+                            <SelectTrigger className="w-full sm:w-[200px] h-8 text-xs">
+                              <SelectValue placeholder="Choose layout..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {layoutOptions.map((layout) => (
+                                <SelectItem key={layout.id} value={layout.id}>
+                                  <div className="flex items-center gap-2">
+                                    <span>{layout.icon}</span>
+                                    <div className="flex flex-col">
+                                      <span className="text-xs font-medium">{layout.name}</span>
+                                    </div>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {/* Download Buttons */}
+                        <div className="flex flex-wrap gap-2">
+                          <Button variant="outline" size="sm" onClick={copyToClipboard}>
+                            <Copy className="w-4 h-4 mr-1" />
+                            Copy
+                          </Button>
+                          <Button variant="outline" size="sm" onClick={downloadMinutes}>
+                            <Download className="w-4 h-4 mr-1" />
+                            TXT
+                          </Button>
+                          <Button variant="default" size="sm" onClick={downloadAsPDF}>
+                            <FileDown className="w-4 h-4 mr-1" />
+                            PDF
+                          </Button>
+                        </div>
                       </div>
                     )}
                   </div>
