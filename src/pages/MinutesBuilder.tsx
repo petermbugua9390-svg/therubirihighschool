@@ -27,7 +27,8 @@ import {
   User,
   FileDown,
   LayoutTemplate,
-  Palette
+  Palette,
+  FileType
 } from "lucide-react";
 import {
   Select,
@@ -37,6 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import jsPDF from "jspdf";
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, BorderStyle, Table, TableRow, TableCell, WidthType, Header, Footer, PageNumber, NumberFormat } from "docx";
 
 interface ActionItem {
   task: string;
@@ -824,37 +826,52 @@ Date: ___________________                    Date: ___________________
     const pdf = new jsPDF();
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 20;
-    const lineHeight = 7;
-    let yPosition = margin;
+    
+    // Official document margins (25mm left/right, 25mm top/bottom)
+    const leftMargin = 25;
+    const rightMargin = 25;
+    const topMargin = 25;
+    const bottomMargin = 30;
+    const contentWidth = pageWidth - leftMargin - rightMargin;
+    const lineHeight = 6;
+    let yPosition = topMargin;
+    let pageNumber = 1;
 
-    // Set font based on layout
     const fontFamily = layout.fontFamily as "helvetica" | "times" | "courier";
 
-    const checkPageBreak = (requiredSpace: number = lineHeight) => {
-      if (yPosition > pageHeight - margin - requiredSpace) {
+    const addPageNumber = () => {
+      pdf.setFontSize(9);
+      pdf.setFont(fontFamily, "normal");
+      pdf.setTextColor(100, 100, 100);
+      pdf.text(`Page ${pageNumber}`, pageWidth / 2, pageHeight - 15, { align: "center" });
+    };
+
+    const checkPageBreak = (requiredSpace: number = lineHeight * 2) => {
+      if (yPosition > pageHeight - bottomMargin - requiredSpace) {
+        addPageNumber();
         pdf.addPage();
-        yPosition = margin;
+        pageNumber++;
+        yPosition = topMargin;
         return true;
       }
       return false;
     };
 
-    const addText = (text: string, fontSize: number = 10, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor) => {
+    const addText = (text: string, fontSize: number = 11, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor, indent: number = 0) => {
       pdf.setFontSize(fontSize);
       pdf.setFont(fontFamily, isBold ? "bold" : "normal");
       pdf.setTextColor(color[0], color[1], color[2]);
       
-      const lines = pdf.splitTextToSize(text, pageWidth - margin * 2);
+      const lines = pdf.splitTextToSize(text, contentWidth - indent);
       
       lines.forEach((line: string) => {
         checkPageBreak();
-        pdf.text(line, margin, yPosition);
+        pdf.text(line, leftMargin + indent, yPosition);
         yPosition += lineHeight;
       });
     };
 
-    const addCenteredText = (text: string, fontSize: number = 10, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor) => {
+    const addCenteredText = (text: string, fontSize: number = 11, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor) => {
       pdf.setFontSize(fontSize);
       pdf.setFont(fontFamily, isBold ? "bold" : "normal");
       pdf.setTextColor(color[0], color[1], color[2]);
@@ -864,246 +881,633 @@ Date: ___________________                    Date: ___________________
       yPosition += lineHeight;
     };
 
-    const addLeftText = (text: string, fontSize: number = 10, isBold: boolean = false, color: [number, number, number] = layout.secondaryColor) => {
-      pdf.setFontSize(fontSize);
-      pdf.setFont(fontFamily, isBold ? "bold" : "normal");
-      pdf.setTextColor(color[0], color[1], color[2]);
-      
-      checkPageBreak();
-      pdf.text(text, margin, yPosition);
-      yPosition += lineHeight;
+    const addSectionHeader = (text: string) => {
+      checkPageBreak(lineHeight * 3);
+      yPosition += 4;
+      pdf.setFontSize(12);
+      pdf.setFont(fontFamily, "bold");
+      pdf.setTextColor(layout.primaryColor[0], layout.primaryColor[1], layout.primaryColor[2]);
+      pdf.text(text, leftMargin, yPosition);
+      yPosition += lineHeight + 2;
     };
 
-    const addSeparator = () => {
-      if (!layout.useLines) {
-        yPosition += 5;
-        return;
-      }
-      checkPageBreak();
-      pdf.setDrawColor(200, 200, 200);
-      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-      yPosition += 10;
-    };
-
-    const addColoredSeparator = () => {
-      if (!layout.useLines) {
-        yPosition += 5;
-        return;
-      }
+    const addHorizontalLine = (thick: boolean = false) => {
       checkPageBreak();
       pdf.setDrawColor(layout.primaryColor[0], layout.primaryColor[1], layout.primaryColor[2]);
-      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
-      yPosition += 10;
+      pdf.setLineWidth(thick ? 0.8 : 0.3);
+      pdf.line(leftMargin, yPosition, pageWidth - rightMargin, yPosition);
+      yPosition += 6;
     };
 
-    const addSpace = (space: number = 5) => {
+    const addSpace = (space: number = 4) => {
       yPosition += space;
     };
 
-    const addBoxedHeader = (title: string, subtitle: string) => {
-      pdf.setFillColor(layout.primaryColor[0], layout.primaryColor[1], layout.primaryColor[2]);
-      pdf.rect(margin, yPosition, pageWidth - margin * 2, 25, 'F');
-      yPosition += 10;
-      pdf.setFontSize(16);
-      pdf.setFont(fontFamily, "bold");
-      pdf.setTextColor(255, 255, 255);
-      pdf.text(title, pageWidth / 2, yPosition, { align: "center" });
-      yPosition += 8;
-      pdf.setFontSize(12);
-      pdf.text(subtitle, pageWidth / 2, yPosition, { align: "center" });
-      yPosition += 15;
-    };
+    // === DOCUMENT HEADER ===
+    // Top border line
+    addHorizontalLine(true);
+    addSpace(2);
 
-    // Layout-specific header rendering
-    if (layout.headerStyle === "boxed") {
-      addBoxedHeader("MEETING MINUTES", generatedMinutes.header.title);
-    } else if (layout.headerStyle === "centered") {
-      if (layout.useBorders) {
-        pdf.setDrawColor(layout.primaryColor[0], layout.primaryColor[1], layout.primaryColor[2]);
-        pdf.setLineWidth(0.5);
-        pdf.rect(margin - 5, yPosition - 5, pageWidth - margin * 2 + 10, 30);
-        yPosition += 5;
-      }
-      addCenteredText("MEETING MINUTES", 18, true, layout.primaryColor);
-      addCenteredText(generatedMinutes.header.title, 14, true, layout.accentColor);
-      if (layout.useBorders) {
-        yPosition += 5;
-      }
-      addSpace(5);
-    } else {
-      // Left aligned header
-      addLeftText("MEETING MINUTES", 18, true, layout.primaryColor);
-      addSpace(3);
-      addLeftText(generatedMinutes.header.title, 14, true, layout.accentColor);
-      addSpace(5);
+    // Title section
+    addCenteredText("OFFICIAL MEETING MINUTES", 16, true, layout.primaryColor);
+    addSpace(2);
+    addCenteredText(generatedMinutes.header.title.toUpperCase(), 13, true, layout.accentColor);
+    addSpace(4);
+    addHorizontalLine(true);
+    addSpace(6);
+
+    // Meeting Details Table
+    const detailsData = [
+      ["Date:", generatedMinutes.header.date + (generatedMinutes.header.time ? ` at ${generatedMinutes.header.time}` : "")],
+      ["Venue:", generatedMinutes.header.venue],
+      ["Chairperson:", generatedMinutes.header.chairperson],
+      ["Secretary:", generatedMinutes.header.secretary],
+    ];
+
+    if (generatedMinutes.header.quorum) {
+      detailsData.push(["Quorum:", generatedMinutes.header.quorum]);
     }
 
-    addColoredSeparator();
+    detailsData.forEach(([label, value]) => {
+      checkPageBreak();
+      pdf.setFontSize(11);
+      pdf.setFont(fontFamily, "bold");
+      pdf.setTextColor(layout.secondaryColor[0], layout.secondaryColor[1], layout.secondaryColor[2]);
+      pdf.text(label, leftMargin, yPosition);
+      pdf.setFont(fontFamily, "normal");
+      pdf.text(value, leftMargin + 35, yPosition);
+      yPosition += lineHeight;
+    });
 
-    // Meeting Details Section
-    const renderMeetingDetails = () => {
-      const details = [
-        { label: "Date", value: generatedMinutes.header.date },
-        { label: "Venue", value: generatedMinutes.header.venue },
-        { label: "Chairperson", value: generatedMinutes.header.chairperson },
-        { label: "Secretary", value: generatedMinutes.header.secretary }
-      ];
+    addSpace(4);
 
-      if (layout.useBorders && layout.id !== "minimal") {
-        pdf.setDrawColor(layout.accentColor[0], layout.accentColor[1], layout.accentColor[2]);
-        pdf.setLineWidth(0.3);
-        pdf.rect(margin, yPosition, pageWidth - margin * 2, 35 + (generatedMinutes.header.attendees.length > 4 ? 15 : 0));
-        yPosition += 5;
-      }
+    // Attendees section
+    addText("PRESENT:", 11, true, layout.primaryColor);
+    generatedMinutes.header.attendees.forEach((attendee, i) => {
+      addText(`${i + 1}. ${attendee}`, 10, false, layout.secondaryColor, 5);
+    });
 
-      details.forEach(detail => {
-        addText(`${detail.label}: ${detail.value}`, 10, true, layout.secondaryColor);
+    // Apologies section
+    if (generatedMinutes.header.absentees && generatedMinutes.header.absentees.length > 0) {
+      addSpace(4);
+      addText("APOLOGIES:", 11, true, layout.primaryColor);
+      generatedMinutes.header.absentees.forEach((absentee, i) => {
+        addText(`${i + 1}. ${absentee}`, 10, false, layout.secondaryColor, 5);
       });
+    }
 
-      addSpace(3);
-      addText("Attendees:", 10, true, layout.primaryColor);
-      generatedMinutes.header.attendees.forEach(attendee => {
-        addText(`  • ${attendee}`, 10, false, layout.secondaryColor);
-      });
+    addSpace(6);
+    addHorizontalLine();
 
-      if (generatedMinutes.header.absentees && generatedMinutes.header.absentees.length > 0) {
-        addSpace(3);
-        addText("Apologies:", 10, true, layout.primaryColor);
-        generatedMinutes.header.absentees.forEach(absentee => {
-          addText(`  • ${absentee}`, 10, false, layout.secondaryColor);
-        });
-      }
-
-      if (layout.useBorders && layout.id !== "minimal") {
-        yPosition += 5;
-      }
-    };
-
-    renderMeetingDetails();
-    addSpace(5);
-    addSeparator();
+    // === MINUTE SECTIONS ===
+    let sectionNumber = 1;
 
     // Call to Order
-    addText("1. CALL TO ORDER", 12, true, layout.primaryColor);
-    addText(generatedMinutes.callToOrder, 10, false, layout.secondaryColor);
-    addSpace(5);
+    addSectionHeader(`MIN ${sectionNumber}/2025: CALL TO ORDER`);
+    sectionNumber++;
+    addText(generatedMinutes.callToOrder, 10, false, layout.secondaryColor, 0);
+    addSpace(4);
 
     // Previous Minutes
-    addText("2. CONFIRMATION OF PREVIOUS MINUTES", 12, true, layout.primaryColor);
-    addText(generatedMinutes.previousMinutes, 10, false, layout.secondaryColor);
-    addSpace(5);
-    addSeparator();
+    addSectionHeader(`MIN ${sectionNumber}/2025: CONFIRMATION OF PREVIOUS MINUTES`);
+    sectionNumber++;
+    addText(generatedMinutes.previousMinutes, 10, false, layout.secondaryColor, 0);
+    addSpace(4);
 
-    // Agenda Items Header
-    if (layout.headerStyle === "boxed") {
-      pdf.setFillColor(layout.accentColor[0], layout.accentColor[1], layout.accentColor[2]);
-      pdf.rect(margin, yPosition, pageWidth - margin * 2, 12, 'F');
-      yPosition += 8;
-      pdf.setFontSize(12);
-      pdf.setFont(fontFamily, "bold");
-      pdf.setTextColor(255, 255, 255);
-      pdf.text("AGENDA ITEMS", pageWidth / 2, yPosition, { align: "center" });
-      yPosition += 12;
-    } else {
-      addCenteredText("AGENDA ITEMS", 14, true, layout.primaryColor);
+    // Matters Arising
+    if (generatedMinutes.mattersArising && generatedMinutes.mattersArising.length > 0) {
+      addSectionHeader(`MIN ${sectionNumber}/2025: MATTERS ARISING`);
+      sectionNumber++;
+      generatedMinutes.mattersArising.forEach((matter, i) => {
+        addText(`${i + 1}. ${matter.item}`, 10, true, layout.secondaryColor, 5);
+        addText(`Status: ${matter.status}`, 10, false, layout.accentColor, 10);
+        if (matter.remarks) {
+          addText(`Remarks: ${matter.remarks}`, 10, false, layout.secondaryColor, 10);
+        }
+        addSpace(2);
+      });
+      addSpace(2);
     }
-    addSpace(5);
 
-    // Render Agenda Items
+    addHorizontalLine();
+    addCenteredText("AGENDA ITEMS", 13, true, layout.primaryColor);
+    addSpace(4);
+
+    // Agenda Items
     generatedMinutes.agendaItems.forEach((item, index) => {
       checkPageBreak(40);
       
-      if (layout.useBorders) {
-        pdf.setDrawColor(220, 220, 220);
-        pdf.setLineWidth(0.2);
-        const boxHeight = Math.min(80, 20 + item.decisions.length * 7 + item.actionItems.length * 21);
-        pdf.roundedRect(margin, yPosition, pageWidth - margin * 2, boxHeight, 2, 2);
-        yPosition += 5;
-      }
+      addSectionHeader(`MIN ${sectionNumber}/2025: ${item.title.toUpperCase()}`);
+      sectionNumber++;
 
-      addText(`${index + 3}. ${item.title.toUpperCase()}`, 12, true, layout.primaryColor);
       if (item.presenter) {
-        addText(`Presented by: ${item.presenter}`, 9, false, layout.accentColor);
+        addText(`Presented by: ${item.presenter}`, 10, false, layout.accentColor, 0);
+        addSpace(2);
       }
-      addSpace(3);
 
-      addText("Discussion:", 10, true, layout.secondaryColor);
-      addText(item.discussion, 10, false, layout.secondaryColor);
+      addText("Discussion:", 10, true, layout.secondaryColor, 0);
+      addText(item.discussion, 10, false, layout.secondaryColor, 5);
       addSpace(3);
 
       if (item.decisions.length > 0) {
-        addText("Decisions:", 10, true, layout.secondaryColor);
-        item.decisions.forEach(decision => {
-          addText(`  ✓ ${decision}`, 10, false, layout.secondaryColor);
+        addText("RESOLVED:", 10, true, layout.primaryColor, 0);
+        item.decisions.forEach((decision, i) => {
+          addText(`${i + 1}. ${decision}`, 10, false, layout.secondaryColor, 5);
         });
-        addSpace(3);
+        addSpace(2);
       }
 
       if (item.actionItems.length > 0) {
-        addText("Action Items:", 10, true, layout.secondaryColor);
-        item.actionItems.forEach(action => {
-          addText(`  → ${action.task}`, 10, false, layout.secondaryColor);
-          addText(`      Responsible: ${action.responsible}`, 9, false, layout.accentColor);
-          addText(`      Deadline: ${action.deadline}`, 9, false, layout.accentColor);
+        addText("ACTION ITEMS:", 10, true, layout.primaryColor, 0);
+        item.actionItems.forEach((action, i) => {
+          addText(`${i + 1}. ${action.task}`, 10, false, layout.secondaryColor, 5);
+          addText(`Responsible: ${action.responsible}`, 9, false, layout.accentColor, 10);
+          addText(`Deadline: ${action.deadline}`, 9, false, layout.accentColor, 10);
           if (action.followUp) {
-            addText(`      Follow-up: ${action.followUp}`, 9, false, layout.accentColor);
+            addText(`Follow-up: ${action.followUp}`, 9, false, layout.accentColor, 10);
           }
+          addSpace(2);
         });
       }
 
-      addSpace(layout.useBorders ? 10 : 8);
+      addSpace(4);
     });
 
-    addSeparator();
+    addHorizontalLine();
 
     // AOB
-    addText("ANY OTHER BUSINESS (AOB)", 12, true, layout.primaryColor);
-    addText(formatAOB(generatedMinutes.aob), 10, false, layout.secondaryColor);
-    addSpace(5);
+    addSectionHeader(`MIN ${sectionNumber}/2025: ANY OTHER BUSINESS`);
+    sectionNumber++;
+    const aobText = formatAOB(generatedMinutes.aob);
+    addText(aobText, 10, false, layout.secondaryColor, 0);
+    addSpace(4);
 
     // Next Meeting
-    addText("NEXT MEETING", 12, true, layout.primaryColor);
-    addText(formatNextMeeting(generatedMinutes.nextMeeting), 10, false, layout.secondaryColor);
-    addSpace(5);
+    addSectionHeader(`MIN ${sectionNumber}/2025: DATE OF NEXT MEETING`);
+    sectionNumber++;
+    const nextMeetingText = formatNextMeeting(generatedMinutes.nextMeeting);
+    addText(nextMeetingText, 10, false, layout.secondaryColor, 0);
+    addSpace(4);
 
     // Adjournment
-    addText("ADJOURNMENT", 12, true, layout.primaryColor);
-    addText(formatAdjournment(generatedMinutes.adjournment), 10, false, layout.secondaryColor);
+    addSectionHeader(`MIN ${sectionNumber}/2025: ADJOURNMENT`);
+    const adjournmentText = formatAdjournment(generatedMinutes.adjournment);
+    addText(adjournmentText, 10, false, layout.secondaryColor, 0);
+    addSpace(8);
+
+    addHorizontalLine(true);
+    addCenteredText("END OF MINUTES", 11, true, layout.primaryColor);
     addSpace(10);
 
-    // Footer
-    addColoredSeparator();
-    addCenteredText("END OF MINUTES", 12, true, layout.primaryColor);
+    // Signature Section
+    checkPageBreak(50);
+    addCenteredText("CONFIRMATION OF MINUTES", 12, true, layout.primaryColor);
+    addSpace(8);
+    addText("These minutes are a true and accurate record of the proceedings.", 10, false, layout.secondaryColor, 0);
+    addSpace(15);
 
-    // Signature Lines
-    addSpace(20);
-    checkPageBreak(30);
+    // Signature lines with proper spacing
+    const sigStartY = yPosition;
+    const sigWidth = 70;
+    const sigGap = 20;
+
+    // Chairperson signature
     pdf.setDrawColor(layout.secondaryColor[0], layout.secondaryColor[1], layout.secondaryColor[2]);
-    pdf.line(margin, yPosition, margin + 60, yPosition);
-    pdf.line(pageWidth - margin - 60, yPosition, pageWidth - margin, yPosition);
-    yPosition += 5;
-    
+    pdf.line(leftMargin, sigStartY, leftMargin + sigWidth, sigStartY);
     pdf.setFontSize(9);
+    pdf.setFont(fontFamily, "bold");
+    pdf.text("CHAIRPERSON", leftMargin, sigStartY + 5);
     pdf.setFont(fontFamily, "normal");
-    pdf.setTextColor(layout.secondaryColor[0], layout.secondaryColor[1], layout.secondaryColor[2]);
-    pdf.text("Chairperson's Signature", margin, yPosition);
-    pdf.text("Secretary's Signature", pageWidth - margin - 50, yPosition);
+    pdf.text(`Name: ${generatedMinutes.header.chairperson}`, leftMargin, sigStartY + 10);
+    pdf.text("Date: ____________________", leftMargin, sigStartY + 15);
 
-    yPosition += 15;
-    pdf.line(margin, yPosition, margin + 60, yPosition);
-    pdf.line(pageWidth - margin - 60, yPosition, pageWidth - margin, yPosition);
-    yPosition += 5;
-    pdf.text("Date: _______________", margin, yPosition);
-    pdf.text("Date: _______________", pageWidth - margin - 50, yPosition);
+    // Secretary signature
+    const secX = leftMargin + sigWidth + sigGap;
+    pdf.line(secX, sigStartY, secX + sigWidth, sigStartY);
+    pdf.setFont(fontFamily, "bold");
+    pdf.text("SECRETARY", secX, sigStartY + 5);
+    pdf.setFont(fontFamily, "normal");
+    pdf.text(`Name: ${generatedMinutes.header.secretary}`, secX, sigStartY + 10);
+    pdf.text("Date: ____________________", secX, sigStartY + 15);
+
+    yPosition = sigStartY + 25;
+
+    // Add final page number
+    addPageNumber();
 
     // Save the PDF
-    const fileName = `minutes-${meetingTitle || "meeting"}-${meetingDate || new Date().toISOString().split("T")[0]}-${layout.id}.pdf`;
+    const fileName = `MINUTES-${(meetingTitle || "Meeting").replace(/\s+/g, "-")}-${meetingDate || new Date().toISOString().split("T")[0]}.pdf`;
     pdf.save(fileName);
 
     toast({
       title: "PDF Downloaded!",
-      description: `Minutes saved with ${layout.name} layout.`,
+      description: `Official minutes saved with ${layout.name} layout.`,
     });
+  };
+
+  const downloadAsWord = async () => {
+    if (!generatedMinutes) return;
+
+    try {
+      const doc = new Document({
+        sections: [{
+          properties: {
+            page: {
+              margin: {
+                top: 1440, // 1 inch = 1440 twips
+                right: 1440,
+                bottom: 1440,
+                left: 1440,
+              },
+            },
+          },
+          headers: {
+            default: new Header({
+              children: [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: generatedMinutes.header.title,
+                      size: 20,
+                      color: "666666",
+                    }),
+                  ],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+            }),
+          },
+          footers: {
+            default: new Footer({
+              children: [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: "Page ",
+                      size: 18,
+                    }),
+                    new TextRun({
+                      children: [PageNumber.CURRENT],
+                      size: 18,
+                    }),
+                    new TextRun({
+                      text: " of ",
+                      size: 18,
+                    }),
+                    new TextRun({
+                      children: [PageNumber.TOTAL_PAGES],
+                      size: 18,
+                    }),
+                  ],
+                  alignment: AlignmentType.CENTER,
+                }),
+              ],
+            }),
+          },
+          children: [
+            // Title
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "OFFICIAL MEETING MINUTES",
+                  bold: true,
+                  size: 32,
+                  color: "000080",
+                }),
+              ],
+              heading: HeadingLevel.TITLE,
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 200 },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: generatedMinutes.header.title.toUpperCase(),
+                  bold: true,
+                  size: 26,
+                  color: "333333",
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 400 },
+              border: {
+                bottom: { style: BorderStyle.DOUBLE, size: 6, color: "000080" },
+              },
+            }),
+
+            // Meeting Details
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Date: ", bold: true }),
+                new TextRun({ text: generatedMinutes.header.date + (generatedMinutes.header.time ? ` at ${generatedMinutes.header.time}` : "") }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Venue: ", bold: true }),
+                new TextRun({ text: generatedMinutes.header.venue }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Chairperson: ", bold: true }),
+                new TextRun({ text: generatedMinutes.header.chairperson }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: "Secretary: ", bold: true }),
+                new TextRun({ text: generatedMinutes.header.secretary }),
+              ],
+              spacing: { after: 200 },
+            }),
+
+            // Attendees
+            new Paragraph({
+              children: [
+                new TextRun({ text: "PRESENT:", bold: true, color: "000080" }),
+              ],
+              spacing: { after: 120 },
+            }),
+            ...generatedMinutes.header.attendees.map((attendee, i) =>
+              new Paragraph({
+                children: [new TextRun({ text: `${i + 1}. ${attendee}` })],
+                indent: { left: 360 },
+                spacing: { after: 80 },
+              })
+            ),
+
+            // Apologies
+            ...(generatedMinutes.header.absentees && generatedMinutes.header.absentees.length > 0 ? [
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "APOLOGIES:", bold: true, color: "000080" }),
+                ],
+                spacing: { before: 200, after: 120 },
+              }),
+              ...generatedMinutes.header.absentees.map((absentee, i) =>
+                new Paragraph({
+                  children: [new TextRun({ text: `${i + 1}. ${absentee}` })],
+                  indent: { left: 360 },
+                  spacing: { after: 80 },
+                })
+              ),
+            ] : []),
+
+            // Separator
+            new Paragraph({
+              border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "CCCCCC" } },
+              spacing: { before: 300, after: 300 },
+            }),
+
+            // Call to Order
+            new Paragraph({
+              children: [
+                new TextRun({ text: "1. CALL TO ORDER", bold: true, size: 24, color: "000080" }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: generatedMinutes.callToOrder })],
+              spacing: { after: 200 },
+            }),
+
+            // Previous Minutes
+            new Paragraph({
+              children: [
+                new TextRun({ text: "2. CONFIRMATION OF PREVIOUS MINUTES", bold: true, size: 24, color: "000080" }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: generatedMinutes.previousMinutes })],
+              spacing: { after: 200 },
+            }),
+
+            // Matters Arising
+            ...(generatedMinutes.mattersArising && generatedMinutes.mattersArising.length > 0 ? [
+              new Paragraph({
+                children: [
+                  new TextRun({ text: "3. MATTERS ARISING", bold: true, size: 24, color: "000080" }),
+                ],
+                spacing: { after: 120 },
+              }),
+              ...generatedMinutes.mattersArising.flatMap((matter, i) => [
+                new Paragraph({
+                  children: [new TextRun({ text: `${i + 1}. ${matter.item}`, bold: true })],
+                  indent: { left: 360 },
+                  spacing: { after: 80 },
+                }),
+                new Paragraph({
+                  children: [new TextRun({ text: `Status: ${matter.status}`, italics: true })],
+                  indent: { left: 720 },
+                  spacing: { after: 80 },
+                }),
+              ]),
+            ] : []),
+
+            // Agenda Items Header
+            new Paragraph({
+              children: [
+                new TextRun({ text: "AGENDA ITEMS", bold: true, size: 26, color: "000080" }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: { before: 300, after: 200 },
+              border: {
+                top: { style: BorderStyle.SINGLE, size: 6, color: "000080" },
+                bottom: { style: BorderStyle.SINGLE, size: 6, color: "000080" },
+              },
+            }),
+
+            // Agenda Items
+            ...generatedMinutes.agendaItems.flatMap((item, index) => {
+              const baseNumber = (generatedMinutes.mattersArising && generatedMinutes.mattersArising.length > 0) ? 4 : 3;
+              return [
+                new Paragraph({
+                  children: [
+                    new TextRun({ text: `${baseNumber + index}. ${item.title.toUpperCase()}`, bold: true, size: 24, color: "000080" }),
+                  ],
+                  spacing: { before: 200, after: 120 },
+                }),
+                ...(item.presenter ? [
+                  new Paragraph({
+                    children: [new TextRun({ text: `Presented by: ${item.presenter}`, italics: true, color: "666666" })],
+                    spacing: { after: 80 },
+                  }),
+                ] : []),
+                new Paragraph({
+                  children: [new TextRun({ text: "Discussion:", bold: true })],
+                  spacing: { after: 80 },
+                }),
+                new Paragraph({
+                  children: [new TextRun({ text: item.discussion })],
+                  spacing: { after: 120 },
+                }),
+                ...(item.decisions.length > 0 ? [
+                  new Paragraph({
+                    children: [new TextRun({ text: "RESOLVED:", bold: true, color: "006400" })],
+                    spacing: { after: 80 },
+                  }),
+                  ...item.decisions.map((decision, i) =>
+                    new Paragraph({
+                      children: [new TextRun({ text: `${i + 1}. ${decision}` })],
+                      indent: { left: 360 },
+                      spacing: { after: 80 },
+                    })
+                  ),
+                ] : []),
+                ...(item.actionItems.length > 0 ? [
+                  new Paragraph({
+                    children: [new TextRun({ text: "ACTION ITEMS:", bold: true, color: "8B0000" })],
+                    spacing: { before: 120, after: 80 },
+                  }),
+                  ...item.actionItems.flatMap((action, i) => [
+                    new Paragraph({
+                      children: [new TextRun({ text: `${i + 1}. ${action.task}`, bold: true })],
+                      indent: { left: 360 },
+                      spacing: { after: 40 },
+                    }),
+                    new Paragraph({
+                      children: [
+                        new TextRun({ text: `Responsible: ${action.responsible}`, size: 20 }),
+                        new TextRun({ text: ` | Deadline: ${action.deadline}`, size: 20 }),
+                      ],
+                      indent: { left: 720 },
+                      spacing: { after: 80 },
+                    }),
+                  ]),
+                ] : []),
+              ];
+            }),
+
+            // Separator
+            new Paragraph({
+              border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: "CCCCCC" } },
+              spacing: { before: 300, after: 300 },
+            }),
+
+            // AOB
+            new Paragraph({
+              children: [
+                new TextRun({ text: "ANY OTHER BUSINESS", bold: true, size: 24, color: "000080" }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: formatAOB(generatedMinutes.aob) })],
+              spacing: { after: 200 },
+            }),
+
+            // Next Meeting
+            new Paragraph({
+              children: [
+                new TextRun({ text: "DATE OF NEXT MEETING", bold: true, size: 24, color: "000080" }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: formatNextMeeting(generatedMinutes.nextMeeting) })],
+              spacing: { after: 200 },
+            }),
+
+            // Adjournment
+            new Paragraph({
+              children: [
+                new TextRun({ text: "ADJOURNMENT", bold: true, size: 24, color: "000080" }),
+              ],
+              spacing: { after: 120 },
+            }),
+            new Paragraph({
+              children: [new TextRun({ text: formatAdjournment(generatedMinutes.adjournment) })],
+              spacing: { after: 300 },
+            }),
+
+            // End of Minutes
+            new Paragraph({
+              children: [
+                new TextRun({ text: "END OF MINUTES", bold: true, size: 22, color: "000080" }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: { before: 200, after: 400 },
+              border: {
+                top: { style: BorderStyle.DOUBLE, size: 6, color: "000080" },
+                bottom: { style: BorderStyle.DOUBLE, size: 6, color: "000080" },
+              },
+            }),
+
+            // Confirmation Section
+            new Paragraph({
+              children: [
+                new TextRun({ text: "CONFIRMATION OF MINUTES", bold: true, size: 24, color: "000080" }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: { before: 400, after: 200 },
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: "These minutes are a true and accurate record of the proceedings.", italics: true }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 400 },
+            }),
+
+            // Signature Table
+            new Table({
+              width: { size: 100, type: WidthType.PERCENTAGE },
+              rows: [
+                new TableRow({
+                  children: [
+                    new TableCell({
+                      children: [
+                        new Paragraph({ children: [new TextRun({ text: "_".repeat(30) })] }),
+                        new Paragraph({ children: [new TextRun({ text: "CHAIRPERSON", bold: true })], spacing: { before: 80 } }),
+                        new Paragraph({ children: [new TextRun({ text: `Name: ${generatedMinutes.header.chairperson}` })], spacing: { before: 80 } }),
+                        new Paragraph({ children: [new TextRun({ text: "Date: ____________________" })], spacing: { before: 80 } }),
+                      ],
+                      borders: { top: { size: 0, style: BorderStyle.NONE }, bottom: { size: 0, style: BorderStyle.NONE }, left: { size: 0, style: BorderStyle.NONE }, right: { size: 0, style: BorderStyle.NONE } },
+                    }),
+                    new TableCell({
+                      children: [
+                        new Paragraph({ children: [new TextRun({ text: "_".repeat(30) })] }),
+                        new Paragraph({ children: [new TextRun({ text: "SECRETARY", bold: true })], spacing: { before: 80 } }),
+                        new Paragraph({ children: [new TextRun({ text: `Name: ${generatedMinutes.header.secretary}` })], spacing: { before: 80 } }),
+                        new Paragraph({ children: [new TextRun({ text: "Date: ____________________" })], spacing: { before: 80 } }),
+                      ],
+                      borders: { top: { size: 0, style: BorderStyle.NONE }, bottom: { size: 0, style: BorderStyle.NONE }, left: { size: 0, style: BorderStyle.NONE }, right: { size: 0, style: BorderStyle.NONE } },
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+        }],
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `MINUTES-${(meetingTitle || "Meeting").replace(/\s+/g, "-")}-${meetingDate || new Date().toISOString().split("T")[0]}.docx`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      toast({
+        title: "Word Document Downloaded!",
+        description: "Official minutes saved as DOCX file.",
+      });
+    } catch (error) {
+      console.error("Error generating Word document:", error);
+      toast({
+        title: "Download Failed",
+        description: "Failed to generate Word document. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -1305,6 +1709,10 @@ Date: ___________________                    Date: ___________________
                         <Button variant="outline" size="sm" onClick={downloadMinutes}>
                           <Download className="w-4 h-4 mr-1" />
                           TXT
+                        </Button>
+                        <Button variant="outline" size="sm" onClick={downloadAsWord}>
+                          <FileType className="w-4 h-4 mr-1" />
+                          DOCX
                         </Button>
                         <Button variant="default" size="sm" onClick={downloadAsPDF}>
                           <FileDown className="w-4 h-4 mr-1" />
