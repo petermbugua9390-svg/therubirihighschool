@@ -39,6 +39,7 @@ const Navbar = () => {
 
   const communityLinks = [
     { name: "Co-Curricular", path: "/co-curricular" },
+    { name: "Achievements", path: "/achievements" },
     { name: "Teachers", path: "/teachers" },
     { name: "Alumni", path: "/alumni" },
     { name: "Gallery", path: "/gallery" },

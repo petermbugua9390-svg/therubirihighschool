@@ -17,6 +17,7 @@ import Academics from "./pages/Academics";
 import CBC from "./pages/CBC";
 import SchoolPlacement from "./pages/SchoolPlacement";
 import CoCurricular from "./pages/CoCurricular";
+import Achievements from "./pages/Achievements";
 import Teachers from "./pages/Teachers";
 import Admissions from "./pages/Admissions";
 import Alumni from "./pages/Alumni";
@@ -50,6 +51,7 @@ const AnimatedRoutes = () => {
         <Route path="/cbc" element={<PageTransition><CBC /></PageTransition>} />
         <Route path="/school-placement" element={<PageTransition><SchoolPlacement /></PageTransition>} />
         <Route path="/co-curricular" element={<PageTransition><CoCurricular /></PageTransition>} />
+        <Route path="/achievements" element={<PageTransition><Achievements /></PageTransition>} />
         <Route path="/teachers" element={<PageTransition><Teachers /></PageTransition>} />
         <Route path="/admissions" element={<PageTransition><Admissions /></PageTransition>} />
         <Route path="/alumni" element={<PageTransition><Alumni /></PageTransition>} />
